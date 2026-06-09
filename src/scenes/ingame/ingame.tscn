@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://kd6qaviqjcl2"]
+
+[ext_resource type="Script" uid="uid://cpmam2ibu0oqb" path="res://src/scenes/ingame/ingame.gd" id="1_aiu3x"]
+
+[node name="Ingame" type="Node2D" unique_id=816651463]
+script = ExtResource("1_aiu3x")
+
+[node name="Characters" type="Node2D" parent="." unique_id=1180726723]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=891521632]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=266394916]

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cunodanda2h0v"]
+
+[ext_resource type="Script" uid="uid://br7bebn3cahi5" path="res://src/scenes/start/start.gd" id="1_61vyr"]
+
+[node name="Start" type="Node2D" unique_id=1191381798]
+script = ExtResource("1_61vyr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=789217729]
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=2101987934]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]

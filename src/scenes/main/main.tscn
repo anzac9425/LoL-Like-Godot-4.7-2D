@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bl5s25ilccob3"]
+
+[ext_resource type="Script" uid="uid://bvbut80xb51po" path="res://src/scenes/main/main.gd" id="1_aiwe5"]
+
+[node name="Main" type="Node2D" unique_id=293000293]
+script = ExtResource("1_aiwe5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1950728301]
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=781756852]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_button_pressed"]
