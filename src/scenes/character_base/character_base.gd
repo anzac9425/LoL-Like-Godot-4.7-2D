@@ -35,10 +35,8 @@ func _ready() -> void:
 	
 	add_child(character_data.character_logic.new())
 	
-	
-func _process(delta: float) -> void:
 	queue_redraw()
-		
+	
 	
 func _physics_process(delta: float) -> void:
 	if is_moving:
@@ -47,7 +45,80 @@ func _physics_process(delta: float) -> void:
 		if global_position == target_position:
 			is_moving = false
 	
-	update_barriers(delta)
+	if barriers:
+		update_barriers(delta)
+	
+
+func _draw() -> void:
+	var width: float = 256.0
+	var height: float = 32.0
+	
+	var barrier_amount: float = 0.0
+	
+	for barrier in barriers:
+		barrier_amount += barrier.amount
+		
+	var max_health_barrier: float = (total_statistics.health + barrier_amount)
+
+	var health_ratio: float = current_health / max_health_barrier
+
+	var barrier_ratio: float = barrier_amount / max_health_barrier
+
+	var pos: Vector2 = Vector2(width / -2, -128.0)
+
+	draw_rect(
+		Rect2(pos, Vector2(width, height)),
+		Color.BLACK
+	)
+
+	draw_rect(
+		Rect2(pos, Vector2(width * health_ratio, height)),
+		Color.RED
+	)
+
+	if barrier_amount:
+		var barrier_x := pos.x + width * health_ratio
+		var barrier_width: float = min(
+			width * barrier_ratio,
+			width - width * health_ratio
+		)
+
+		draw_rect(
+			Rect2(
+				Vector2(barrier_x, pos.y),
+				Vector2(barrier_width, height)
+			),
+			Color.YELLOW
+		)
+
+	if total_statistics.health:
+		for hp in range(100, int(max_health_barrier), 100):
+			var x: float = pos.x + (float(hp) / max_health_barrier) * width
+
+			draw_line(
+				Vector2(x, pos.y + height * 0.5),
+				Vector2(x, pos.y),
+				Color.BLACK,
+				1.0
+			)
+
+	if total_statistics.health > 1000:
+		for hp in range(1000, int(max_health_barrier), 1000):
+			var x := pos.x + (float(hp) / max_health_barrier) * width
+
+			draw_line(
+				Vector2(x, pos.y),
+				Vector2(x, pos.y + height),
+				Color.BLACK,
+				2.0
+			)
+
+	draw_rect(
+		Rect2(pos, Vector2(width, height)),
+		Color.WHITE,
+		false,
+		2.0
+	)
 			
 			
 func update_barriers(delta: float) -> void:
@@ -58,6 +129,8 @@ func update_barriers(delta: float) -> void:
 
 		if barrier.remaining_duration <= 0.0:
 			barriers.remove_at(i)
+			
+			queue_redraw()
 
 
 func move_to(pos: Vector2) -> void:
@@ -67,29 +140,7 @@ func move_to(pos: Vector2) -> void:
 	var dmg: DamageInfo = DamageInfo.create(self, self)
 	dmg.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.UNKNOWN, 10.0, true, true)
 	Combat.apply_damage(dmg)
-	
-	
-func _draw() -> void:
-	var width: float = 48.0
-	var height: float = 4.0
-
-	var ratio: float = current_health / total_statistics.health
-
-	draw_rect(
-		Rect2(
-			Vector2(-24.0, -40.0),
-			Vector2(width, height)
-		),
-		Color.BLACK
-	)
-
-	draw_rect(
-		Rect2(
-			Vector2(-24.0, -40.0),
-			Vector2(width * ratio, height)
-		),
-		Color.RED
-	)
+	Combat.apply_barrier(self, 128, 2.0)
 	
 
 func calculate_statistics() -> void:

@@ -23,7 +23,9 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 				amount *= 100 / (100 + max(0.0, max(0.0, (1 - damage_info.attacker.total_statistics.magic_penetration_multiplier)) * damage_info.victim.total_statistics.magic_resistance - damage_info.attacker.total_statistics.magic_penetration_flat))
 		
 		if instance.allow_lifesteal:
-			pass ## apply lifesteal
+			apply_heal(damage_info.attacker, amount * damage_info.attacker.total_statistics.lifesteal)
+		
+		apply_heal(damage_info.attacker, amount * damage_info.attacker.total_statistics.omnivamp)
 		
 		damage_amount[instance.damage_type] += amount
 	
@@ -40,7 +42,10 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 			amount -= absorbed
 			
 		damage_info.victim.current_health -= amount
-		
+	
+	damage_info.attacker.queue_redraw()
+	damage_info.victim.queue_redraw()
+	
 
 static func apply_heal(target: CharacterBase, amount: float) -> void:
 	amount *= target.total_statistics.heal_shield_power_multiplier
@@ -49,12 +54,16 @@ static func apply_heal(target: CharacterBase, amount: float) -> void:
 
 	if target.current_health > target.total_statistics.health:
 		target.current_health = target.total_statistics.health
+	
+	target.queue_redraw()
 
 
 static func apply_barrier(target: CharacterBase, amount: float, duration: float) -> void:
 	var barrier: Barrier = Barrier.new()
 
-	barrier.amount = amount
+	barrier.amount = amount * target.total_statistics.heal_shield_power_multiplier
 	barrier.remaining_duration = duration
 
 	target.barriers.push_back(barrier)
+	
+	target.queue_redraw()
