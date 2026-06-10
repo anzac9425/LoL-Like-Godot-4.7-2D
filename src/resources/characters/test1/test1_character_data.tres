@@ -8,5 +8,5 @@
 script = ExtResource("1_h32tj")
 character_name = "test1"
 statistics = ExtResource("3_qp0j6")
-character_logic_path = ExtResource("1_xfegy")
+character_logic = ExtResource("1_xfegy")
 metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

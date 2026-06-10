@@ -1,2 +1,6 @@
 ## TODO
-- TEAMS
+- GROUP
+- COMBAT
+
+- apply_damage.lifesteal/omnivamp
+- combat.heal

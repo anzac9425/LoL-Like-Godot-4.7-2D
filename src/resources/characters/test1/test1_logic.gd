@@ -1,5 +1,6 @@
+extends Node
 class_name test1
 
 
-static func auto_attack() -> void:
+func auto_attack() -> void:
 	pass

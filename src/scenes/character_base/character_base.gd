@@ -13,6 +13,7 @@ var experience: float
 
 var current_health: float
 var current_mana: float
+var barriers: Array[Barrier]
 
 # var buffs: Array[Buff] = []
 # var items: Array[Item] = []
@@ -35,20 +36,65 @@ func _ready() -> void:
 	add_child(character_data.character_logic.new())
 	
 	
+func _process(delta: float) -> void:
+	queue_redraw()
+		
+	
 func _physics_process(delta: float) -> void:
 	if is_moving:
 		global_position = global_position.move_toward(target_position, total_statistics.move_speed * delta)
 		
 		if global_position == target_position:
 			is_moving = false
+	
+	update_barriers(delta)
+			
+			
+func update_barriers(delta: float) -> void:
+	for i in range(barriers.size() - 1, -1, -1):
+		var barrier: Barrier = barriers[i]
+
+		barrier.remaining_duration -= delta
+
+		if barrier.remaining_duration <= 0.0:
+			barriers.remove_at(i)
 
 
 func move_to(pos: Vector2) -> void:
 	target_position = pos
 	is_moving = true
+	
+	var dmg: DamageInfo = DamageInfo.create(self, self)
+	dmg.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.UNKNOWN, 10.0, true, true)
+	Combat.apply_damage(dmg)
+	
+	
+func _draw() -> void:
+	var width: float = 48.0
+	var height: float = 4.0
 
+	var ratio: float = current_health / total_statistics.health
+
+	draw_rect(
+		Rect2(
+			Vector2(-24.0, -40.0),
+			Vector2(width, height)
+		),
+		Color.BLACK
+	)
+
+	draw_rect(
+		Rect2(
+			Vector2(-24.0, -40.0),
+			Vector2(width * ratio, height)
+		),
+		Color.RED
+	)
+	
 
 func calculate_statistics() -> void:
+	var old_total_statistics_health: float = total_statistics.health
+	
 	total_statistics.health = base_statistics.health + bonus_statistics.health
 	
 	total_statistics.health_regeneration = base_statistics.health_regeneration + bonus_statistics.health_regeneration
@@ -97,7 +143,6 @@ func calculate_statistics() -> void:
 	
 	total_statistics.heal_shield_power_multiplier = base_statistics.heal_shield_power_multiplier + bonus_statistics.heal_shield_power_multiplier
 	
-	
 	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
 		total_statistics.attack_damage += total_statistics.adaptive_force
 		
@@ -106,3 +151,4 @@ func calculate_statistics() -> void:
 	
 	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
 	
+	current_health += max(0.0, total_statistics.health - old_total_statistics_health)
