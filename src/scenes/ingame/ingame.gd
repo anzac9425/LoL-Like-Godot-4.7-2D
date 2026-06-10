@@ -1,12 +1,17 @@
 extends Node2D
+class_name Ingame
 
+
+static var current: Ingame
 
 var input_characters: Array[CharacterBase]
 
 
 func _ready() -> void:
-	input_characters.append(character_spawn(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a"))
-	character_spawn(load(Paths.CHARACTER_DATA_TEST2), Vector2.ZERO, "a")
+	current = self
+	
+	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a"))
+	spawn_character(load(Paths.CHARACTER_DATA_TEST2), Vector2.ZERO, "a")
 	
 	
 func _unhandled_input(event: InputEvent) -> void:
@@ -17,7 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			character.move_to(pos)
 
 
-func character_spawn(
+func spawn_character(
 		character_data: CharacterData,
 		character_position: Vector2,
 		group_name: String
@@ -35,3 +40,20 @@ func character_spawn(
 	$Characters.add_child(character_base)
 	
 	return character_base
+
+
+func spawn_projectile(
+	damage_info: DamageInfo,
+	speed: float,
+	radius: float
+) -> Projectile:
+	
+	var projectile: Projectile = load(Paths.PROJECTILE).instantiate()
+	
+	projectile.damage_info = damage_info
+	projectile.projectile_speed = speed
+	projectile.projectile_radius = radius
+	
+	$Projectiles.add_child(projectile)
+	
+	return projectile

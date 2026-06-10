@@ -7,6 +7,8 @@ script = ExtResource("1_aiu3x")
 
 [node name="Characters" type="Node2D" parent="." unique_id=1180726723]
 
+[node name="Projectiles" type="Node2D" parent="." unique_id=896597231]
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=891521632]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=266394916]

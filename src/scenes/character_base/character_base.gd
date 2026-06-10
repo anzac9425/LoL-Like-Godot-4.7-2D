@@ -2,7 +2,13 @@ extends Area2D
 class_name CharacterBase
 
 
+@onready var character_sprite: Sprite2D = $Sprite2D
+@onready var character_collision_shape: CollisionShape2D = $CollisionShape2D
+
+
 var character_data: CharacterData
+var character_logic: CharacterLogic
+
 
 var base_statistics: Statistics
 var bonus_statistics: Statistics = Statistics.new()
@@ -15,6 +21,10 @@ var current_health: float
 var current_mana: float
 var barriers: Array[Barrier]
 
+var character_radius: float
+var character_sprite_radius: float
+var character_collision_shape_radius: float
+
 # var buffs: Array[Buff] = []
 # var items: Array[Item] = []
 # var runes: Array[Rune] = []
@@ -24,16 +34,24 @@ var target_position: Vector2
 
 
 func _ready() -> void:
-	base_statistics = character_data.statistics
+	character_logic = character_data.character_logic.new()
+	character_logic.name = "CharacterLogic"
+	character_logic.character_base = self
+	add_child(character_logic)
+	
+	character_radius = character_data.radius
+	
+	set_radius_sprite(character_radius)
+	set_radius_collision_shape(character_radius)
 	
 	target_position = global_position
+	
+	base_statistics = character_data.statistics
 	
 	calculate_statistics()
 	
 	current_health = total_statistics.health
 	current_mana = total_statistics.mana
-	
-	add_child(character_data.character_logic.new())
 	
 	queue_redraw()
 	
@@ -119,8 +137,26 @@ func _draw() -> void:
 		false,
 		2.0
 	)
-			
-			
+
+
+func set_radius_sprite(radius: float) -> void:
+	character_sprite.scale = Vector2.ONE * (
+		radius * 2.0 / character_sprite.texture.get_size().x
+	)
+	
+	character_sprite_radius = radius
+
+
+func set_radius_collision_shape(radius: float) -> void:
+	var shape: CircleShape2D = CircleShape2D.new()
+	
+	shape.radius = radius
+
+	character_collision_shape.shape = shape
+	
+	character_collision_shape_radius = radius
+
+
 func update_barriers(delta: float) -> void:
 	for i in range(barriers.size() - 1, -1, -1):
 		var barrier: Barrier = barriers[i]
@@ -137,10 +173,9 @@ func move_to(pos: Vector2) -> void:
 	target_position = pos
 	is_moving = true
 	
-	var dmg: DamageInfo = DamageInfo.create(self, self)
-	dmg.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.UNKNOWN, 10.0, true, true)
-	Combat.apply_damage(dmg)
-	Combat.apply_barrier(self, 128, 2.0)
+	var a = DamageInfo.create(get_parent().get_node("test2"), self)
+	
+	Ingame.current.spawn_projectile(a, 256.0, 8.0)
 	
 
 func calculate_statistics() -> void:

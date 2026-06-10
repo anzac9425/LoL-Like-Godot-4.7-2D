@@ -7,6 +7,7 @@
 [resource]
 script = ExtResource("1_nbm8a")
 character_name = "test2"
+radius = 64.0
 statistics = ExtResource("3_u1uq4")
 character_logic = ExtResource("1_lnsae")
 metadata/_custom_type_script = "uid://c5nrg3dfghsbm"
