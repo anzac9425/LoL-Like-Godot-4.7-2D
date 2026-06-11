@@ -10,8 +10,8 @@ var input_characters: Array[CharacterBase]
 func _ready() -> void:
 	current = self
 	
-	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a"))
-	spawn_character(load(Paths.CHARACTER_DATA_TEST2), Vector2.ZERO, "a")
+	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "a"))
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a")
 	
 	
 func _unhandled_input(event: InputEvent) -> void:

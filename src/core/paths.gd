@@ -8,4 +8,4 @@ const CHARACTER_BASE: String = "res://src/scenes/character_base/character_base.t
 const PROJECTILE: String = "res://src/scenes/projectile/projectile.tscn"
 
 const CHARACTER_DATA_TEST1: String = "res://src/resources/characters/test1/test1_character_data.tres"
-const CHARACTER_DATA_TEST2: String = "res://src/resources/characters/test2/test2_character_data.tres"
+const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/aatrox_character_data.tres"

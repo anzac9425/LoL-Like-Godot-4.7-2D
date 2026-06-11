@@ -8,7 +8,7 @@ class_name CharacterBase
 var character_data: CharacterData
 var character_logic: CharacterLogic
 
-var base_statistics: Statistics
+var base_statistics: Statistics = Statistics.new()
 var bonus_statistics: Statistics = Statistics.new()
 var total_statistics: Statistics = Statistics.new()
 
@@ -52,8 +52,6 @@ func _ready() -> void:
 	set_radius_collision_shape(character_radius)
 	
 	target_position = global_position
-	
-	base_statistics = character_data.statistics
 	
 	calculate_statistics()
 	
@@ -388,53 +386,21 @@ func can_die():
 func calculate_statistics() -> void:
 	var old_total_statistics_health: float = total_statistics.health
 	
-	total_statistics.health = base_statistics.health + bonus_statistics.health
+	base_statistics = Statistics.new()
 	
-	total_statistics.health_regeneration = base_statistics.health_regeneration + bonus_statistics.health_regeneration
+	var growthed_statistics: Statistics = character_data.growth_statistics.duplicate()
 	
-	total_statistics.mana = base_statistics.mana + bonus_statistics.mana
+	growthed_statistics.multiply(level)
 	
-	total_statistics.mana_regeneration = base_statistics.mana_regeneration + bonus_statistics.mana_regeneration
+	base_statistics.add(character_data.statistics)
+	base_statistics.add(growthed_statistics)
 	
-	total_statistics.attack_damage = base_statistics.attack_damage + bonus_statistics.attack_damage
+	bonus_statistics = Statistics.new()
 	
-	total_statistics.ability_power = base_statistics.ability_power + bonus_statistics.ability_power
+	total_statistics = Statistics.new()
 	
-	total_statistics.adaptive_force = base_statistics.adaptive_force + bonus_statistics.adaptive_force
-	
-	total_statistics.armor = base_statistics.armor + bonus_statistics.armor
-	
-	total_statistics.magic_resistance = base_statistics.magic_resistance + bonus_statistics.magic_resistance
-	
-	total_statistics.attack_speed = base_statistics.attack_speed + bonus_statistics.attack_speed
-	
-	total_statistics.attack_speed_multiplier = base_statistics.attack_speed_multiplier + bonus_statistics.attack_speed_multiplier
-	
-	total_statistics.skill_haste = base_statistics.skill_haste + bonus_statistics.skill_haste
-	
-	total_statistics.critical_chance = base_statistics.critical_chance + bonus_statistics.critical_chance
-	
-	total_statistics.critical_damage_multiplier = base_statistics.critical_damage_multiplier + bonus_statistics.critical_damage_multiplier
-	
-	total_statistics.move_speed = base_statistics.move_speed + bonus_statistics.move_speed
-	
-	total_statistics.armor_penetration_flat = base_statistics.armor_penetration_flat + bonus_statistics.armor_penetration_flat
-	
-	total_statistics.armor_penetration_multiplier = base_statistics.armor_penetration_multiplier + bonus_statistics.armor_penetration_multiplier
-	
-	total_statistics.magic_penetration_flat = base_statistics.magic_penetration_flat + bonus_statistics.magic_penetration_flat
-	
-	total_statistics.magic_penetration_multiplier = base_statistics.magic_penetration_multiplier + bonus_statistics.magic_penetration_multiplier
-	
-	total_statistics.lifesteal = base_statistics.lifesteal + bonus_statistics.lifesteal
-	
-	total_statistics.omnivamp = base_statistics.omnivamp + bonus_statistics.omnivamp
-	
-	total_statistics.attack_range = base_statistics.attack_range + bonus_statistics.attack_range
-	
-	total_statistics.tenacity = base_statistics.tenacity + bonus_statistics.tenacity
-	
-	total_statistics.heal_shield_power_multiplier = base_statistics.heal_shield_power_multiplier + bonus_statistics.heal_shield_power_multiplier
+	total_statistics.add(base_statistics)
+	total_statistics.add(bonus_statistics)
 	
 	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
 		total_statistics.attack_damage += total_statistics.adaptive_force
@@ -445,3 +411,7 @@ func calculate_statistics() -> void:
 	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
 	
 	current_health += max(0.0, total_statistics.health - old_total_statistics_health)
+	
+	current_health = min(current_health, total_statistics.health)
+	
+	queue_redraw()

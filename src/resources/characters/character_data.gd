@@ -10,4 +10,6 @@ class_name CharacterData
 
 @export var statistics: Statistics
 
+@export var growth_statistics: Statistics
+
 @export var character_logic: Script

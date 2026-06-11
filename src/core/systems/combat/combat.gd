@@ -34,15 +34,20 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	
 	for type in damage_amount:
 		var amount: float = damage_amount[type]
-		
-		for barrier in damage_info.victim.barriers:
+
+		for i in range(damage_info.victim.barriers.size() - 1, -1, -1):
 			if amount <= 0.0:
 				break
-			
+
+			var barrier: Barrier = damage_info.victim.barriers[i]
+
 			var absorbed: float = min(barrier.amount, amount)
-			
+
 			barrier.amount -= absorbed
 			amount -= absorbed
+
+			if barrier.amount <= 0.0:
+				damage_info.victim.barriers.remove_at(i)
 			
 		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - amount)
 	
@@ -56,7 +61,7 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 static func apply_heal(target: CharacterBase, amount: float) -> void:
 	if target.is_dead:
 		return
-	amount *= target.total_statistics.heal_shield_power_multiplier
+	amount *= (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	
 	target.current_health += amount
 
@@ -72,7 +77,7 @@ static func apply_barrier(target: CharacterBase, amount: float, duration: float)
 	
 	var barrier: Barrier = Barrier.new()
 
-	barrier.amount = amount * target.total_statistics.heal_shield_power_multiplier
+	barrier.amount = amount * (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	barrier.remaining_duration = duration
 
 	target.barriers.push_back(barrier)
@@ -90,7 +95,7 @@ static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, 
 	
 	crowd_control.type = type
 	crowd_control.amount = amount
-	crowd_control.remaining_duration = duration
+	crowd_control.remaining_duration = duration * max(0.0, (1.0 - target.total_statistics.tenacity))
 	
 	target.crowd_controls.append(crowd_control)
 
