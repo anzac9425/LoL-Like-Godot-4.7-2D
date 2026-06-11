@@ -24,19 +24,18 @@ var barriers: Array[Barrier]
 var crowd_controls: Array[CrowdControl]
 var statuses: Array[Status]
 
-var character_radius: float
-var character_sprite_radius: float
-var character_collision_shape_radius: float
-
 # var buffs: Array[Buff] = []
 # var items: Array[Item] = []
 # var runes: Array[Rune] = []
+
+var character_radius: float
+var character_sprite_radius: float
+var character_collision_shape_radius: float
 
 var is_moving: bool
 var target_position: Vector2
 
 var auto_attack_target: CharacterBase
-
 var auto_attack_available: bool = true
 var auto_attack_cooldown: float
 
