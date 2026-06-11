@@ -19,7 +19,32 @@ func _unhandled_input(event: InputEvent) -> void:
 		var pos = get_global_mouse_position()
 
 		for character in input_characters:
+			if character.auto_attack_target:
+				character.auto_attack_target = null
 			character.move_to(pos)
+	
+	if event.is_action_pressed("auto_attack_target_set"):
+		var target: CharacterBase
+
+		var point_query: PhysicsPointQueryParameters2D = PhysicsPointQueryParameters2D.new()
+
+		point_query.position = get_global_mouse_position()
+		point_query.collide_with_areas = true
+
+		var result: Array[Dictionary] = get_world_2d().direct_space_state.intersect_point(
+			point_query
+		)
+
+		for hit in result:
+			var collider = hit["collider"]
+
+			if collider is CharacterBase:
+				target = collider
+				break
+
+		if target:
+			for character in input_characters:
+				character.auto_attack_target = target
 
 
 func spawn_character(

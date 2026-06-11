@@ -2,5 +2,6 @@ class_name SourceType
 
 
 enum Type {
-	UNKNOWN
+	UNKNOWN,
+	AUTO_ATTACK
 }

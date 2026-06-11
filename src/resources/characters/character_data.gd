@@ -6,6 +6,8 @@ class_name CharacterData
 
 @export var radius: float
 
+@export var ranged: bool
+
 @export var statistics: Statistics
 
 @export var character_logic: Script

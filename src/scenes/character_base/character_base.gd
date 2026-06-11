@@ -5,10 +5,8 @@ class_name CharacterBase
 @onready var character_sprite: Sprite2D = $Sprite2D
 @onready var character_collision_shape: CollisionShape2D = $CollisionShape2D
 
-
 var character_data: CharacterData
 var character_logic: CharacterLogic
-
 
 var base_statistics: Statistics
 var bonus_statistics: Statistics = Statistics.new()
@@ -31,6 +29,11 @@ var character_collision_shape_radius: float
 
 var is_moving: bool
 var target_position: Vector2
+
+var auto_attack_target: CharacterBase
+
+var auto_attack_available: bool = true
+var auto_attack_cooldown: float
 
 
 func _ready() -> void:
@@ -64,7 +67,41 @@ func _physics_process(delta: float) -> void:
 			is_moving = false
 	
 	if barriers:
-		update_barriers(delta)
+		for i in range(barriers.size() - 1, -1, -1):
+			var barrier: Barrier = barriers[i]
+
+			barrier.remaining_duration -= delta
+
+			if barrier.remaining_duration <= 0.0:
+				barriers.remove_at(i)
+				
+				queue_redraw()
+	
+	if auto_attack_cooldown > 0.0:
+		auto_attack_cooldown -= delta
+
+	if auto_attack_target:
+		if !is_instance_valid(auto_attack_target):
+			auto_attack_target = null
+
+		else:
+			var distance: float = global_position.distance_to(auto_attack_target.global_position)
+
+			var attack_distance: float = (
+				total_statistics.attack_range
+				+ character_collision_shape_radius
+				+ auto_attack_target.character_collision_shape_radius
+			)
+
+			if distance > attack_distance:
+				move_to(auto_attack_target.global_position)
+
+			else:
+				is_moving = false
+
+				if auto_attack_available:
+					if auto_attack_cooldown <= 0.0:
+						auto_attack()
 	
 
 func _draw() -> void:
@@ -155,27 +192,35 @@ func set_radius_collision_shape(radius: float) -> void:
 	character_collision_shape.shape = shape
 	
 	character_collision_shape_radius = radius
-
-
-func update_barriers(delta: float) -> void:
-	for i in range(barriers.size() - 1, -1, -1):
-		var barrier: Barrier = barriers[i]
-
-		barrier.remaining_duration -= delta
-
-		if barrier.remaining_duration <= 0.0:
-			barriers.remove_at(i)
-			
-			queue_redraw()
+	
+	
+func auto_attack() -> void:
+	auto_attack_cooldown = 1.0 / total_statistics.attack_speed
+	
+	var damage_info: DamageInfo = DamageInfo.create(self, auto_attack_target)
+	
+	damage_info.add_damage_instance(
+		DamageType.Type.PHYSICAL,
+		SourceType.Type.AUTO_ATTACK,
+		total_statistics.attack_damage,
+		true,
+		true
+	)
+	
+	if character_data.ranged:
+		Ingame.current.spawn_projectile(
+			damage_info,
+			1024.0,
+			8.0
+		)
+		
+	else:
+		Combat.apply_damage(damage_info)
 
 
 func move_to(pos: Vector2) -> void:
 	target_position = pos
 	is_moving = true
-	
-	var a = DamageInfo.create(get_parent().get_node("test2"), self)
-	
-	Ingame.current.spawn_projectile(a, 256.0, 8.0)
 	
 
 func calculate_statistics() -> void:
