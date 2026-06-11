@@ -83,6 +83,15 @@ func _physics_process(delta: float) -> void:
 				
 				queue_redraw()
 	
+	if crowd_controls:
+		for i in range(crowd_controls.size() - 1, -1, -1):
+			var crowd_control: CrowdControl = crowd_controls[i]
+
+			crowd_control.remaining_duration -= delta
+
+			if crowd_control.remaining_duration <= 0.0:
+				crowd_controls.remove_at(i)
+	
 	if statuses:
 		for i in range(statuses.size() - 1, -1, -1):
 			var status: Status = statuses[i]

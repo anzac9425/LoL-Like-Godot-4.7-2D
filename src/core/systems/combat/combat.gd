@@ -79,8 +79,7 @@ static func apply_barrier(target: CharacterBase, amount: float, duration: float)
 	
 	target.queue_redraw()
 
-
-func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, amount: float, duration: float):
+static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, amount: float, duration: float):
 	if target.is_dead:
 		return
 	
@@ -96,7 +95,7 @@ func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, amount:
 	target.crowd_controls.append(crowd_control)
 
 
-func apply_status(target: CharacterBase, type: Status.Type, duration: float):
+static func apply_status(target: CharacterBase, type: Status.Type, duration: float):
 	if target.is_dead:
 		return
 	
