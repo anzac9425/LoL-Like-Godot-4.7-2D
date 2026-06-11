@@ -12,12 +12,17 @@ var base_statistics: Statistics
 var bonus_statistics: Statistics = Statistics.new()
 var total_statistics: Statistics = Statistics.new()
 
+var is_dead: bool
+
 var level: int
 var experience: float
 
 var current_health: float
 var current_mana: float
 var barriers: Array[Barrier]
+
+var crowd_controls: Array[CrowdControl]
+var statuses: Array[Status]
 
 var character_radius: float
 var character_sprite_radius: float
@@ -61,10 +66,11 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	if is_moving:
-		global_position = global_position.move_toward(target_position, total_statistics.move_speed * delta)
-		
-		if global_position == target_position:
-			is_moving = false
+		if can_move():
+			global_position = global_position.move_toward(target_position, total_statistics.move_speed * delta)
+			
+			if global_position == target_position:
+				is_moving = false
 	
 	if barriers:
 		for i in range(barriers.size() - 1, -1, -1):
@@ -77,11 +83,20 @@ func _physics_process(delta: float) -> void:
 				
 				queue_redraw()
 	
+	if statuses:
+		for i in range(statuses.size() - 1, -1, -1):
+			var status: Status = statuses[i]
+
+			status.remaining_duration -= delta
+
+			if status.remaining_duration <= 0.0:
+				statuses.remove_at(i)
+	
 	if auto_attack_cooldown > 0.0:
 		auto_attack_cooldown -= delta
 
 	if auto_attack_target:
-		if !is_instance_valid(auto_attack_target):
+		if !auto_attack_target.can_be_targeted():
 			auto_attack_target = null
 
 		else:
@@ -99,12 +114,15 @@ func _physics_process(delta: float) -> void:
 			else:
 				is_moving = false
 
-				if auto_attack_available:
+				if can_auto_attack():
 					if auto_attack_cooldown <= 0.0:
 						auto_attack()
 	
 
 func _draw() -> void:
+	if is_dead:
+		return
+		
 	var width: float = 256.0
 	var height: float = 32.0
 	
@@ -176,6 +194,38 @@ func _draw() -> void:
 	)
 
 
+func die() -> void:
+	if !can_die():
+		return
+	
+	is_dead = true
+	is_moving = false
+	auto_attack_available = false
+	auto_attack_target = null
+
+	set_physics_process(false)
+	update_visibility()
+	queue_redraw()
+
+
+func respawn() -> void:
+	is_dead = false
+	auto_attack_available = true
+
+	global_position = Vector2.ZERO
+	current_health = total_statistics.health
+	current_mana = total_statistics.mana
+	barriers.clear()
+
+	target_position = global_position
+	
+	auto_attack_target = null
+
+	set_physics_process(true)
+	update_visibility()
+	queue_redraw()
+
+
 func set_radius_sprite(radius: float) -> void:
 	character_sprite.scale = Vector2.ONE * (
 		radius * 2.0 / character_sprite.texture.get_size().x
@@ -222,6 +272,110 @@ func move_to(pos: Vector2) -> void:
 	target_position = pos
 	is_moving = true
 	
+
+func stop() -> void:
+	is_moving = false
+	auto_attack_target = null
+
+
+func update_visibility() -> void:
+	character_sprite.visible = !is_dead
+
+
+func has_crowd_control(type: CrowdControl.Type) -> bool:
+	for crowd_control in crowd_controls:
+		if crowd_control.type == type:
+			return true
+
+	return false
+
+
+func has_status(type: Status.Type) -> bool:
+	for status in statuses:
+		if status.type == type:
+			return true
+
+	return false
+
+
+func can_move() -> bool:
+	if is_dead:
+		return false
+
+	if has_crowd_control(CrowdControl.Type.STUN):
+		return false
+
+	if has_crowd_control(CrowdControl.Type.ROOT):
+		return false
+
+	return true
+
+
+func can_auto_attack() -> bool:
+	if is_dead:
+		return false
+	
+	if !auto_attack_available:
+		return false
+		
+	if has_crowd_control(CrowdControl.Type.STUN):
+		return false
+		
+	return true
+
+
+func can_cast():
+	if is_dead:
+		return false
+	
+	if has_crowd_control(CrowdControl.Type.STUN):
+		return false
+
+	if has_crowd_control(CrowdControl.Type.SILENCE):
+		return false
+
+	return true
+
+
+func can_be_targeted() -> bool:
+	if is_dead:
+		return false
+	
+	if has_status(Status.Type.UNTARGETABLE):
+		return false
+		
+	return true
+
+
+func can_take_damage():
+	if is_dead:
+		return false
+		
+	if has_status(Status.Type.INVULNERABLE):
+		return false
+
+	return true
+
+
+func can_be_crowd_controlled():
+	if is_dead:
+		return false
+	
+	if has_status(Status.Type.UNSTOPPABLE):
+		return false
+	
+	return true
+
+
+func can_die():
+	if is_dead:
+		return false
+	
+	if has_status(Status.Type.UNDYING):
+		return false
+	
+	return true
+
 
 func calculate_statistics() -> void:
 	var old_total_statistics_health: float = total_statistics.health

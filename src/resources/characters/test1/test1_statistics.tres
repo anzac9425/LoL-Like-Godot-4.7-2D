@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_ns84b")
 health = 1024.0
-attack_damage = 100.0
+attack_damage = 256.0
 attack_speed = 0.8
 move_speed = 300.0
 attack_range = 200.0

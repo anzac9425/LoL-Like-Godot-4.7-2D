@@ -1,5 +1,5 @@
 ## DID IN THIS COMMIT
-- auto_attack
+- cc, status
 
 ## TODO
-- die
+- make logic

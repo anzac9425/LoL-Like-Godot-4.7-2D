@@ -20,7 +20,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if !damage_info.victim:
+	if !damage_info.victim.can_be_targeted():
 		queue_free()
 		return
 

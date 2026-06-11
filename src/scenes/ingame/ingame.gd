@@ -21,6 +21,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		for character in input_characters:
 			if character.auto_attack_target:
 				character.auto_attack_target = null
+			
 			character.move_to(pos)
 	
 	if event.is_action_pressed("auto_attack_target_set"):
@@ -44,7 +45,28 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		if target:
 			for character in input_characters:
-				character.auto_attack_target = target
+				if target != character:
+					character.auto_attack_target = target
+	
+	if event.is_action_pressed("stop"):
+		for character in input_characters:
+			character.stop()
+	
+	if event.is_action_pressed("skill_q"):
+		for character in input_characters:
+			character.character_logic.cast_q()
+	
+	if event.is_action_pressed("skill_w"):
+		for character in input_characters:
+			character.character_logic.cast_w()
+	
+	if event.is_action_pressed("skill_e"):
+		for character in input_characters:
+			character.character_logic.cast_e()
+	
+	if event.is_action_pressed("skill_r"):
+		for character in input_characters:
+			character.character_logic.cast_r()
 
 
 func spawn_character(

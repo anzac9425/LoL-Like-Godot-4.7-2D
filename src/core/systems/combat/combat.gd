@@ -2,6 +2,9 @@ class_name Combat
 
 
 static func apply_damage(damage_info: DamageInfo) -> void:
+	if !damage_info.victim.can_take_damage():
+		return
+	
 	var damage_amount: Dictionary
 	
 	var is_critical: bool = randf() < damage_info.attacker.total_statistics.critical_chance
@@ -41,13 +44,18 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 			barrier.amount -= absorbed
 			amount -= absorbed
 			
-		damage_info.victim.current_health -= amount
+		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - amount)
 	
 	damage_info.attacker.queue_redraw()
 	damage_info.victim.queue_redraw()
 	
+	if damage_info.victim.current_health <= 0:
+		damage_info.victim.die()
+	
 
 static func apply_heal(target: CharacterBase, amount: float) -> void:
+	if target.is_dead:
+		return
 	amount *= target.total_statistics.heal_shield_power_multiplier
 	
 	target.current_health += amount
@@ -59,6 +67,9 @@ static func apply_heal(target: CharacterBase, amount: float) -> void:
 
 
 static func apply_barrier(target: CharacterBase, amount: float, duration: float) -> void:
+	if target.is_dead:
+		return
+	
 	var barrier: Barrier = Barrier.new()
 
 	barrier.amount = amount * target.total_statistics.heal_shield_power_multiplier
@@ -67,3 +78,31 @@ static func apply_barrier(target: CharacterBase, amount: float, duration: float)
 	target.barriers.push_back(barrier)
 	
 	target.queue_redraw()
+
+
+func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, amount: float, duration: float):
+	if target.is_dead:
+		return
+	
+	if !target.can_be_crowd_controlled():
+		return
+	
+	var crowd_control: CrowdControl = CrowdControl.new()
+	
+	crowd_control.type = type
+	crowd_control.amount = amount
+	crowd_control.remaining_duration = duration
+	
+	target.crowd_controls.append(crowd_control)
+
+
+func apply_status(target: CharacterBase, type: Status.Type, duration: float):
+	if target.is_dead:
+		return
+	
+	var status: Status = Status.new()
+	
+	status.type = type
+	status.remaining_duration = duration
+	
+	target.statuses.append(status)
