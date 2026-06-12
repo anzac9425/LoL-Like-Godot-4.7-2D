@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="1_h32tj"]
 [ext_resource type="Script" uid="uid://b1f657pf07mmn" path="res://src/resources/characters/test1/test1_logic.gd" id="1_xfegy"]
+[ext_resource type="Resource" uid="uid://ccxisn30c48or" path="res://src/resources/characters/test1/test1_growth_statistics.tres" id="2_0ie4s"]
 [ext_resource type="Resource" uid="uid://cm11rmdprxn56" path="res://src/resources/characters/test1/test1_statistics.tres" id="3_qp0j6"]
 
 [resource]
@@ -9,5 +10,6 @@ script = ExtResource("1_h32tj")
 character_name = "test1"
 radius = 64.0
 statistics = ExtResource("3_qp0j6")
+growth_statistics = ExtResource("2_0ie4s")
 character_logic = ExtResource("1_xfegy")
 metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

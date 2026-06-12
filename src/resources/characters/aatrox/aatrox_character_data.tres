@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_nbm8a")
-character_name = "test2"
+character_name = "aatrox"
 radius = 64.0
 statistics = ExtResource("3_u1uq4")
 growth_statistics = ExtResource("2_l8l3w")

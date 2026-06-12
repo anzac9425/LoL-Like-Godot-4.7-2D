@@ -5,7 +5,8 @@ enum Type {
 	SLOW,
 	STUN,
 	ROOT,
-	SILENCE
+	SILENCE,
+	AIRBORNE
 }
 
 var type: Type

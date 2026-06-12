@@ -4,4 +4,10 @@
 
 [resource]
 script = ExtResource("1_u5um0")
+health = 114.0
+health_regeneration = 0.5
+attack_damage = 5.0
+armor = 4.8
+magic_resistance = 2.05
+attack_speed_multiplier = 0.025
 metadata/_custom_type_script = "uid://b8abtl1va6o4b"

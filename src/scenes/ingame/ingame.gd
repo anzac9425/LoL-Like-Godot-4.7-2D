@@ -12,8 +12,16 @@ func _ready() -> void:
 	
 	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "a"))
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a")
-	
-	
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("zoom_in"):
+		$Camera2D.zoom += Vector2.ONE * delta
+
+	if Input.is_action_pressed("zoom_out"):
+		$Camera2D.zoom -= Vector2.ONE * delta
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("move"):
 		var pos = get_global_mouse_position()
@@ -91,16 +99,19 @@ func spawn_character(
 
 func spawn_projectile(
 	damage_info: DamageInfo,
+	type: Projectile.Type,
 	speed: float,
 	radius: float
 ) -> Projectile:
-	
+
 	var projectile: Projectile = load(Paths.PROJECTILE).instantiate()
-	
+
+	projectile.projectile_type = type
+
 	projectile.damage_info = damage_info
 	projectile.projectile_speed = speed
 	projectile.projectile_radius = radius
-	
+
 	$Projectiles.add_child(projectile)
-	
+
 	return projectile

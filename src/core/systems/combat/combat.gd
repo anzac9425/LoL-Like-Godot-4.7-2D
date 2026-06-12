@@ -95,7 +95,9 @@ static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, 
 	
 	crowd_control.type = type
 	crowd_control.amount = amount
-	crowd_control.remaining_duration = duration * max(0.0, (1.0 - target.total_statistics.tenacity))
+	crowd_control.remaining_duration = duration
+	if type != CrowdControl.Type.AIRBORNE:
+		crowd_control.remaining_duration *= max(0.0, (1.0 - target.total_statistics.tenacity))
 	
 	target.crowd_controls.append(crowd_control)
 

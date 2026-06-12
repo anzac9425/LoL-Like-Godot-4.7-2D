@@ -45,20 +45,15 @@ func _ready() -> void:
 	character_logic.name = "CharacterLogic"
 	character_logic.character_base = self
 	add_child(character_logic)
-	
+
 	character_radius = character_data.radius
-	
+
 	set_radius_sprite(character_radius)
 	set_radius_collision_shape(character_radius)
-	
-	target_position = global_position
-	
+
 	calculate_statistics()
-	
-	current_health = total_statistics.health
-	current_mana = total_statistics.mana
-	
-	queue_redraw()
+
+	respawn()
 	
 	
 func _physics_process(delta: float) -> void:
@@ -213,23 +208,30 @@ func die() -> void:
 	update_visibility()
 	queue_redraw()
 
-
+	
 func respawn() -> void:
 	is_dead = false
 	auto_attack_available = true
 
-	global_position = Vector2.ZERO
 	current_health = total_statistics.health
 	current_mana = total_statistics.mana
+
 	barriers.clear()
+	crowd_controls.clear()
+	statuses.clear()
 
 	target_position = global_position
-	
+
+	is_moving = false
 	auto_attack_target = null
+	auto_attack_cooldown = 0.0
 
 	set_physics_process(true)
+
 	update_visibility()
 	queue_redraw()
+
+	character_logic.on_spawn()
 
 
 func set_radius_sprite(radius: float) -> void:
@@ -266,6 +268,7 @@ func auto_attack() -> void:
 	if character_data.ranged:
 		Ingame.current.spawn_projectile(
 			damage_info,
+			Projectile.Type.TARGET,
 			1024.0,
 			8.0
 		)
@@ -313,6 +316,9 @@ func can_move() -> bool:
 
 	if has_crowd_control(CrowdControl.Type.ROOT):
 		return false
+	
+	if has_crowd_control(CrowdControl.Type.AIRBORNE):
+		return false
 
 	return true
 
@@ -326,6 +332,9 @@ func can_auto_attack() -> bool:
 		
 	if has_crowd_control(CrowdControl.Type.STUN):
 		return false
+	
+	if has_crowd_control(CrowdControl.Type.AIRBORNE):
+		return false
 		
 	return true
 
@@ -338,6 +347,9 @@ func can_cast():
 		return false
 
 	if has_crowd_control(CrowdControl.Type.SILENCE):
+		return false
+	
+	if has_crowd_control(CrowdControl.Type.AIRBORNE):
 		return false
 
 	return true
