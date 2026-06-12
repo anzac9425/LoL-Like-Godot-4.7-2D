@@ -1,31 +1,29 @@
 extends CharacterLogic
 
-func on_spawn():
+
+func build_damage_info(_damage_info: DamageInfo) -> void:
 	pass
 
-func on_death():
+
+func on_deal_damage(_damage_info: DamageInfo) -> void:
 	pass
 
-func on_take_damage():
+
+func on_take_damage(_damage_info: DamageInfo) -> void:
 	pass
 
-func on_deal_damage():
+
+func cast_q() -> void:
 	pass
 
-func on_auto_attack():
+
+func cast_w() -> void:
 	pass
 
-func on_auto_attack_hit():
+
+func cast_e() -> void:
 	pass
 
-func cast_q():
-	pass
 
-func cast_w():
-	pass
-
-func cast_e():
-	pass
-
-func cast_r():
+func cast_r() -> void:
 	pass

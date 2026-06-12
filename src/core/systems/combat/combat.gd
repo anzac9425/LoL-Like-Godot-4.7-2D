@@ -2,10 +2,18 @@ class_name Combat
 
 
 static func apply_damage(damage_info: DamageInfo) -> void:
+	if damage_info.attacker.is_same_team(damage_info.victim):
+		return
+		
 	if !damage_info.victim.can_take_damage():
 		return
 	
+	damage_info.attacker.build_damage_info(damage_info)
+	damage_info.victim.build_damage_info(damage_info)
+	
 	var damage_amount: Dictionary
+	
+	var result_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)
 	
 	var is_critical: bool = randf() < damage_info.attacker.total_statistics.critical_chance
 	
@@ -31,6 +39,8 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 		apply_heal(damage_info.attacker, amount * damage_info.attacker.total_statistics.omnivamp)
 		
 		damage_amount[instance.damage_type] += amount
+		
+		result_info.add_damage_instance(instance.damage_type, instance.source_type, amount, instance.allow_critical, instance.allow_lifesteal)
 	
 	for type in damage_amount:
 		var amount: float = damage_amount[type]
@@ -51,12 +61,15 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 			
 		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - amount)
 	
-	damage_info.attacker.queue_redraw()
-	damage_info.victim.queue_redraw()
+	damage_info.attacker.character_logic.on_deal_damage(result_info)
+	damage_info.victim.character_logic.on_take_damage(result_info)
 	
 	if damage_info.victim.current_health <= 0:
 		damage_info.victim.die()
-	
+		
+	damage_info.attacker.queue_redraw()
+	damage_info.victim.queue_redraw()
+
 
 static func apply_heal(target: CharacterBase, amount: float) -> void:
 	if target.is_dead:
@@ -84,7 +97,7 @@ static func apply_barrier(target: CharacterBase, amount: float, duration: float)
 	
 	target.queue_redraw()
 
-static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, amount: float, duration: float):
+static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, duration: float, amount: float = 0.0):
 	if target.is_dead:
 		return
 	
@@ -112,3 +125,16 @@ static func apply_status(target: CharacterBase, type: Status.Type, duration: flo
 	status.remaining_duration = duration
 	
 	target.statuses.append(status)
+
+
+static func apply_forced_movement(
+	target: CharacterBase,
+	destination: Vector2,
+	speed: float
+) -> void:
+	var movement: ForcedMovement = ForcedMovement.new()
+
+	movement.destination = destination
+	movement.speed = speed
+
+	target.forced_movement = movement

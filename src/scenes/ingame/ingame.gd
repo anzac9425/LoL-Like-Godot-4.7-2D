@@ -10,8 +10,10 @@ var input_characters: Array[CharacterBase]
 func _ready() -> void:
 	current = self
 	
-	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "a"))
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "a")
+	$Camera2D.zoom = Vector2(0.625 , 0.625)
+	
+	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "character", "team1"))
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "character", "team2")
 
 
 func _process(delta: float) -> void:
@@ -80,7 +82,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func spawn_character(
 		character_data: CharacterData,
 		character_position: Vector2,
-		group_name: String
+		group_name: String,
+		team: String
 	) -> CharacterBase:
 	
 	var character_base = load(Paths.CHARACTER_BASE).instantiate()
@@ -91,6 +94,7 @@ func spawn_character(
 	character_base.position = character_position
 	
 	character_base.add_to_group(group_name)
+	character_base.team = team
 	
 	$Characters.add_child(character_base)
 	
@@ -115,3 +119,9 @@ func spawn_projectile(
 	$Projectiles.add_child(projectile)
 
 	return projectile
+
+
+func spawn_area(area: Area) -> Area:
+	$Areas.add_child(area)
+
+	return area

@@ -12,6 +12,8 @@ var base_statistics: Statistics = Statistics.new()
 var bonus_statistics: Statistics = Statistics.new()
 var total_statistics: Statistics = Statistics.new()
 
+var team: String
+
 var is_dead: bool
 
 var level: int
@@ -24,9 +26,9 @@ var barriers: Array[Barrier]
 var crowd_controls: Array[CrowdControl]
 var statuses: Array[Status]
 
-# var buffs: Array[Buff] = []
-# var items: Array[Item] = []
-# var runes: Array[Rune] = []
+var buffs: Array
+var items: Array
+var runes: Array
 
 var character_radius: float
 var character_sprite_radius: float
@@ -34,6 +36,8 @@ var character_collision_shape_radius: float
 
 var is_moving: bool
 var target_position: Vector2
+
+var forced_movement: ForcedMovement
 
 var auto_attack_target: CharacterBase
 var auto_attack_available: bool = true
@@ -57,12 +61,32 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
+	if forced_movement:
+		var movement: ForcedMovement = forced_movement
+
+		if movement.target:
+			if movement.target.is_dead:
+				forced_movement = null
+
+			else:
+				movement.destination = movement.target.global_position
+
+		if forced_movement:
+			global_position = global_position.move_toward(
+				movement.destination,
+				movement.speed * delta
+			)
+
+			if global_position == movement.destination:
+				forced_movement = null
+				
 	if is_moving:
-		if can_move():
-			global_position = global_position.move_toward(target_position, total_statistics.move_speed * delta)
-			
-			if global_position == target_position:
-				is_moving = false
+		if !forced_movement:
+			if can_move():
+				global_position = global_position.move_toward(target_position, total_statistics.move_speed * delta)
+				
+				if global_position == target_position:
+					is_moving = false
 	
 	if barriers:
 		for i in range(barriers.size() - 1, -1, -1):
@@ -70,7 +94,7 @@ func _physics_process(delta: float) -> void:
 
 			barrier.remaining_duration -= delta
 
-			if barrier.remaining_duration <= 0.0:
+			if barrier.remaining_duration <= 0.0:	
 				barriers.remove_at(i)
 				
 				queue_redraw()
@@ -200,7 +224,10 @@ func die() -> void:
 		return
 	
 	is_dead = true
+	
 	is_moving = false
+	forced_movement = null
+	
 	auto_attack_available = false
 	auto_attack_target = null
 
@@ -223,6 +250,8 @@ func respawn() -> void:
 	target_position = global_position
 
 	is_moving = false
+	forced_movement = null
+	
 	auto_attack_target = null
 	auto_attack_cooldown = 0.0
 
@@ -230,8 +259,6 @@ func respawn() -> void:
 
 	update_visibility()
 	queue_redraw()
-
-	character_logic.on_spawn()
 
 
 func set_radius_sprite(radius: float) -> void:
@@ -250,6 +277,20 @@ func set_radius_collision_shape(radius: float) -> void:
 	character_collision_shape.shape = shape
 	
 	character_collision_shape_radius = radius
+
+
+func build_damage_info(damage_info: DamageInfo) -> void:
+
+	character_logic.build_damage_info(damage_info)
+
+	for rune in runes:
+		rune.build_damage_info(damage_info)
+
+	for item in items:
+		item.build_damage_info(damage_info)
+
+	for buff in buffs:
+		buff.build_damage_info(damage_info)
 	
 	
 func auto_attack() -> void:
@@ -291,6 +332,14 @@ func update_visibility() -> void:
 	character_sprite.visible = !is_dead
 
 
+func is_same_team(target: CharacterBase) -> bool:
+	return team == target.team
+
+
+func is_enemy_team(target: CharacterBase) -> bool:
+	return team != target.team
+
+
 func has_crowd_control(type: CrowdControl.Type) -> bool:
 	for crowd_control in crowd_controls:
 		if crowd_control.type == type:
@@ -319,6 +368,9 @@ func can_move() -> bool:
 	
 	if has_crowd_control(CrowdControl.Type.AIRBORNE):
 		return false
+	
+	if has_status(Status.Type.CANNOT_MOVE):
+		return false
 
 	return true
 
@@ -334,6 +386,9 @@ func can_auto_attack() -> bool:
 		return false
 	
 	if has_crowd_control(CrowdControl.Type.AIRBORNE):
+		return false
+	
+	if has_status(Status.Type.CANNOT_AUTO_ATTACK):
 		return false
 		
 	return true
@@ -351,6 +406,9 @@ func can_cast():
 	
 	if has_crowd_control(CrowdControl.Type.AIRBORNE):
 		return false
+	
+	if has_status(Status.Type.CANNOT_CAST):
+		return false
 
 	return true
 
@@ -361,6 +419,9 @@ func can_be_targeted() -> bool:
 	
 	if has_status(Status.Type.UNTARGETABLE):
 		return false
+	
+	if has_status(Status.Type.CANNOT_BE_TARGETED):
+		return false
 		
 	return true
 
@@ -370,6 +431,9 @@ func can_take_damage():
 		return false
 		
 	if has_status(Status.Type.INVULNERABLE):
+		return false
+	
+	if has_status(Status.Type.CANNOT_TAKE_DAMAGE):
 		return false
 
 	return true
@@ -382,14 +446,19 @@ func can_be_crowd_controlled():
 	if has_status(Status.Type.UNSTOPPABLE):
 		return false
 	
+	if has_status(Status.Type.CANNOT_BE_CROWD_CONTROLLED):
+		return false
+	
 	return true
-
 
 func can_die():
 	if is_dead:
 		return false
 	
 	if has_status(Status.Type.UNDYING):
+		return false
+	
+	if has_status(Status.Type.CANNOT_DIE):
 		return false
 	
 	return true
