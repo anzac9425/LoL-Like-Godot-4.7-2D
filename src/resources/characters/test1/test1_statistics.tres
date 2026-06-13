@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_ns84b")
 health = 1024.0
-attack_damage = 256.0
-attack_speed = 0.8
+attack_damage = 128.0
+attack_speed = 2.0
 move_speed = 300.0
-attack_range = 200.0
+attack_range = 550.0
 metadata/_custom_type_script = "uid://b8abtl1va6o4b"

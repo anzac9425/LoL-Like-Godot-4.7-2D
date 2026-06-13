@@ -13,6 +13,14 @@ func on_take_damage(_damage_info: DamageInfo) -> void:
 	pass
 
 
+func on_deal_projectile_hit(_projectile: Projectile) -> void:
+	pass
+
+
+func on_take_projectile_hit(_projectile: Projectile) -> void:
+	pass
+
+
 func cast_q() -> void:
 	pass
 

@@ -107,6 +107,9 @@ func _physics_process(delta: float) -> void:
 
 			if crowd_control.remaining_duration <= 0.0:
 				crowd_controls.remove_at(i)
+				
+				if crowd_control.type == CrowdControl.Type.SLOW:
+					calculate_statistics()
 	
 	if statuses:
 		for i in range(statuses.size() - 1, -1, -1):
@@ -490,6 +493,14 @@ func calculate_statistics() -> void:
 		total_statistics.ability_power += total_statistics.adaptive_force
 	
 	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
+	
+	var slow_amount: float
+	
+	for crowd_control in crowd_controls:
+		if crowd_control.type == CrowdControl.Type.SLOW:
+			slow_amount = max(slow_amount,crowd_control.amount)
+
+	total_statistics.move_speed *= (1.0 - slow_amount)
 	
 	current_health += max(0.0, total_statistics.health - old_total_statistics_health)
 	

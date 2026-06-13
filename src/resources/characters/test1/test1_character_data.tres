@@ -9,6 +9,7 @@
 script = ExtResource("1_h32tj")
 character_name = "test1"
 radius = 64.0
+ranged = true
 statistics = ExtResource("3_qp0j6")
 growth_statistics = ExtResource("2_0ie4s")
 character_logic = ExtResource("1_xfegy")

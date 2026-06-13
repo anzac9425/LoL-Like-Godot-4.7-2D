@@ -113,6 +113,9 @@ static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, 
 		crowd_control.remaining_duration *= max(0.0, (1.0 - target.total_statistics.tenacity))
 	
 	target.crowd_controls.append(crowd_control)
+	
+	if type == CrowdControl.Type.SLOW:
+		target.calculate_statistics()
 
 
 static func apply_status(target: CharacterBase, type: Status.Type, duration: float):

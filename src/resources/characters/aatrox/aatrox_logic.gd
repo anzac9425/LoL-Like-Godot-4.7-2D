@@ -10,6 +10,8 @@ var q_rotation: float
 var q_cooldown: Cooldown = Cooldown.new()
 var q_recast: Cooldown = Cooldown.new()
 
+var w_cooldown: Cooldown = Cooldown.new()
+
 
 func _physics_process(delta: float) -> void:
 	if passive_cooldown.remaining_duration > 0.0:
@@ -54,19 +56,73 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 
 func on_deal_damage(damage_info: DamageInfo) -> void:
 	var reduce_cooldown: bool
-
+	
 	for instance in damage_info.damage_instances:
 		if instance.source_type == SourceType.Type.PASSIVE:
 			Combat.apply_heal(character_base, instance.amount)
-
+		
 		else:
 			reduce_cooldown = true
-
+	
 	if reduce_cooldown:
 		passive_cooldown.remaining_duration -= 2.0
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
+	pass
+
+
+func on_deal_projectile_hit(projectile: Projectile) -> void:
+	for instance in projectile.damage_info.damage_instances:
+		if instance.source_type == SourceType.Type.SKILL_W:
+			var target: CharacterBase = projectile.damage_info.victim
+			var damage_info: DamageInfo = projectile.damage_info
+			
+			var area: Area = Area.create_polygon(
+				projectile.damage_info.victim.global_position,
+				(target.global_position - character_base.global_position).angle(),
+				PackedVector2Array([
+					Vector2(-200, -175),
+					Vector2(-200, 175),
+					Vector2(500, 300),
+					Vector2(500, -300),
+				]),
+				true
+			)
+			
+			Ingame.current.spawn_area(area)
+			
+			Combat.apply_crowd_control(
+				target,
+				CrowdControl.Type.SLOW,
+				1.5,
+				0.25 + (0.1 / 17.0 * character_base.level)
+			)
+			
+			await get_tree().create_timer(1.5).timeout
+			
+			if !is_instance_valid(area):
+				return
+			
+			if target.is_dead:
+				area.queue_free()
+				return
+			
+			if target in area.get_targets():
+				Combat.apply_forced_movement(
+					target,
+					area.global_position,
+					1024.0
+				)
+				
+				Combat.apply_damage(damage_info)
+			
+			area.queue_free()
+			
+			break
+
+
+func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
@@ -262,7 +318,60 @@ func cast_q() -> void:
 
 
 func cast_w() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if w_cooldown.remaining_duration > 0.0:
+		return
+	
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_MOVE,
+		0.25
+	)
+
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_AUTO_ATTACK,
+		0.25
+	)
+	
+	var direction: Vector2 = (
+		Ingame.current.get_global_mouse_position()
+		- character_base.global_position
+	).normalized()
+	
+	w_cooldown.remaining_duration = 20.0 - (6.0 / 17.0 * character_base.level)
+
+	await get_tree().create_timer(0.25).timeout
+
+	if character_base.is_dead:
+		return
+
+	var damage_info: DamageInfo = DamageInfo.create(character_base, null)
+
+	damage_info.add_damage_instance(
+		DamageType.Type.PHYSICAL,
+		SourceType.Type.SKILL_W,
+		30.0
+		+ (40.0 / 17.0 * character_base.level)
+		+ 0.4 * character_base.total_statistics.attack_damage,
+		false,
+		false
+	)
+
+	var projectile: Projectile = (
+		Ingame.current.spawn_projectile(
+			damage_info,
+			Projectile.Type.LINEAR,
+			1800.0,
+			80.0
+		)
+	)
+
+	projectile.direction = direction
+
+	projectile.max_distance = 825.0
 
 
 func cast_e() -> void:
