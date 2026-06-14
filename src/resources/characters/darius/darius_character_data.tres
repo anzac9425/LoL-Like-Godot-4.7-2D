@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://sfm66r0c8v7f"]
+
+[ext_resource type="Script" uid="uid://d1gel8ohqwccp" path="res://src/resources/characters/darius/darius_logic.gd" id="1_1vpfh"]
+[ext_resource type="Resource" uid="uid://b13m6rd1ajj0r" path="res://src/resources/characters/darius/darius_growth_statistics.tres" id="2_cob1c"]
+[ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="3_nrnyi"]
+[ext_resource type="Resource" uid="uid://ddvmndssxqdjs" path="res://src/resources/characters/darius/darius_statistics.tres" id="4_soau4"]
+
+[resource]
+script = ExtResource("3_nrnyi")
+character_name = "template"
+radius = 64.0
+auto_attack_windup_multiplier = 0.2
+statistics = ExtResource("4_soau4")
+growth_statistics = ExtResource("2_cob1c")
+character_logic = ExtResource("1_1vpfh")
+metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

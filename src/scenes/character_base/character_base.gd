@@ -26,7 +26,6 @@ var barriers: Array[Barrier]
 var crowd_controls: Array[CrowdControl]
 var statuses: Array[Status]
 
-var buffs: Array
 var items: Array
 var runes: Array
 
@@ -41,7 +40,8 @@ var forced_movement: ForcedMovement
 
 var auto_attack_target: CharacterBase
 var auto_attack_available: bool = true
-var auto_attack_cooldown: float
+var auto_attack_cooldown: Cooldown = Cooldown.new()
+var auto_attack_cast_time: Cooldown = Cooldown.new()
 
 
 func _ready() -> void:
@@ -61,6 +61,9 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
+	Combat.apply_heal(self, total_statistics.health_regeneration * delta)
+	Combat.apply_mana_restore(self, total_statistics.mana_regeneration * delta)
+	
 	if forced_movement:
 		var movement: ForcedMovement = forced_movement
 
@@ -120,8 +123,14 @@ func _physics_process(delta: float) -> void:
 			if status.remaining_duration <= 0.0:
 				statuses.remove_at(i)
 	
-	if auto_attack_cooldown > 0.0:
-		auto_attack_cooldown -= delta
+	if auto_attack_cooldown.remaining_duration > 0.0:
+		auto_attack_cooldown.remaining_duration -= delta
+	
+	if auto_attack_cast_time.remaining_duration > 0.0:
+		auto_attack_cast_time.remaining_duration -= delta
+
+		if auto_attack_cast_time.remaining_duration <= 0.0:
+			_auto_attack()
 
 	if auto_attack_target:
 		if !auto_attack_target.can_be_targeted():
@@ -137,13 +146,13 @@ func _physics_process(delta: float) -> void:
 			)
 
 			if distance > attack_distance:
-				move_to(auto_attack_target.global_position)
+				move_to(auto_attack_target.global_position, false)
 
 			else:
 				is_moving = false
-
-				if can_auto_attack():
-					if auto_attack_cooldown <= 0.0:
+				
+				if auto_attack_cooldown.remaining_duration <= 0.0:
+					if auto_attack_cast_time.remaining_duration <= 0.0:
 						auto_attack()
 	
 
@@ -205,7 +214,7 @@ func _draw() -> void:
 
 	if total_statistics.health > 1000:
 		for hp in range(1000, int(max_health_barrier), 1000):
-			var x := pos.x + (float(hp) / max_health_barrier) * width
+			var x: float = pos.x + (float(hp) / max_health_barrier) * width
 
 			draw_line(
 				Vector2(x, pos.y),
@@ -256,7 +265,6 @@ func respawn() -> void:
 	forced_movement = null
 	
 	auto_attack_target = null
-	auto_attack_cooldown = 0.0
 
 	set_physics_process(true)
 
@@ -283,7 +291,6 @@ func set_radius_collision_shape(radius: float) -> void:
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
-
 	character_logic.build_damage_info(damage_info)
 
 	for rune in runes:
@@ -291,14 +298,21 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 
 	for item in items:
 		item.build_damage_info(damage_info)
+	
+	
+func auto_attack():
+	if !can_auto_attack():
+		return
 
-	for buff in buffs:
-		buff.build_damage_info(damage_info)
-	
-	
-func auto_attack() -> void:
-	auto_attack_cooldown = 1.0 / total_statistics.attack_speed
-	
+	auto_attack_cast_time.remaining_duration = character_data.auto_attack_windup_multiplier / total_statistics.attack_speed
+
+	auto_attack_cooldown.remaining_duration = 1.0 / total_statistics.attack_speed
+
+
+func _auto_attack():
+	if !auto_attack_target.can_be_targeted():
+		return
+		
 	var damage_info: DamageInfo = DamageInfo.create(self, auto_attack_target)
 	
 	damage_info.add_damage_instance(
@@ -321,14 +335,24 @@ func auto_attack() -> void:
 		Combat.apply_damage(damage_info)
 
 
-func move_to(pos: Vector2) -> void:
+func move_to(pos: Vector2, cancel_attack: bool) -> void:
 	target_position = pos
 	is_moving = true
 	
+	if cancel_attack:
+		if auto_attack_cast_time.remaining_duration > 0:
+			auto_attack_cast_time.remaining_duration = 0.0
+			auto_attack_cooldown.remaining_duration = 0.0
+	
 
-func stop() -> void:
+func stop():
 	is_moving = false
+
 	auto_attack_target = null
+	
+	if auto_attack_cast_time.remaining_duration > 0:
+		auto_attack_cast_time.remaining_duration = 0.0
+		auto_attack_cooldown.remaining_duration = 0.0
 
 
 func update_visibility() -> void:
@@ -392,6 +416,9 @@ func can_auto_attack() -> bool:
 		return false
 	
 	if has_status(Status.Type.CANNOT_AUTO_ATTACK):
+		return false
+	
+	if forced_movement:
 		return false
 		
 	return true
@@ -479,18 +506,29 @@ func calculate_statistics() -> void:
 	base_statistics.add(character_data.statistics)
 	base_statistics.add(growthed_statistics)
 	
+	character_logic.modify_base_statistics(base_statistics)
+	
 	bonus_statistics = Statistics.new()
+	
+	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
+		bonus_statistics.attack_damage += bonus_statistics.adaptive_force
+		
+	else:
+		bonus_statistics.ability_power += bonus_statistics.adaptive_force
+	
+	character_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	
+	var raw_total_statistics = Statistics.new()
+	
+	raw_total_statistics.add(base_statistics)
+	raw_total_statistics.add(bonus_statistics)
+	
+	character_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
 	
 	total_statistics = Statistics.new()
 	
 	total_statistics.add(base_statistics)
 	total_statistics.add(bonus_statistics)
-	
-	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
-		total_statistics.attack_damage += total_statistics.adaptive_force
-		
-	else:
-		total_statistics.ability_power += total_statistics.adaptive_force
 	
 	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
 	

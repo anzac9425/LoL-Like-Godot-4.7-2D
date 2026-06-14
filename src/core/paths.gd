@@ -9,3 +9,4 @@ const PROJECTILE: String = "res://src/scenes/projectile/projectile.tscn"
 
 const CHARACTER_DATA_TEST1: String = "res://src/resources/characters/test1/test1_character_data.tres"
 const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/aatrox_character_data.tres"
+const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/darius_character_data.tres"

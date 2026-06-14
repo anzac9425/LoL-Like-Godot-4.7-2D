@@ -12,7 +12,7 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "character", "team1"))
+	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1"))
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "character", "team2")
 
 
@@ -32,7 +32,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if character.auto_attack_target:
 				character.auto_attack_target = null
 			
-			character.move_to(pos)
+			character.move_to(pos, true)
 	
 	if event.is_action_pressed("auto_attack_target_set"):
 		var target: CharacterBase

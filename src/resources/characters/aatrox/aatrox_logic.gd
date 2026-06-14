@@ -12,6 +12,15 @@ var q_recast: Cooldown = Cooldown.new()
 
 var w_cooldown: Cooldown = Cooldown.new()
 
+var e_cooldown: Cooldown = Cooldown.new()
+
+var r_cooldown: Cooldown = Cooldown.new()
+var r_active: bool
+var r_duration: Cooldown = Cooldown.new()
+var r_bonus_ad_multiplier: float
+var r_bonus_heal_force: float
+var r_bonus_move_speed_multiplier: float
+
 
 func _physics_process(delta: float) -> void:
 	if passive_cooldown.remaining_duration > 0.0:
@@ -28,7 +37,23 @@ func _physics_process(delta: float) -> void:
 
 		if q_recast.remaining_duration <= 0.0:
 			q_index = 0
-			q_cooldown.remaining_duration = 14.0
+			q_cooldown.remaining_duration = 14.0 - 8.0 / 17.0 * character_base.level
+	
+	if w_cooldown.remaining_duration > 0.0:
+		w_cooldown.remaining_duration -= delta
+	
+	if e_cooldown.remaining_duration > 0.0:
+		e_cooldown.remaining_duration -= delta
+	
+	if r_cooldown.remaining_duration > 0.0:
+		r_cooldown.remaining_duration -= delta
+	
+	if r_duration.remaining_duration > 0.0:
+		r_duration.remaining_duration -= delta
+
+		if r_duration.remaining_duration <= 0.0:
+			r_active = false
+			character_base.calculate_statistics()
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
@@ -54,6 +79,25 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 				)
 
 
+func modify_base_statistics(_base_statistics: Statistics) -> void:
+	pass
+
+
+func modify_bonus_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics) -> void:
+	pass
+
+
+func modify_total_statistics(_base_statistics: Statistics, bonus_statistics: Statistics, raw_total_statistics: Statistics) -> void:
+	bonus_statistics.omnivamp = 0.16 + 0.00011 * bonus_statistics.health
+	
+	if r_active:
+		bonus_statistics.attack_damage += raw_total_statistics.attack_damage *  r_bonus_ad_multiplier
+		
+		bonus_statistics.heal_shield_power_multiplier += (r_bonus_heal_force)
+		
+		bonus_statistics.move_speed += raw_total_statistics.move_speed * r_bonus_move_speed_multiplier
+
+
 func on_deal_damage(damage_info: DamageInfo) -> void:
 	var reduce_cooldown: bool
 	
@@ -66,6 +110,9 @@ func on_deal_damage(damage_info: DamageInfo) -> void:
 	
 	if reduce_cooldown:
 		passive_cooldown.remaining_duration -= 2.0
+	
+	if damage_info.victim.is_dead and r_active:
+		r_duration.remaining_duration += 5.0
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
@@ -115,7 +162,19 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 					1024.0
 				)
 				
-				Combat.apply_damage(damage_info)
+				var second_damage_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)
+				
+				second_damage_info.add_damage_instance(
+					DamageType.Type.PHYSICAL,
+					SourceType.Type.SKILL_W,
+					30.0
+					+ (40.0 / 17.0 * character_base.level)
+					+ 0.4 * character_base.total_statistics.attack_damage,
+					false,
+					false
+				)
+				
+				Combat.apply_damage(second_damage_info)
 			
 			area.queue_free()
 			
@@ -260,7 +319,7 @@ func cast_q() -> void:
 
 	Ingame.current.spawn_area(area)
 	Ingame.current.spawn_area(sweet_area)
-
+	
 	await get_tree().create_timer(0.6).timeout
 
 	if character_base.is_dead:
@@ -309,7 +368,7 @@ func cast_q() -> void:
 	if q_index == 2:
 		q_index = 0
 		q_recast.remaining_duration = 0.0
-		q_cooldown.remaining_duration = 14.0
+		q_cooldown.remaining_duration = 14.0 - 8.0 / 17.0 * character_base.level
 		q_casting = false
 	else:
 		q_index = next_index
@@ -375,8 +434,84 @@ func cast_w() -> void:
 
 
 func cast_e() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if e_cooldown.remaining_duration > 0.0:
+		return
+
+	e_cooldown.remaining_duration = (
+		9.0
+		- (4.0 / 17.0 * character_base.level)
+	)
+
+	var direction: Vector2 = (
+		Ingame.current.get_global_mouse_position()
+		- character_base.global_position
+	).normalized()
+
+	var mouse_pos: Vector2 = Ingame.current.get_global_mouse_position()
+
+	var distance: float = min(
+		character_base.global_position.distance_to(mouse_pos),
+		300.0
+	)
+
+	Combat.apply_forced_movement(
+		character_base,
+		character_base.global_position + direction * distance,
+		800.0
+	)
+	
+	character_base.auto_attack_cooldown.remaining_duration = 0.0
 
 
 func cast_r() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if r_cooldown.remaining_duration > 0.0:
+		return
+
+	r_cooldown.remaining_duration = (
+		120.0
+		- (40.0 / 17.0 * character_base.level)
+	)
+
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_MOVE,
+		0.25
+	)
+
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_AUTO_ATTACK,
+		0.25
+	)
+
+	await get_tree().create_timer(0.25).timeout
+
+	if character_base.is_dead:
+		return
+
+	r_active = true
+
+	r_duration.remaining_duration = 10.0
+
+	r_bonus_ad_multiplier = (
+		0.20
+		+ (0.20 / 17.0 * character_base.level)
+	)
+
+	r_bonus_heal_force = (
+		0.50
+		+ (0.50 / 17.0 * character_base.level)
+	)
+
+	r_bonus_move_speed_multiplier = (
+		0.60
+		+ (0.40 / 17.0 * character_base.level)
+	)
+
+	character_base.calculate_statistics()

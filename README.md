@@ -1,3 +1,2 @@
 ## TODO
-- aatrox r
-- aa cast time
+- darius w

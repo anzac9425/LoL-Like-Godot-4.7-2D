@@ -61,11 +61,11 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 			
 		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - amount)
 	
-	damage_info.attacker.character_logic.on_deal_damage(result_info)
-	damage_info.victim.character_logic.on_take_damage(result_info)
-	
 	if damage_info.victim.current_health <= 0:
 		damage_info.victim.die()
+	
+	damage_info.attacker.character_logic.on_deal_damage(result_info)
+	damage_info.victim.character_logic.on_take_damage(result_info)
 		
 	damage_info.attacker.queue_redraw()
 	damage_info.victim.queue_redraw()
@@ -74,12 +74,25 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 static func apply_heal(target: CharacterBase, amount: float) -> void:
 	if target.is_dead:
 		return
+	
 	amount *= (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	
 	target.current_health += amount
 
 	if target.current_health > target.total_statistics.health:
 		target.current_health = target.total_statistics.health
+	
+	target.queue_redraw()
+
+
+static func apply_mana_restore(target: CharacterBase, amount: float) -> void:
+	if target.is_dead:
+		return
+	
+	target.current_mana += amount
+
+	if target.current_mana > target.total_statistics.mana:
+		target.current_mana = target.total_statistics.mana
 	
 	target.queue_redraw()
 

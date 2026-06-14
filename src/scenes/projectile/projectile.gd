@@ -39,7 +39,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	match projectile_type:
 		Type.TARGET:
-			if !damage_info.victim.can_be_targeted():
+			if damage_info.victim.is_dead or !damage_info.victim.can_be_targeted():
 				queue_free()
 				return
 
@@ -71,7 +71,10 @@ func _physics_process(delta: float) -> void:
 
 					if area in hit_targets:
 						continue
-
+					
+					if area.is_dead:
+						continue
+						
 					hit_targets.append(area)
 
 					damage_info.victim = area
