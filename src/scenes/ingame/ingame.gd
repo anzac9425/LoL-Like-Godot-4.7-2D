@@ -24,6 +24,7 @@ func _ready() -> void:
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
+			#pass
 
 
 func _process(delta: float) -> void:
