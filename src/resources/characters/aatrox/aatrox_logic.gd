@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 
 		if q_recast.remaining_duration <= 0.0:
 			q_index = 0
-			q_cooldown.remaining_duration = 14.0 - 8.0 / 17.0 * character_base.level
+			q_cooldown.remaining_duration = max(0.0, 14.0 - 8.0 / 17.0 * character_base.level)
 	
 	if w_cooldown.remaining_duration > 0.0:
 		w_cooldown.remaining_duration -= delta
@@ -72,7 +72,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 		
 		if has_auto_attack:
 			passive_ready = false
-			passive_cooldown.remaining_duration = (22.0 - 10.0 / 17.0 * character_base.level)
+			passive_cooldown.remaining_duration = max(0.0, 22.0 - 10.0 / 17.0 * character_base.level)
 			
 			damage_info.add_damage_instance(
 				DamageType.Type.MAGIC,
@@ -375,7 +375,7 @@ func cast_q() -> void:
 	if q_index == 2:
 		q_index = 0
 		q_recast.remaining_duration = 0.0
-		q_cooldown.remaining_duration = 14.0 - 8.0 / 17.0 * character_base.level
+		q_cooldown.remaining_duration = max(0.0, 14.0 - 8.0 / 17.0 * character_base.level)
 		q_casting = false
 	else:
 		q_index = next_index
@@ -407,7 +407,7 @@ func cast_w() -> void:
 		- character_base.global_position
 	).normalized()
 	
-	w_cooldown.remaining_duration = 20.0 - (6.0 / 17.0 * character_base.level)
+	w_cooldown.remaining_duration = max(0.0, 20.0 - (6.0 / 17.0 * character_base.level))
 
 	await get_tree().create_timer(0.25).timeout
 
@@ -448,7 +448,7 @@ func cast_e() -> void:
 		return
 
 	e_cooldown.remaining_duration = (
-		9.0 - (4.0 / 17.0 * character_base.level)
+		max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
 	)
 
 	var direction: Vector2 = (
@@ -479,10 +479,7 @@ func cast_r() -> void:
 	if r_cooldown.remaining_duration > 0.0:
 		return
 
-	r_cooldown.remaining_duration = (
-		120.0
-		- (40.0 / 17.0 * character_base.level)
-	)
+	r_cooldown.remaining_duration = max(0.0, 120.0 - (40.0 / 17.0 * character_base.level))
 
 	Combat.apply_status(
 		character_base,

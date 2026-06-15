@@ -16,7 +16,7 @@ var team: String
 
 var is_dead: bool
 
-var level: int
+var level: int = 9
 var experience: float
 
 var current_health: float

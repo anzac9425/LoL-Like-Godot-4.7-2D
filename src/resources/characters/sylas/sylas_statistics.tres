@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://c5me71qq2rhsr"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/characters/statistics.gd" id="1_50i8p"]
+
+[resource]
+script = ExtResource("1_50i8p")
+health = 600.0
+health_regeneration = 9.0
+mana = 400.0
+mana_regeneration = 8.0
+attack_damage = 61.0
+armor = 29.0
+magic_resistance = 32.0
+attack_speed = 0.645
+move_speed = 340.0
+attack_range = 175.0
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

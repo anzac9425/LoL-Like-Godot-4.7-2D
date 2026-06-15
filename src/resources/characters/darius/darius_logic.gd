@@ -80,8 +80,17 @@ func apply_passive(target: CharacterBase):
 		passive_instance.target = target
 
 		passive_instances.append(passive_instance)
+	
+	if target.is_dead:
+		if passive_instance.index != 5:
+			passive_instance.index = 5
+			passive_full += 1
+			character_base.calculate_statistics()
 
-	if passive_full > 0:
+		passive_instance.cooldown.remaining_duration = 5.0
+		return
+
+	elif passive_full > 0:
 		if passive_instance.index != 5:
 			passive_instance.index = 5
 			passive_full += 1
@@ -179,7 +188,7 @@ func cast_q() -> void:
 	if !Combat.spend_mana(character_base, 25.0 + 20.0 / 17.0 * character_base.level):
 		return
 
-	q_cooldown.remaining_duration = 9.0 - (4.0 / 17.0 * character_base.level)
+	q_cooldown.remaining_duration = max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
 
 	var outer_area: Area = Area.create_circle(
 		character_base.global_position,
@@ -276,7 +285,7 @@ func cast_e() -> void:
 	if !Combat.spend_mana(character_base, max(0.0, 70 - 40.0 / 17.0 * character_base.level)):
 		return
 
-	e_cooldown.remaining_duration = 26.0 - 10.0 / 17.0 * character_base.level
+	e_cooldown.remaining_duration = max(0.0, 26.0 - 10.0 / 17.0 * character_base.level)
 
 	Combat.apply_status(character_base,Status.Type.CANNOT_MOVE, 0.65)
 	Combat.apply_status(character_base,Status.Type.CANNOT_AUTO_ATTACK, 0.65)
@@ -355,7 +364,7 @@ func cast_r() -> void:
 	if !target:
 		return
 		
-	if character_base.global_position.distance_to(target.global_position) > 460.0 + character_base.character_collision_shape_radius + target.character_collision_shape_radius:
+	if character_base.global_position.distance_to(target.global_position) > 2460.0 + character_base.character_collision_shape_radius + target.character_collision_shape_radius:
 		return
 		
 	if target == character_base:
@@ -370,7 +379,7 @@ func cast_r() -> void:
 	if !target.can_be_targeted():
 		return
 	
-	r_cooldown.remaining_duration = 120.0 - 40.0 / 17.0 * character_base.level
+	r_cooldown.remaining_duration = max(0.0, 120.0 - 40.0 / 17.0 * character_base.level)
 	
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.36)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.36)
@@ -425,3 +434,4 @@ func cast_r() -> void:
 	
 	if target.is_dead:
 		r_cooldown.remaining_duration = 0.0
+		apply_passive(target)
