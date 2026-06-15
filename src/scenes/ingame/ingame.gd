@@ -12,8 +12,18 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	input_characters.append(spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1"))
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2.ZERO, "character", "team2")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1")
+	input_characters.append(player)
+	
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 0), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 200), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
+	
+	for character: CharacterBase in $Characters.get_children():
+		if character != player:
+			character.auto_attack_target = player
 
 
 func _process(delta: float) -> void:
@@ -35,23 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			character.move_to(pos, true)
 	
 	if event.is_action_pressed("auto_attack_target_set"):
-		var target: CharacterBase
-
-		var point_query: PhysicsPointQueryParameters2D = PhysicsPointQueryParameters2D.new()
-
-		point_query.position = get_global_mouse_position()
-		point_query.collide_with_areas = true
-
-		var result: Array[Dictionary] = get_world_2d().direct_space_state.intersect_point(
-			point_query
-		)
-
-		for hit in result:
-			var collider = hit["collider"]
-
-			if collider is CharacterBase:
-				target = collider
-				break
+		var target: CharacterBase = get_target_at_mouse_position()
 
 		if target:
 			for character in input_characters:
@@ -77,6 +71,28 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("skill_r"):
 		for character in input_characters:
 			character.character_logic.cast_r()
+
+
+func get_target_at_mouse_position() -> CharacterBase:
+	var target: CharacterBase
+
+	var point_query: PhysicsPointQueryParameters2D = PhysicsPointQueryParameters2D.new()
+
+	point_query.position = get_global_mouse_position()
+	point_query.collide_with_areas = true
+
+	var result: Array[Dictionary] = (
+		get_world_2d().direct_space_state.intersect_point(point_query)
+	)
+
+	for hit in result:
+		var collider = hit["collider"]
+
+		if collider is CharacterBase:
+			target = collider
+			break
+
+	return target
 
 
 func spawn_character(

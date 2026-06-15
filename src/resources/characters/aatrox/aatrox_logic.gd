@@ -29,6 +29,8 @@ func _physics_process(delta: float) -> void:
 	if passive_cooldown.remaining_duration <= 0.0:
 		passive_ready = true
 		
+		character_base.calculate_statistics()
+		
 	if q_cooldown.remaining_duration > 0.0:
 		q_cooldown.remaining_duration -= delta
 
@@ -57,39 +59,44 @@ func _physics_process(delta: float) -> void:
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
-	if damage_info.attacker == character_base:
-		if passive_ready:
-			var has_auto_attack: bool
+	if damage_info.attacker != character_base:
+		return
+		
+	if passive_ready:
+		var has_auto_attack: bool
 
-			for instance in damage_info.damage_instances:
-				if instance.source_type == SourceType.Type.AUTO_ATTACK:
-					has_auto_attack = true
-					break
+		for instance in damage_info.damage_instances:
+			if instance.source_type == SourceType.Type.AUTO_ATTACK:
+				has_auto_attack = true
+				break
+		
+		if has_auto_attack:
+			passive_ready = false
+			passive_cooldown.remaining_duration = (22.0 - 10.0 / 17.0 * character_base.level)
 			
-			if has_auto_attack:
-				passive_ready = false
-				passive_cooldown.remaining_duration = (22.0 - 10.0 / 17.0 * character_base.level)
-				
-				damage_info.add_damage_instance(
-					DamageType.Type.MAGIC,
-					SourceType.Type.PASSIVE,
-					damage_info.victim.total_statistics.health * (0.04 + 0.06 / 17.0 * character_base.level),
-					true,
-					true
-				)
+			damage_info.add_damage_instance(
+				DamageType.Type.MAGIC,
+				SourceType.Type.PASSIVE,
+				damage_info.victim.total_statistics.health * (0.04 + 0.06 / 17.0 * character_base.level),
+				true,
+				true
+			)
+			
+			character_base.calculate_statistics()
 
 
 func modify_base_statistics(_base_statistics: Statistics) -> void:
 	pass
 
 
-func modify_bonus_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics) -> void:
-	pass
+func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
+	bonus_statistics.omnivamp = 0.16 + 0.00011 * bonus_statistics.health
+	
+	if passive_ready:
+		bonus_statistics.attack_range += 50
 
 
 func modify_total_statistics(_base_statistics: Statistics, bonus_statistics: Statistics, raw_total_statistics: Statistics) -> void:
-	bonus_statistics.omnivamp = 0.16 + 0.00011 * bonus_statistics.health
-	
 	if r_active:
 		bonus_statistics.attack_damage += raw_total_statistics.attack_damage *  r_bonus_ad_multiplier
 		
@@ -159,7 +166,7 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 				Combat.apply_forced_movement(
 					target,
 					area.global_position,
-					1024.0
+					area.global_position.distance_to(target.global_position) / 0.1
 				)
 				
 				var second_damage_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)
@@ -342,7 +349,7 @@ func cast_q() -> void:
 		var damage: float = base_damage * damage_multiplier
 
 		if target in sweet_targets:
-			damage *= 1.7
+			damage *= 1.75
 
 			Combat.apply_crowd_control(
 				target,
@@ -441,8 +448,7 @@ func cast_e() -> void:
 		return
 
 	e_cooldown.remaining_duration = (
-		9.0
-		- (4.0 / 17.0 * character_base.level)
+		9.0 - (4.0 / 17.0 * character_base.level)
 	)
 
 	var direction: Vector2 = (

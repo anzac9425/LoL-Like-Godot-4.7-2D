@@ -2,8 +2,17 @@ extends CharacterLogic
 
 
 var passive_instances: Array[DariusPassive]
+var passive_full: int
 
 var q_cooldown: Cooldown = Cooldown.new()
+
+var w_active: bool
+var w_cooldown: Cooldown = Cooldown.new()
+var w_active_cooldown: Cooldown = Cooldown.new()
+
+var e_cooldown: Cooldown = Cooldown.new()
+
+var r_cooldown: Cooldown = Cooldown.new()
 
 
 func _physics_process(delta: float) -> void:
@@ -11,24 +20,18 @@ func _physics_process(delta: float) -> void:
 		for i in range(passive_instances.size() - 1, -1, -1):
 			var instance: DariusPassive = passive_instances[i]
 			
-			if instance.cooldown.remaining_duration > 0.0:
-				instance.cooldown.remaining_duration -= delta
-				
-				if instance.cooldown.remaining_duration <= 0.0:
-					passive_instances.remove_at(i)
-					
-					if instance.index == 5:
-						var has_full: bool
-						
-						for instance_ in passive_instances:
-							if instance_.index == 5:
-								has_full = true
-								break
-						
-						if !has_full:
-							character_base.calculate_statistics()
-						
-						continue
+			instance.cooldown.remaining_duration -= delta
+			
+			if instance.cooldown.remaining_duration <= 0.0:
+				if instance.index == 5:
+					passive_full -= 1
+
+					if passive_full == 0:
+						character_base.calculate_statistics()
+
+				passive_instances.remove_at(i)
+
+				continue
 			
 			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target)
 			
@@ -36,7 +39,7 @@ func _physics_process(delta: float) -> void:
 				DamageType.Type.PHYSICAL,
 				SourceType.Type.PASSIVE,
 				(13.0 + character_base.level + 0.3 * character_base.bonus_statistics.attack_damage)
-				* instance.index * delta,
+				* instance.index * delta / 5,
 				false,
 				false
 			)
@@ -45,6 +48,23 @@ func _physics_process(delta: float) -> void:
 	
 	if q_cooldown.remaining_duration > 0:
 		q_cooldown.remaining_duration -= delta
+	
+	if w_cooldown.remaining_duration > 0:
+		w_cooldown.remaining_duration -= delta
+	
+	if w_active_cooldown.remaining_duration > 0:
+		w_active_cooldown.remaining_duration -= delta
+		
+		if w_active_cooldown.remaining_duration <= 0:
+			w_active = false
+			
+			character_base.calculate_statistics()
+			
+	if e_cooldown.remaining_duration > 0:
+		e_cooldown.remaining_duration -= delta
+	
+	if r_cooldown.remaining_duration > 0:
+		r_cooldown.remaining_duration -= delta
 
 
 func apply_passive(target: CharacterBase):
@@ -61,17 +81,47 @@ func apply_passive(target: CharacterBase):
 
 		passive_instances.append(passive_instance)
 
-	if passive_instance.index < 5:
-		passive_instance.index += 1
-		
-		if passive_instance.index == 5:
-			character_base.calculate_statistics() 
+	if passive_full > 0:
+		if passive_instance.index != 5:
+			passive_instance.index = 5
+			passive_full += 1
+	
+	else:
+		if passive_instance.index < 5:
+			passive_instance.index += 1
+
+			if passive_instance.index == 5:
+				passive_full += 1
+				character_base.calculate_statistics()
 
 	passive_instance.cooldown.remaining_duration = 5.0
 
 
-func build_damage_info(_damage_info: DamageInfo) -> void:
-	pass
+func build_damage_info(damage_info: DamageInfo) -> void:
+	if damage_info.attacker != character_base:
+		return
+	
+	for instance in damage_info.damage_instances:
+		if instance.source_type == SourceType.Type.AUTO_ATTACK:
+			if w_active:
+				w_active = false
+				
+				w_active_cooldown.remaining_duration = 0.0
+				
+				w_cooldown.remaining_duration = 5.0
+				
+				damage_info.add_damage_instance(
+					DamageType.Type.PHYSICAL,
+					SourceType.Type.SKILL_W,
+					(2.4 + 0.2 / 17.0 * character_base.level)
+					* character_base.total_statistics.attack_damage,
+					true,
+					true
+				)
+				
+				character_base.calculate_statistics()
+				
+				break
 
 
 func modify_base_statistics(_base_statistics: Statistics) -> void:
@@ -79,14 +129,13 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 
 
 func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
-	var add_passive_attack_damage: bool
-	
-	for instance in passive_instances:
-		if instance.index == 5:
-			add_passive_attack_damage = true
-			
-	if add_passive_attack_damage:
+	if passive_full > 0:
 		bonus_statistics.attack_damage += 30.0 + 250.0 / 17.0 * character_base.level
+		
+	if w_active:
+		bonus_statistics.attack_range += 25
+	
+	bonus_statistics.armor_penetration_multiplier += 0.2 + 0.2 / 17.0 * character_base.level
 
 
 func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
@@ -95,13 +144,17 @@ func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: St
 
 func on_deal_damage(damage_info: DamageInfo) -> void:
 	for instance in damage_info.damage_instances:
-		if instance.source_type in [
-			SourceType.Type.AUTO_ATTACK,
-			SourceType.Type.SKILL_R
-		]:
-			apply_passive(damage_info.victim)
-			break
-		
+		match instance.source_type:
+			SourceType.Type.AUTO_ATTACK, SourceType.Type.SKILL_R:
+				apply_passive(damage_info.victim)
+
+			SourceType.Type.SKILL_W:
+				Combat.apply_crowd_control(damage_info.victim, CrowdControl.Type.SLOW, 1.0, 0.9)
+				
+				if damage_info.victim.is_dead:
+					w_cooldown.remaining_duration *= 0.5
+				
+				break
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
@@ -122,6 +175,9 @@ func cast_q() -> void:
 
 	if q_cooldown.remaining_duration > 0.0:
 		return
+	
+	if !Combat.spend_mana(character_base, 25.0 + 20.0 / 17.0 * character_base.level):
+		return
 
 	q_cooldown.remaining_duration = 9.0 - (4.0 / 17.0 * character_base.level)
 
@@ -134,7 +190,7 @@ func cast_q() -> void:
 
 	var inner_area: Area = Area.create_circle(
 		character_base.global_position,
-		270.0,
+		205.0,
 		true,
 		character_base
 	)
@@ -155,6 +211,7 @@ func cast_q() -> void:
 	)
 	
 	var targets: Array[CharacterBase] = outer_area.get_targets()
+	var heal_count: int = 0
 
 	for target in targets:
 		if !character_base.is_enemy_team(target):
@@ -180,20 +237,191 @@ func cast_q() -> void:
 		Combat.apply_damage(damage_info)
 		
 		if !is_inner:
-			Combat.apply_heal(character_base, 0.17 * (character_base.total_statistics.health - character_base.current_health))
+			heal_count += 1
+			
 			apply_passive(damage_info.victim)
+			
+	Combat.apply_heal(character_base, heal_count * (0.17 * (character_base.total_statistics.health - character_base.current_health)))
 		
-		outer_area.queue_free()
-		inner_area.queue_free()
+	outer_area.queue_free()
+	inner_area.queue_free()
 
 
 func cast_w() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if w_cooldown.remaining_duration > 0.0:
+		return
+	
+	if !Combat.spend_mana(character_base, 40.0):
+		return
+
+	w_active_cooldown.remaining_duration = 4.0
+	
+	w_active = true
+	
+	character_base.auto_attack_cooldown.remaining_duration = 0.0
+	
+	character_base.calculate_statistics()
 
 
 func cast_e() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if e_cooldown.remaining_duration > 0.0:
+		return
+	
+	if !Combat.spend_mana(character_base, max(0.0, 70 - 40.0 / 17.0 * character_base.level)):
+		return
+
+	e_cooldown.remaining_duration = 26.0 - 10.0 / 17.0 * character_base.level
+
+	Combat.apply_status(character_base,Status.Type.CANNOT_MOVE, 0.65)
+	Combat.apply_status(character_base,Status.Type.CANNOT_AUTO_ATTACK, 0.65)
+	Combat.apply_status(character_base,Status.Type.CANNOT_CAST, 0.65)
+	
+	var radius: float = 535.0 + character_base.character_collision_shape_radius
+	var points: PackedVector2Array = PackedVector2Array()
+
+	points.append(Vector2.ZERO)
+
+	for i in range(6):
+		var angle: float = deg_to_rad( -25.0 + 50.0 * i / 5.0)
+		points.append(Vector2(
+			cos(angle) * radius,
+			sin(angle) * radius
+		))
+	
+	var area: Area = Area.create_polygon(
+		character_base.global_position,
+		(Ingame.current.get_global_mouse_position() - character_base.global_position).angle(),
+		points,
+		true,
+		character_base
+	)
+
+	Ingame.current.spawn_area(area)
+
+	await get_tree().create_timer(0.25).timeout
+
+	if character_base.is_dead:
+		return
+	
+	var targets: Array[CharacterBase]
+
+	for target in area.get_targets():
+		if !character_base.is_enemy_team(target):
+			continue
+
+		var destination: Vector2 = (
+			character_base.global_position
+			+ (target.global_position - character_base.global_position).normalized()
+			* 125.0
+		)
+
+		Combat.apply_forced_movement(
+			target,
+			destination,
+			destination.distance_to(target.global_position) / 0.4
+		)
+		
+		Combat.apply_crowd_control(target, CrowdControl.Type.AIRBORNE, 0.75)
+		
+		targets.append(target)
+	
+	area.queue_free()
+	
+	await get_tree().create_timer(0.75).timeout
+	
+	for target in targets:
+		Combat.apply_crowd_control(target, CrowdControl.Type.SLOW, 1.0, 0.4)
+	
 
 
 func cast_r() -> void:
-	pass
+	if !character_base.can_cast():
+		return
+
+	if r_cooldown.remaining_duration > 0.0:
+		return
+	
+	if !Combat.spend_mana(character_base, max(0.0, 100.0 - 100.0 / 17.0 * character_base.level)):
+		return
+	
+	var target: CharacterBase = Ingame.current.get_target_at_mouse_position()
+	
+	if !target:
+		return
+		
+	if character_base.global_position.distance_to(target.global_position) > 460.0 + character_base.character_collision_shape_radius + target.character_collision_shape_radius:
+		return
+		
+	if target == character_base:
+		return
+	
+	if !character_base.is_enemy_team(target):
+		return
+
+	if target.is_dead:
+		return
+	
+	if !target.can_be_targeted():
+		return
+	
+	r_cooldown.remaining_duration = 120.0 - 40.0 / 17.0 * character_base.level
+	
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.36)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.36)
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.36)
+	
+	var direction: Vector2 = (target.global_position - character_base.global_position).normalized()
+
+	var destination: Vector2 = (
+		target.global_position
+		- direction * (target.character_collision_shape_radius + character_base.character_collision_shape_radius)
+	)
+	
+	Combat.apply_forced_movement(character_base, destination, character_base.global_position.distance_to(destination) / 0.36)
+
+	await get_tree().create_timer(0.36).timeout
+	if character_base.is_dead:
+		r_cooldown.remaining_duration = 0.0
+		return
+
+	if target.is_dead:
+		r_cooldown.remaining_duration = 0.0
+		return
+
+	if !target.can_be_targeted():
+		r_cooldown.remaining_duration = 0.0
+		return
+	
+	if !character_base.can_cast():
+		r_cooldown.remaining_duration = 0.0
+		return
+	
+	var stack: int
+
+	for instance in passive_instances:
+		if instance.target == target:
+			stack = instance.index
+			break
+	
+	var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+	
+	damage_info.add_damage_instance(
+		DamageType.Type.TRUE,
+		SourceType.Type.SKILL_R,
+		(125.0 + 250.0 / 17.0 * character_base.level
+		+ 0.75 * character_base.total_statistics.attack_damage)
+		* (1.0 + 0.2 * stack),
+		false,
+		false
+	)
+	
+	Combat.apply_damage(damage_info)
+	
+	if target.is_dead:
+		r_cooldown.remaining_duration = 0.0

@@ -61,8 +61,8 @@ func _ready() -> void:
 	
 	
 func _physics_process(delta: float) -> void:
-	Combat.apply_heal(self, total_statistics.health_regeneration * delta)
-	Combat.apply_mana_restore(self, total_statistics.mana_regeneration * delta)
+	Combat.apply_heal(self, total_statistics.health_regeneration / 5 * delta)
+	Combat.apply_mana_restore(self, total_statistics.mana_regeneration / 5 * delta)
 	
 	if forced_movement:
 		var movement: ForcedMovement = forced_movement
@@ -162,6 +162,7 @@ func _draw() -> void:
 		
 	var width: float = 256.0
 	var height: float = 32.0
+	var mana_height: float = 8.0
 	
 	var barrier_amount: float = 0.0
 	
@@ -175,6 +176,8 @@ func _draw() -> void:
 	var barrier_ratio: float = barrier_amount / max_health_barrier
 
 	var pos: Vector2 = Vector2(width / -2, -128.0)
+	var mana_pos: Vector2 = Vector2(width / -2, -128.0 + height + 4.0)
+	
 
 	draw_rect(
 		Rect2(pos, Vector2(width, height)),
@@ -199,6 +202,26 @@ func _draw() -> void:
 				Vector2(barrier_width, height)
 			),
 			Color.YELLOW
+		)
+	
+	if total_statistics.mana > 0:
+		var mana_ratio: float = current_mana / total_statistics.mana
+
+		draw_rect(
+			Rect2(mana_pos, Vector2(width, mana_height)),
+			Color.BLACK
+		)
+
+		draw_rect(
+			Rect2(mana_pos, Vector2(width * mana_ratio, mana_height)),
+			Color.BLUE
+		)
+
+		draw_rect(
+			Rect2(mana_pos, Vector2(width, mana_height)),
+			Color.WHITE,
+			false,
+			1.0
 		)
 
 	if total_statistics.health:
@@ -310,6 +333,8 @@ func auto_attack():
 
 
 func _auto_attack():
+	if !auto_attack_target:
+		return
 	if !auto_attack_target.can_be_targeted():
 		return
 		

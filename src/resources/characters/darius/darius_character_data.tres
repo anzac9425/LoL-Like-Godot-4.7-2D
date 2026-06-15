@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("3_nrnyi")
-character_name = "template"
+character_name = "darius"
 radius = 64.0
 auto_attack_windup_multiplier = 0.2
 statistics = ExtResource("4_soau4")
