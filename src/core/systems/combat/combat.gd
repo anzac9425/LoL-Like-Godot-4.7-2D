@@ -64,8 +64,8 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	if damage_info.victim.current_health <= 0:
 		damage_info.victim.die()
 	
-	damage_info.attacker.character_logic.on_deal_damage(result_info)
-	damage_info.victim.character_logic.on_take_damage(result_info)
+	damage_info.attacker.on_deal_damage(result_info)
+	damage_info.victim.on_take_damage(result_info)
 		
 	damage_info.attacker.queue_redraw()
 	damage_info.victim.queue_redraw()

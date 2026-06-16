@@ -15,8 +15,10 @@ func _ready() -> void:
 	var player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2.ZERO, "character", "team1")
 	input_characters.append(player)
 	
-	spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(0, 0), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 200), "character", "team2")
+	player.add_item(load(Paths.ITEM_DATA_ECLIPSE))
+	
+	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 0), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 200), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")

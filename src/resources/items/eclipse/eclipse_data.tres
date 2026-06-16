@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c11pjphbgxcro"]
+
+[ext_resource type="Script" uid="uid://mxhfvm10orul" path="res://src/resources/items/eclipse/eclipse_logic.gd" id="1_dul5a"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="1_uu6iu"]
+[ext_resource type="Resource" uid="uid://becn7w4dokm8l" path="res://src/resources/items/eclipse/eclipse_statistics.tres" id="3_56076"]
+
+[resource]
+script = ExtResource("1_uu6iu")
+item_name = "eclipse"
+item_cost = 2900.0
+statistics = ExtResource("3_56076")
+item_logic = ExtResource("1_dul5a")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

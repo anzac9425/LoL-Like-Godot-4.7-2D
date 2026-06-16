@@ -1,7 +1,7 @@
 extends CharacterLogic
 
 
-var passive_instances: Array[DariusPassive]
+var passive_instances: Array[Stack]
 var passive_full: int
 
 var q_cooldown: Cooldown = Cooldown.new()
@@ -18,12 +18,12 @@ var r_cooldown: Cooldown = Cooldown.new()
 func _physics_process(delta: float) -> void:
 	if passive_instances:
 		for i in range(passive_instances.size() - 1, -1, -1):
-			var instance: DariusPassive = passive_instances[i]
+			var instance: Stack = passive_instances[i]
 			
 			instance.cooldown.remaining_duration -= delta
 			
 			if instance.cooldown.remaining_duration <= 0.0:
-				if instance.index == 5:
+				if instance.stack == 5:
 					passive_full -= 1
 
 					if passive_full == 0:
@@ -39,7 +39,7 @@ func _physics_process(delta: float) -> void:
 				DamageType.Type.PHYSICAL,
 				SourceType.Type.PASSIVE,
 				(13.0 + character_base.level + 0.3 * character_base.bonus_statistics.attack_damage)
-				* instance.index * delta / 5,
+				* instance.stack * delta / 5,
 				false,
 				false
 			)
@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 
 
 func apply_passive(target: CharacterBase):
-	var passive_instance: DariusPassive
+	var passive_instance: Stack
 
 	for instance in passive_instances:
 		if instance.target == target:
@@ -76,14 +76,14 @@ func apply_passive(target: CharacterBase):
 			break
 
 	if !passive_instance:
-		passive_instance = DariusPassive.new()
+		passive_instance = Stack.new()
 		passive_instance.target = target
 
 		passive_instances.append(passive_instance)
 	
 	if target.is_dead:
-		if passive_instance.index != 5:
-			passive_instance.index = 5
+		if passive_instance.stack != 5:
+			passive_instance.stack = 5
 			passive_full += 1
 			character_base.calculate_statistics()
 
@@ -91,15 +91,15 @@ func apply_passive(target: CharacterBase):
 		return
 
 	elif passive_full > 0:
-		if passive_instance.index != 5:
-			passive_instance.index = 5
+		if passive_instance.stack != 5:
+			passive_instance.stack = 5
 			passive_full += 1
 	
 	else:
-		if passive_instance.index < 5:
-			passive_instance.index += 1
+		if passive_instance.stack < 5:
+			passive_instance.stack += 1
 
-			if passive_instance.index == 5:
+			if passive_instance.stack == 5:
 				passive_full += 1
 				character_base.calculate_statistics()
 
@@ -415,7 +415,7 @@ func cast_r() -> void:
 
 	for instance in passive_instances:
 		if instance.target == target:
-			stack = instance.index
+			stack = instance.stack
 			break
 	
 	var damage_info: DamageInfo = DamageInfo.create(character_base, target)

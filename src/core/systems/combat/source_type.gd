@@ -12,4 +12,8 @@ enum Type {
 	SKILL_W,
 	SKILL_E,
 	SKILL_R,
+	
+	ITEM,
+	
+	RUNE
 }

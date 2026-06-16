@@ -51,8 +51,8 @@ func _physics_process(delta: float) -> void:
 			if global_position.distance_to(damage_info.victim.global_position) <= projectile_radius + damage_info.victim.character_collision_shape_radius:
 				Combat.apply_damage(damage_info)
 				
-				damage_info.attacker.character_logic.on_deal_projectile_hit(self)
-				damage_info.victim.character_logic.on_take_projectile_hit(self)
+				damage_info.attacker.on_deal_projectile_hit(self)
+				damage_info.victim.on_take_projectile_hit(self)
 				
 				queue_free()
 				return
@@ -81,8 +81,8 @@ func _physics_process(delta: float) -> void:
 
 					Combat.apply_damage(damage_info)
 				
-					damage_info.attacker.character_logic.on_deal_projectile_hit(self)
-					damage_info.victim.character_logic.on_take_projectile_hit(self)
+					damage_info.attacker.on_deal_projectile_hit(self)
+					damage_info.victim.on_take_projectile_hit(self)
 
 					if !pierce:
 						queue_free()

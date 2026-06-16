@@ -1,6 +1,6 @@
-class_name DariusPassive
+class_name Stack
 
 
 var target: CharacterBase
-var index: int
+var stack: int
 var cooldown: Cooldown = Cooldown.new()

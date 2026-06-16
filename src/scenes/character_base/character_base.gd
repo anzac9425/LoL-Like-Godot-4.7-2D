@@ -26,8 +26,11 @@ var barriers: Array[Barrier]
 var crowd_controls: Array[CrowdControl]
 var statuses: Array[Status]
 
-var items: Array
+var items: Array[ItemData]
+var item_logics: Array[CharacterLogic]
+
 var runes: Array
+var rune_logics: Array[CharacterLogic]
 
 var character_radius: float
 var character_sprite_radius: float
@@ -314,15 +317,55 @@ func set_radius_collision_shape(radius: float) -> void:
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
+	for rune_logic in rune_logics:
+		rune_logic.build_damage_info(damage_info)
+
+	for item_logic in item_logics:
+		item_logic.build_damage_info(damage_info)
+		
 	character_logic.build_damage_info(damage_info)
 
-	for rune in runes:
-		rune.build_damage_info(damage_info)
 
-	for item in items:
-		item.build_damage_info(damage_info)
-	
-	
+func on_deal_damage(damage_info: DamageInfo):
+	for rune_logic in rune_logics:
+		rune_logic.on_deal_damage(damage_info)
+
+	for item_logic in item_logics:
+		item_logic.on_deal_damage(damage_info)
+
+	character_logic.on_deal_damage(damage_info)
+
+
+func on_take_damage(damage_info: DamageInfo):
+	for rune_logic in rune_logics:
+		rune_logic.on_take_damage(damage_info)
+
+	for item_logic in item_logics:
+		item_logic.on_take_damage(damage_info)
+
+	character_logic.on_take_damage(damage_info)
+
+
+func on_deal_projectile_hit(projectile: Projectile):
+	for rune_logic in rune_logics:
+		rune_logic.on_deal_projectile_hit(projectile)
+
+	for item_logic in item_logics:
+		item_logic.on_deal_projectile_hit(projectile)
+
+	character_logic.on_deal_projectile_hit(projectile)
+
+
+func on_take_projectile_hit(projectile: Projectile):
+	for rune_logic in rune_logics:
+		rune_logic.on_take_projectile_hit(projectile)
+
+	for item_logic in item_logics:
+		item_logic.on_take_projectile_hit(projectile)
+
+	character_logic.on_take_projectile_hit(projectile)
+
+
 func auto_attack():
 	if !can_auto_attack():
 		return
@@ -382,6 +425,20 @@ func stop():
 
 func update_visibility() -> void:
 	character_sprite.visible = !is_dead
+
+
+func add_item(item_data: ItemData):
+	items.append(item_data)
+
+	if item_data.item_logic:
+		var logic: CharacterLogic = item_data.item_logic.new()
+
+		logic.character_base = self
+
+		item_logics.append(logic)
+		add_child(logic)
+
+	calculate_statistics()
 
 
 func is_same_team(target: CharacterBase) -> bool:
@@ -531,6 +588,12 @@ func calculate_statistics() -> void:
 	base_statistics.add(character_data.statistics)
 	base_statistics.add(growthed_statistics)
 	
+	for rune_logic in rune_logics:
+		rune_logic.modify_base_statistics(base_statistics)
+	
+	for item_logic in item_logics:
+		item_logic.modify_base_statistics(base_statistics)
+	
 	character_logic.modify_base_statistics(base_statistics)
 	
 	bonus_statistics = Statistics.new()
@@ -541,6 +604,16 @@ func calculate_statistics() -> void:
 	else:
 		bonus_statistics.ability_power += bonus_statistics.adaptive_force
 	
+	for item in items:
+		if item.statistics:
+			bonus_statistics.add(item.statistics)
+	
+	for rune_logic in rune_logics:
+		rune_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	
+	for item_logic in item_logics:
+		item_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	
 	character_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
 	
 	var raw_total_statistics = Statistics.new()
@@ -548,6 +621,12 @@ func calculate_statistics() -> void:
 	raw_total_statistics.add(base_statistics)
 	raw_total_statistics.add(bonus_statistics)
 	
+	for rune_logic in rune_logics:
+		rune_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
+	
+	for item_logic in item_logics:
+		item_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
+		
 	character_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
 	
 	total_statistics = Statistics.new()
