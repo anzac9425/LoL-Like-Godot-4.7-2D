@@ -35,19 +35,3 @@ func on_deal_projectile_hit(_projectile: Projectile) -> void:
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
-
-
-func cast_q() -> void:
-	pass
-
-
-func cast_w() -> void:
-	pass
-
-
-func cast_e() -> void:
-	pass
-
-
-func cast_r() -> void:
-	pass

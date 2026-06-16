@@ -106,6 +106,10 @@ func apply_passive(target: CharacterBase):
 	passive_instance.cooldown.remaining_duration = 5.0
 
 
+func on_hit(_damage_info: DamageInfo) -> void:
+	pass
+
+
 func build_damage_info(damage_info: DamageInfo) -> void:
 	if damage_info.attacker != character_base:
 		return

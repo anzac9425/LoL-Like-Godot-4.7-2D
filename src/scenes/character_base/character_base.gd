@@ -366,6 +366,16 @@ func on_take_projectile_hit(projectile: Projectile):
 	character_logic.on_take_projectile_hit(projectile)
 
 
+func on_hit(damage_info: DamageInfo):
+	for rune_logic in rune_logics:
+		rune_logic.on_hit(damage_info)
+
+	for item_logic in item_logics:
+		item_logic.on_hit(damage_info)
+
+	character_logic.on_hit(damage_info)
+
+
 func auto_attack():
 	if !can_auto_attack():
 		return

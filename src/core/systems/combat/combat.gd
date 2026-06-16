@@ -11,6 +11,10 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	damage_info.attacker.build_damage_info(damage_info)
 	damage_info.victim.build_damage_info(damage_info)
 	
+	if damage_info.on_hit:
+		for i in range(damage_info.on_hit_count):
+			damage_info.attacker.on_hit(damage_info)
+	
 	var damage_amount: Dictionary
 	
 	var result_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)

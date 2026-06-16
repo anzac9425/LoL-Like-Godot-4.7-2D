@@ -1,5 +1,4 @@
 extends CharacterLogic
-class_name EclipseLogic
 
 
 var cooldown: Cooldown = Cooldown.new()
@@ -23,6 +22,10 @@ func stack(target: CharacterBase) -> Stack:
 	stacks.append(stack_)
 
 	return stack_
+
+
+func on_hit(_damage_info: DamageInfo) -> void:
+	pass
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
@@ -126,20 +129,4 @@ func on_deal_projectile_hit(_projectile: Projectile) -> void:
 
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
-	pass
-
-
-func cast_q() -> void:
-	pass
-
-
-func cast_w() -> void:
-	pass
-
-
-func cast_e() -> void:
-	pass
-
-
-func cast_r() -> void:
 	pass

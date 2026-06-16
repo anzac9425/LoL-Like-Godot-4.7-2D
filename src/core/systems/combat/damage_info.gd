@@ -7,6 +7,9 @@ var victim: CharacterBase
 
 var damage_instances: Array[DamageInstance]
 
+var on_hit: bool
+var on_hit_count: int = 1
+
 
 static func create(attacker_: CharacterBase, victim_: CharacterBase) -> DamageInfo:
 	var instance: DamageInfo = DamageInfo.new()

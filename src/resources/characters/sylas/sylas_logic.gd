@@ -56,6 +56,10 @@ func add_passive() -> void:
 	character_base.calculate_statistics()
 
 
+func on_hit(_damage_info: DamageInfo) -> void:
+	pass
+
+
 func build_damage_info(damage_info: DamageInfo) -> void:
 	if damage_info.attacker != character_base:
 		return
