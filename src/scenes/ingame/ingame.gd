@@ -12,10 +12,12 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2.ZERO, "character", "team1")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1")
 	input_characters.append(player)
 	
 	player.add_item(load(Paths.ITEM_DATA_ECLIPSE))
+	player.add_item(load(Paths.ITEM_DATA_TRINITY_FORCE))
+	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
 	
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 0), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 200), "character", "team2")
@@ -26,7 +28,6 @@ func _ready() -> void:
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
-			#pass
 
 
 func _process(delta: float) -> void:
@@ -61,19 +62,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("skill_q"):
 		for character in input_characters:
-			character.character_logic.cast_q()
+			character.on_cast(SourceType.Type.SKILL_Q)
 	
 	if event.is_action_pressed("skill_w"):
 		for character in input_characters:
-			character.character_logic.cast_w()
+			character.on_cast(SourceType.Type.SKILL_W)
 	
 	if event.is_action_pressed("skill_e"):
 		for character in input_characters:
-			character.character_logic.cast_e()
+			character.on_cast(SourceType.Type.SKILL_E)
 	
 	if event.is_action_pressed("skill_r"):
 		for character in input_characters:
-			character.character_logic.cast_r()
+			character.on_cast(SourceType.Type.SKILL_R)
 
 
 func get_target_at_mouse_position() -> CharacterBase:

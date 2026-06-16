@@ -130,3 +130,7 @@ func on_deal_projectile_hit(_projectile: Projectile) -> void:
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
+
+
+func on_cast(_source_type: SourceType.Type):
+	pass

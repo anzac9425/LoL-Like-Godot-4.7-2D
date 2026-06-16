@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cmwnmihvqsv66"]
 
 [ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="1_cec5b"]
-[ext_resource type="Script" uid="uid://2bxu3xjj8jxn" path="res://src/resources/items/_template/_template_logic.gd" id="1_ps2vy"]
-[ext_resource type="Resource" uid="uid://b830eygvwjx8p" path="res://src/resources/items/_template/_template_statistics.tres" id="3_njp77"]
+[ext_resource type="Script" uid="uid://2bxu3xjj8jxn" path="res://src/resources/items/_template/logic.gd" id="1_ps2vy"]
+[ext_resource type="Resource" uid="uid://b830eygvwjx8p" path="res://src/resources/items/_template/statistics.tres" id="3_njp77"]
 
 [resource]
 script = ExtResource("1_cec5b")

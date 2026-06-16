@@ -13,3 +13,5 @@ const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/dar
 const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/sylas_data.tres"
 
 const ITEM_DATA_ECLIPSE: String = "res://src/resources/items/eclipse/eclipse_data.tres"
+const ITEM_DATA_TRINITY_FORCE: String = "res://src/resources/items/trinity_force/trinity_force_data.tres"
+const ITEM_DATA_BLADE_OF_THE_RUINED_KING: String = "res://src/resources/items/blade_of_the_ruined_king/blade_of_the_ruined_king_data.tres"

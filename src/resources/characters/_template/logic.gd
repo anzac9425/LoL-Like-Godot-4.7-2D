@@ -35,3 +35,19 @@ func on_deal_projectile_hit(_projectile: Projectile) -> void:
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
+
+
+func cast_q() -> bool:
+	return false
+	
+
+func cast_w() -> bool:
+	return false
+
+
+func cast_e() -> bool:
+	return false
+
+
+func cast_r() -> bool:
+	return false

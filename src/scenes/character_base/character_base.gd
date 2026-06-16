@@ -29,7 +29,7 @@ var statuses: Array[Status]
 var items: Array[ItemData]
 var item_logics: Array[CharacterLogic]
 
-var runes: Array
+var runes: Array[RuneData]
 var rune_logics: Array[CharacterLogic]
 
 var character_radius: float
@@ -316,6 +316,16 @@ func set_radius_collision_shape(radius: float) -> void:
 	character_collision_shape_radius = radius
 
 
+func on_hit(damage_info: DamageInfo):
+	for rune_logic in rune_logics:
+		rune_logic.on_hit(damage_info)
+
+	for item_logic in item_logics:
+		item_logic.on_hit(damage_info)
+
+	character_logic.on_hit(damage_info)
+
+
 func build_damage_info(damage_info: DamageInfo) -> void:
 	for rune_logic in rune_logics:
 		rune_logic.build_damage_info(damage_info)
@@ -366,14 +376,30 @@ func on_take_projectile_hit(projectile: Projectile):
 	character_logic.on_take_projectile_hit(projectile)
 
 
-func on_hit(damage_info: DamageInfo):
+func on_cast(source_type: SourceType.Type):
+	var success: bool
+	
+	match source_type:
+		SourceType.Type.SKILL_Q:
+			success = character_logic.cast_q()
+		
+		SourceType.Type.SKILL_W:
+			success = character_logic.cast_w()
+		
+		SourceType.Type.SKILL_E:
+			success = character_logic.cast_e()
+		
+		SourceType.Type.SKILL_R:
+			success = character_logic.cast_r()
+	
+	if !success:
+		return
+	
 	for rune_logic in rune_logics:
-		rune_logic.on_hit(damage_info)
-
+		rune_logic.on_cast(source_type)
+		
 	for item_logic in item_logics:
-		item_logic.on_hit(damage_info)
-
-	character_logic.on_hit(damage_info)
+		item_logic.on_cast(source_type)
 
 
 func auto_attack():
@@ -400,6 +426,8 @@ func _auto_attack():
 		true,
 		true
 	)
+	
+	damage_info.on_hit = true
 	
 	if character_data.ranged:
 		Ingame.current.spawn_projectile(
@@ -446,6 +474,20 @@ func add_item(item_data: ItemData):
 		logic.character_base = self
 
 		item_logics.append(logic)
+		add_child(logic)
+
+	calculate_statistics()
+
+
+func add_rune(rune_data: RuneData):
+	runes.append(rune_data)
+
+	if rune_data.rune_logic:
+		var logic: CharacterLogic = rune_data.rune_logic.new()
+
+		logic.character_base = self
+
+		rune_logics.append(logic)
 		add_child(logic)
 
 	calculate_statistics()
@@ -614,6 +656,10 @@ func calculate_statistics() -> void:
 	else:
 		bonus_statistics.ability_power += bonus_statistics.adaptive_force
 	
+	for rune in runes:
+		if rune.statistics:
+			bonus_statistics.add(rune.statistics)
+
 	for item in items:
 		if item.statistics:
 			bonus_statistics.add(item.statistics)

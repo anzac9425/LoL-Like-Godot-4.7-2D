@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://q627etdu745m"]
+
+[ext_resource type="Script" uid="uid://d25twqud4etjp" path="res://src/scenes/rune_page/rune_page.gd" id="1_5vhsn"]
+
+[node name="RunePage" type="Control" unique_id=443863833]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_5vhsn")

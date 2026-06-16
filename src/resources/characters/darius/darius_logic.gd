@@ -182,16 +182,22 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> void:
+func cast_q() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if q_cooldown.remaining_duration > 0.0:
-		return
+		return false
 	
 	if !Combat.spend_mana(character_base, 25.0 + 20.0 / 17.0 * character_base.level):
-		return
+		return false
+	
+	_q()
+	
+	return true
 
+
+func _q() -> void:
 	q_cooldown.remaining_duration = max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
 
 	var outer_area: Area = Area.create_circle(
@@ -260,16 +266,22 @@ func cast_q() -> void:
 	inner_area.queue_free()
 
 
-func cast_w() -> void:
+func cast_w() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if w_cooldown.remaining_duration > 0.0:
-		return
+		return false
 	
 	if !Combat.spend_mana(character_base, 40.0):
-		return
+		return false
+	
+	_w()
+	
+	return true
 
+
+func _w() -> void:
 	w_active_cooldown.remaining_duration = 4.0
 	
 	w_active = true
@@ -279,16 +291,22 @@ func cast_w() -> void:
 	character_base.calculate_statistics()
 
 
-func cast_e() -> void:
+func cast_e() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if e_cooldown.remaining_duration > 0.0:
-		return
+		return false
 	
 	if !Combat.spend_mana(character_base, max(0.0, 70 - 40.0 / 17.0 * character_base.level)):
-		return
+		return false
+	
+	_e()
+	
+	return true
 
+
+func _e() -> void:
 	e_cooldown.remaining_duration = max(0.0, 26.0 - 10.0 / 17.0 * character_base.level)
 
 	Combat.apply_status(character_base,Status.Type.CANNOT_MOVE, 0.65)
@@ -353,16 +371,22 @@ func cast_e() -> void:
 	
 
 
-func cast_r() -> void:
+func cast_r() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if r_cooldown.remaining_duration > 0.0:
-		return
+		return false
 	
 	if !Combat.spend_mana(character_base, max(0.0, 100.0 - 100.0 / 17.0 * character_base.level)):
-		return
+		return false
 	
+	_r()
+	
+	return true
+
+
+func _r() -> void:
 	var target: CharacterBase = Ingame.current.get_target_at_mouse_position()
 	
 	if !target:

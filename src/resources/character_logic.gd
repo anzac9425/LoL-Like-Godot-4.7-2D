@@ -41,17 +41,17 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> void:
-	pass
+func cast_q() -> bool:
+	return false
+	
+
+func cast_w() -> bool:
+	return false
 
 
-func cast_w() -> void:
-	pass
+func cast_e() -> bool:
+	return false
 
 
-func cast_e() -> void:
-	pass
-
-
-func cast_r() -> void:
-	pass
+func cast_r() -> bool:
+	return false

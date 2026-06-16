@@ -1,12 +1,13 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://clyiu5j5kswvj"]
 
-[ext_resource type="Script" uid="uid://g5wcpmdkf23l" path="res://src/resources/items/trinity force/trinity force_logic.gd" id="1_o0jh4"]
+[ext_resource type="Script" uid="uid://g5wcpmdkf23l" path="res://src/resources/items/trinity_force/trinity_force_logic.gd" id="1_o0jh4"]
 [ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_6t4uj"]
-[ext_resource type="Resource" uid="uid://cspi8vqgwvjo" path="res://src/resources/items/trinity force/trinity force_statistics.tres" id="3_aocx7"]
+[ext_resource type="Resource" uid="uid://cspi8vqgwvjo" path="res://src/resources/items/trinity_force/trinity_force_statistics.tres" id="3_aocx7"]
 
 [resource]
 script = ExtResource("2_6t4uj")
 item_name = "trinity force"
+item_cost = 3333.0
 statistics = ExtResource("3_aocx7")
 item_logic = ExtResource("1_o0jh4")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -196,16 +196,22 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> void:
+func cast_q() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if q_casting:
-		return
+		return false
 
 	if q_index == 0 and q_cooldown.remaining_duration > 0.0:
-		return
+		return false
+	
+	_q()
+	
+	return true
+	
 
+func _q() -> void:
 	q_rotation = (
 		Ingame.current.get_global_mouse_position()
 		- character_base.global_position
@@ -387,13 +393,19 @@ func cast_q() -> void:
 		q_casting = false
 
 
-func cast_w() -> void:
+func cast_w() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if w_cooldown.remaining_duration > 0.0:
-		return
+		return false
 	
+	_w()
+	
+	return true
+
+
+func _w() -> void:
 	Combat.apply_status(
 		character_base,
 		Status.Type.CANNOT_MOVE,
@@ -444,13 +456,19 @@ func cast_w() -> void:
 	projectile.max_distance = 825.0
 
 
-func cast_e() -> void:
+func cast_e() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if e_cooldown.remaining_duration > 0.0:
-		return
+		return false
+	
+	_e()
+	
+	return true
 
+
+func _e() -> void:
 	e_cooldown.remaining_duration = (
 		max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
 	)
@@ -476,13 +494,19 @@ func cast_e() -> void:
 	character_base.auto_attack_cooldown.remaining_duration = 0.0
 
 
-func cast_r() -> void:
+func cast_r() -> bool:
 	if !character_base.can_cast():
-		return
+		return false
 
 	if r_cooldown.remaining_duration > 0.0:
-		return
+		return false
+	
+	_r()
+	
+	return true
 
+
+func _r() -> void:
 	r_cooldown.remaining_duration = max(0.0, 120.0 - (40.0 / 17.0 * character_base.level))
 
 	Combat.apply_status(
