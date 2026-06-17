@@ -7,7 +7,6 @@
 
 [resource]
 script = ExtResource("1_xf8rw")
-character_name = "template"
 statistics = ExtResource("4_lp6k4")
 growth_statistics = ExtResource("2_ch228")
 character_logic = ExtResource("1_jt3cv")

@@ -649,16 +649,6 @@ func calculate_statistics() -> void:
 	character_logic.modify_base_statistics(base_statistics)
 	
 	bonus_statistics = Statistics.new()
-	
-	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
-		bonus_statistics.attack_damage += bonus_statistics.adaptive_force
-		
-	else:
-		bonus_statistics.ability_power += bonus_statistics.adaptive_force
-	
-	for rune in runes:
-		if rune.statistics:
-			bonus_statistics.add(rune.statistics)
 
 	for item in items:
 		if item.statistics:
@@ -671,6 +661,12 @@ func calculate_statistics() -> void:
 		item_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
 	
 	character_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	
+	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
+		bonus_statistics.attack_damage += bonus_statistics.adaptive_force * 0.6
+		
+	else:
+		bonus_statistics.ability_power += bonus_statistics.adaptive_force
 	
 	var raw_total_statistics = Statistics.new()
 	

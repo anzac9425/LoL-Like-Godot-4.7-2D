@@ -1,7 +1,9 @@
 [gd_resource type="Resource" script_class="RuneData" format=3 uid="uid://bdf24w4btrn53"]
 
 [ext_resource type="Script" uid="uid://d2pvhfghtorx4" path="res://src/resources/runes/rune_data.gd" id="1_c8yqh"]
+[ext_resource type="Script" uid="uid://b0o7yix4vanp" path="res://src/resources/runes/_template/logic.gd" id="1_rvfhp"]
 
 [resource]
 script = ExtResource("1_c8yqh")
+rune_logic = ExtResource("1_rvfhp")
 metadata/_custom_type_script = "uid://d2pvhfghtorx4"

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://2wjbwsnw4a8v"]
 
 [ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="1_h32tj"]
-[ext_resource type="Script" uid="uid://b1f657pf07mmn" path="res://src/resources/characters/test1/test1_logic.gd" id="1_xfegy"]
-[ext_resource type="Resource" uid="uid://ccxisn30c48or" path="res://src/resources/characters/test1/test1_growth_statistics.tres" id="2_0ie4s"]
-[ext_resource type="Resource" uid="uid://cm11rmdprxn56" path="res://src/resources/characters/test1/test1_statistics.tres" id="3_qp0j6"]
+[ext_resource type="Script" uid="uid://b1f657pf07mmn" path="res://src/resources/characters/test1/logic.gd" id="1_xfegy"]
+[ext_resource type="Resource" uid="uid://ccxisn30c48or" path="res://src/resources/characters/test1/growth_statistics.tres" id="2_0ie4s"]
+[ext_resource type="Resource" uid="uid://cm11rmdprxn56" path="res://src/resources/characters/test1/statistics.tres" id="3_qp0j6"]
 
 [resource]
 script = ExtResource("1_h32tj")

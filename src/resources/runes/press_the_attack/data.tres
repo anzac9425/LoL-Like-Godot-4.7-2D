@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RuneData" format=3 uid="uid://drijp7si7cpux"]
+
+[ext_resource type="Script" uid="uid://yjax8rturove" path="res://src/resources/runes/press_the_attack/logic.gd" id="1_exp3x"]
+[ext_resource type="Script" uid="uid://d2pvhfghtorx4" path="res://src/resources/runes/rune_data.gd" id="2_s0lik"]
+
+[resource]
+script = ExtResource("2_s0lik")
+rune_name = "press_the_attack"
+rune_logic = ExtResource("1_exp3x")
+metadata/_custom_type_script = "uid://d2pvhfghtorx4"

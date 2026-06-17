@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RuneData" format=3 uid="uid://ddsea0x4gvxis"]
+
+[ext_resource type="Script" uid="uid://cmat2uw43bo2d" path="res://src/resources/runes/lethal_tempo/logic.gd" id="1_asqdr"]
+[ext_resource type="Script" uid="uid://d2pvhfghtorx4" path="res://src/resources/runes/rune_data.gd" id="2_63a7r"]
+
+[resource]
+script = ExtResource("2_63a7r")
+rune_name = "lethal_tempo"
+rune_logic = ExtResource("1_asqdr")
+metadata/_custom_type_script = "uid://d2pvhfghtorx4"

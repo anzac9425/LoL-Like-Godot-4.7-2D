@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://c0rdhjk1vt6q2"]
 
-[ext_resource type="Script" uid="uid://bji4bkcxwr4af" path="res://src/resources/characters/sylas/sylas_logic.gd" id="1_2tqkw"]
-[ext_resource type="Resource" uid="uid://bq4xdlko3evya" path="res://src/resources/characters/sylas/sylas_growth_statistics.tres" id="2_8wxw6"]
+[ext_resource type="Script" uid="uid://bji4bkcxwr4af" path="res://src/resources/characters/sylas/logic.gd" id="1_2tqkw"]
+[ext_resource type="Resource" uid="uid://bq4xdlko3evya" path="res://src/resources/characters/sylas/growth_statistics.tres" id="2_8wxw6"]
 [ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="3_mg8ux"]
-[ext_resource type="Resource" uid="uid://c5me71qq2rhsr" path="res://src/resources/characters/sylas/sylas_statistics.tres" id="4_c6w2c"]
+[ext_resource type="Resource" uid="uid://c5me71qq2rhsr" path="res://src/resources/characters/sylas/statistics.tres" id="4_c6w2c"]
 
 [resource]
 script = ExtResource("3_mg8ux")

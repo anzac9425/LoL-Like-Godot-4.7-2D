@@ -143,6 +143,16 @@ func on_take_damage(_damage_info: DamageInfo) -> void:
 
 
 func on_deal_projectile_hit(projectile: Projectile) -> void:
+	var e2: bool = false
+
+	for instance in projectile.damage_info.damage_instances:
+		if instance.source_type == SourceType.Type.SKILL_E:
+			e2 = true
+			break
+
+	if !e2:
+		return
+	
 	var target: CharacterBase = projectile.damage_info.victim
 
 	var destination: Vector2 = (
@@ -479,9 +489,13 @@ func _cast_e2() -> void:
 		return
 
 	var direction: Vector2 = (mouse_position - character_base.global_position).normalized()
-
+	
+	var damage_info: DamageInfo = DamageInfo.create(character_base, null)
+	
+	damage_info.add_damage_instance(DamageType.Type.UNKNOWN, SourceType.Type.SKILL_E, 0.0, false, false)
+	
 	var projectile: Projectile = Ingame.current.spawn_projectile(
-		DamageInfo.create(character_base, null),
+		damage_info,
 		Projectile.Type.LINEAR,
 		2500.0,
 		60.0

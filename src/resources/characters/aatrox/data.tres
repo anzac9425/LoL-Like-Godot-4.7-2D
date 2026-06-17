@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://b3pqoa0b8v1ns"]
 
-[ext_resource type="Script" uid="uid://c8nvmy5i30kdf" path="res://src/resources/characters/aatrox/aatrox_logic.gd" id="1_lnsae"]
+[ext_resource type="Script" uid="uid://c8nvmy5i30kdf" path="res://src/resources/characters/aatrox/logic.gd" id="1_lnsae"]
 [ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="1_nbm8a"]
-[ext_resource type="Resource" uid="uid://benkg16xr1ciw" path="res://src/resources/characters/aatrox/aatrox_growth_statistics.tres" id="2_l8l3w"]
-[ext_resource type="Resource" uid="uid://7p5a8hmhqikr" path="res://src/resources/characters/aatrox/aatrox_statistics.tres" id="3_u1uq4"]
+[ext_resource type="Resource" uid="uid://benkg16xr1ciw" path="res://src/resources/characters/aatrox/growth_statistics.tres" id="2_l8l3w"]
+[ext_resource type="Resource" uid="uid://7p5a8hmhqikr" path="res://src/resources/characters/aatrox/statistics.tres" id="3_u1uq4"]
 
 [resource]
 script = ExtResource("1_nbm8a")
