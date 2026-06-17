@@ -26,10 +26,10 @@ func _physics_process(delta: float) -> void:
 	if passive_cooldown.remaining_duration > 0.0:
 		passive_cooldown.remaining_duration -= delta
 
-	if passive_cooldown.remaining_duration <= 0.0:
-		passive_ready = true
-		
-		character_base.calculate_statistics()
+		if passive_cooldown.remaining_duration <= 0.0:
+			passive_ready = true
+			
+			character_base.calculate_statistics()
 		
 	if q_cooldown.remaining_duration > 0.0:
 		q_cooldown.remaining_duration -= delta
@@ -173,7 +173,7 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 					area.global_position.distance_to(target.global_position) / 0.1
 				)
 				
-				var second_damage_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)
+				var second_damage_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim, damage_info.cast_id)
 				
 				second_damage_info.add_damage_instance(
 					DamageType.Type.PHYSICAL,
@@ -196,7 +196,7 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> bool:
+func cast_q(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -206,12 +206,12 @@ func cast_q() -> bool:
 	if q_index == 0 and q_cooldown.remaining_duration > 0.0:
 		return false
 	
-	_q()
+	_q(cast_id)
 	
 	return true
 	
 
-func _q() -> void:
+func _q(cast_id: String) -> void:
 	q_rotation = (
 		Ingame.current.get_global_mouse_position()
 		- character_base.global_position
@@ -309,6 +309,8 @@ func _q() -> void:
 
 			damage_multiplier = 1.25
 			next_index = 2
+			
+			cast_id = DamageInfo.generate_cast_id()
 
 		2:
 			area = Area.create_circle(
@@ -333,6 +335,8 @@ func _q() -> void:
 
 			damage_multiplier = 1.5
 			next_index = 0
+			
+			cast_id = DamageInfo.generate_cast_id()
 
 	Ingame.current.spawn_area(area)
 	Ingame.current.spawn_area(sweet_area)
@@ -351,10 +355,7 @@ func _q() -> void:
 		if !character_base.is_enemy_team(target):
 			continue
 
-		var damage_info: DamageInfo = DamageInfo.create(
-			character_base,
-			target
-		)
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 		var damage: float = base_damage * damage_multiplier
 
@@ -393,19 +394,19 @@ func _q() -> void:
 		q_casting = false
 
 
-func cast_w() -> bool:
+func cast_w(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
 	if w_cooldown.remaining_duration > 0.0:
 		return false
 	
-	_w()
+	_w(cast_id)
 	
 	return true
 
 
-func _w() -> void:
+func _w(cast_id: String) -> void:
 	Combat.apply_status(
 		character_base,
 		Status.Type.CANNOT_MOVE,
@@ -430,7 +431,7 @@ func _w() -> void:
 	if character_base.is_dead:
 		return
 
-	var damage_info: DamageInfo = DamageInfo.create(character_base, null)
+	var damage_info: DamageInfo = DamageInfo.create(character_base, null, cast_id)
 
 	damage_info.add_damage_instance(
 		DamageType.Type.PHYSICAL,
@@ -456,7 +457,7 @@ func _w() -> void:
 	projectile.max_distance = 825.0
 
 
-func cast_e() -> bool:
+func cast_e(_cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -494,7 +495,7 @@ func _e() -> void:
 	character_base.auto_attack_cooldown.remaining_duration = 0.0
 
 
-func cast_r() -> bool:
+func cast_r(_cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 

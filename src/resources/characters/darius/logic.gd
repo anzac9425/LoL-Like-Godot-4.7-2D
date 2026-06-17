@@ -33,7 +33,7 @@ func _physics_process(delta: float) -> void:
 
 				continue
 			
-			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target)
+			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target, instance.cast_id)
 			
 			passive_damage_info.add_damage_instance(
 				DamageType.Type.PHYSICAL,
@@ -78,6 +78,7 @@ func apply_passive(target: CharacterBase):
 	if !passive_instance:
 		passive_instance = Stack.new()
 		passive_instance.target = target
+		passive_instance.cast_id = DamageInfo.generate_cast_id()
 
 		passive_instances.append(passive_instance)
 	
@@ -182,7 +183,7 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> bool:
+func cast_q(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -192,12 +193,12 @@ func cast_q() -> bool:
 	if !Combat.spend_mana(character_base, 25.0 + 20.0 / 17.0 * character_base.level):
 		return false
 	
-	_q()
+	_q(cast_id)
 	
 	return true
 
 
-func _q() -> void:
+func _q(cast_id: String) -> void:
 	q_cooldown.remaining_duration = max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
 
 	var outer_area: Area = Area.create_circle(
@@ -243,7 +244,7 @@ func _q() -> void:
 			damage *= 0.35
 			is_inner = true
 
-		var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 		damage_info.add_damage_instance(
 			DamageType.Type.PHYSICAL,
@@ -266,7 +267,7 @@ func _q() -> void:
 	inner_area.queue_free()
 
 
-func cast_w() -> bool:
+func cast_w(_cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -291,7 +292,7 @@ func _w() -> void:
 	character_base.calculate_statistics()
 
 
-func cast_e() -> bool:
+func cast_e(_cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -371,7 +372,7 @@ func _e() -> void:
 	
 
 
-func cast_r() -> bool:
+func cast_r(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -381,12 +382,12 @@ func cast_r() -> bool:
 	if !Combat.spend_mana(character_base, max(0.0, 100.0 - 100.0 / 17.0 * character_base.level)):
 		return false
 	
-	_r()
+	_r(cast_id)
 	
 	return true
 
 
-func _r() -> void:
+func _r(cast_id: String) -> void:
 	var target: CharacterBase = Ingame.current.get_target_at_mouse_position()
 	
 	if !target:
@@ -446,7 +447,7 @@ func _r() -> void:
 			stack = instance.stack
 			break
 	
-	var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+	var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 	
 	damage_info.add_damage_instance(
 		DamageType.Type.TRUE,

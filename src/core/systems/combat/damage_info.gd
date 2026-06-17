@@ -10,12 +10,19 @@ var damage_instances: Array[DamageInstance]
 var on_hit: bool
 var on_hit_count: int = 1
 
+var cast_id: String
 
-static func create(attacker_: CharacterBase, victim_: CharacterBase) -> DamageInfo:
+
+static func generate_cast_id() -> String:
+	return str(Time.get_ticks_usec(), "_", randi())
+
+
+static func create(attacker_: CharacterBase, victim_: CharacterBase, cast_id_: String) -> DamageInfo:
 	var instance: DamageInfo = DamageInfo.new()
 
 	instance.attacker = attacker_
 	instance.victim = victim_
+	instance.cast_id = cast_id_
 
 	return instance
 	

@@ -18,3 +18,5 @@ const ITEM_DATA_BLADE_OF_THE_RUINED_KING: String = "res://src/resources/items/bl
 
 const RUNE_DATA_PRESS_THE_ATTACK: String = "res://src/resources/runes/press_the_attack/data.tres"
 const RUNE_DATA_LETHAL_TEMPO: String = "res://src/resources/runes/lethal_tempo/data.tres"
+const RUNE_DATA_FLEET_FOOTWORK: String = "res://src/resources/runes/fleet_footwork/data.tres"
+const RUNE_DATA_CONQUEROR: String = "res://src/resources/runes/conqueror/data.tres"

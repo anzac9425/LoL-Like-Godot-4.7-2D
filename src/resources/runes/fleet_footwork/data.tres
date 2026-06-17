@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RuneData" format=3 uid="uid://d0sdk1aw5vt6"]
+
+[ext_resource type="Script" uid="uid://b8a1wr781yp8i" path="res://src/resources/runes/fleet_footwork/logic.gd" id="1_hnbv8"]
+[ext_resource type="Script" uid="uid://d2pvhfghtorx4" path="res://src/resources/runes/rune_data.gd" id="2_rg6q2"]
+
+[resource]
+script = ExtResource("2_rg6q2")
+rune_name = "fleet_footwork"
+rune_logic = ExtResource("1_hnbv8")
+metadata/_custom_type_script = "uid://d2pvhfghtorx4"

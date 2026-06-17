@@ -377,20 +377,22 @@ func on_take_projectile_hit(projectile: Projectile):
 
 
 func on_cast(source_type: SourceType.Type):
+	var cast_id: String = DamageInfo.generate_cast_id()
+
 	var success: bool
-	
+
 	match source_type:
 		SourceType.Type.SKILL_Q:
-			success = character_logic.cast_q()
-		
+			success = character_logic.cast_q(cast_id)
+
 		SourceType.Type.SKILL_W:
-			success = character_logic.cast_w()
-		
+			success = character_logic.cast_w(cast_id)
+
 		SourceType.Type.SKILL_E:
-			success = character_logic.cast_e()
-		
+			success = character_logic.cast_e(cast_id)
+
 		SourceType.Type.SKILL_R:
-			success = character_logic.cast_r()
+			success = character_logic.cast_r(cast_id)
 	
 	if !success:
 		return
@@ -417,7 +419,7 @@ func _auto_attack():
 	if !auto_attack_target.can_be_targeted():
 		return
 		
-	var damage_info: DamageInfo = DamageInfo.create(self, auto_attack_target)
+	var damage_info: DamageInfo = DamageInfo.create(self, auto_attack_target, DamageInfo.generate_cast_id())
 	
 	damage_info.add_damage_instance(
 		DamageType.Type.PHYSICAL,

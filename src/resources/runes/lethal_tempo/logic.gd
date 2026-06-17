@@ -59,7 +59,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	if stacks < 6:
 		return
 
-	var bolt_damage_info: DamageInfo = DamageInfo.create(character_base, damage_info.victim)
+	var bolt_damage_info: DamageInfo = DamageInfo.create(character_base, damage_info.victim, damage_info.cast_id)
 
 	var damage: float
 

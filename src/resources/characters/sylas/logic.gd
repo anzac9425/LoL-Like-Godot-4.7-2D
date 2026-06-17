@@ -83,7 +83,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 				true
 			)
 			
-			var area: Area = Area.create_circle(damage_info.victim.global_position, 300.0, true)
+			var area: Area = Area.create_circle(damage_info.attacker.global_position, 300.0, true)
 			
 			Ingame.current.add_child(area)
 			
@@ -94,7 +94,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 				if !character_base.is_enemy_team(target):
 					continue
 				
-				var splash_damage_info: DamageInfo = DamageInfo.create(character_base, target)
+				var splash_damage_info: DamageInfo = DamageInfo.create(character_base, target, damage_info.cast_id)
 
 				splash_damage_info.add_damage_instance(
 					DamageType.Type.MAGIC,
@@ -178,6 +178,8 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 		destination,
 		1800.0
 	)
+	
+	var cast_id: String = projectile.damage_info.cast_id
 
 	await get_tree().create_timer(travel_time).timeout
 
@@ -187,7 +189,7 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 	if target.is_dead:
 		return
 
-	var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+	var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 	damage_info.add_damage_instance(
 		DamageType.Type.MAGIC,
@@ -208,7 +210,7 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> bool:
+func cast_q(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -218,12 +220,12 @@ func cast_q() -> bool:
 	if !Combat.spend_mana(character_base, 55.0):
 		return false
 	
-	_q()
+	_q(cast_id)
 	
 	return true
 
 
-func _q() -> void:
+func _q(cast_id: String) -> void:
 	add_passive()
 
 	q_cooldown.remaining_duration = max(0.0, 10.0 - 4.0 / 17.0 * character_base.level)
@@ -257,7 +259,7 @@ func _q() -> void:
 		if !character_base.is_enemy_team(target):
 			continue
 
-		var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 		damage_info.add_damage_instance(
 			DamageType.Type.MAGIC,
@@ -292,7 +294,7 @@ func _q() -> void:
 		if !character_base.is_enemy_team(target):
 			continue
 
-		var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, DamageInfo.generate_cast_id())
 
 		damage_info.add_damage_instance(
 			DamageType.Type.MAGIC,
@@ -311,7 +313,7 @@ func _q() -> void:
 	_passive_area(explosion_area)
 
 
-func cast_w() -> bool:
+func cast_w(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 	
@@ -321,12 +323,12 @@ func cast_w() -> bool:
 	if w_cooldown.remaining_duration > 0.0:
 		return false
 	
-	_w()
+	_w(cast_id)
 	
 	return true
 
 
-func _w() -> void:
+func _w(cast_id: String) -> void:
 	var target: CharacterBase = Ingame.current.get_target_at_mouse_position()
 
 	if !target:
@@ -392,10 +394,7 @@ func _w() -> void:
 	if !target.can_be_targeted():
 		return
 
-	var damage_info: DamageInfo = DamageInfo.create(
-		character_base,
-		target
-	)
+	var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 	damage_info.add_damage_instance(
 		DamageType.Type.MAGIC,
@@ -425,12 +424,12 @@ func _w() -> void:
 	Combat.apply_heal(character_base, heal_amount)
 
 
-func cast_e() -> bool:
+func cast_e(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 	
 	if e_active:
-		_cast_e2()
+		_cast_e2(cast_id)
 		return false
 	
 	if e_cooldown.remaining_duration > 0.0:
@@ -469,7 +468,7 @@ func _e() -> void:
 	Combat.apply_forced_movement(character_base, destination, 1450.0)
 
 
-func _cast_e2() -> void:
+func _cast_e2(cast_id: String) -> void:
 	e_active = false
 	e_active_cooldown.remaining_duration = 0.0
 
@@ -490,7 +489,7 @@ func _cast_e2() -> void:
 
 	var direction: Vector2 = (mouse_position - character_base.global_position).normalized()
 	
-	var damage_info: DamageInfo = DamageInfo.create(character_base, null)
+	var damage_info: DamageInfo = DamageInfo.create(character_base, null, cast_id)
 	
 	damage_info.add_damage_instance(DamageType.Type.UNKNOWN, SourceType.Type.SKILL_E, 0.0, false, false)
 	
@@ -506,7 +505,7 @@ func _cast_e2() -> void:
 	projectile.pierce = false
 
 
-func cast_r() -> bool:
+func cast_r(_cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
@@ -547,7 +546,7 @@ func _cast_r2() -> void:
 		if !character_base.is_enemy_team(target):
 			continue
 
-		var damage_info: DamageInfo = DamageInfo.create(character_base, target)
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, DamageInfo.generate_cast_id())
 
 		damage_info.add_damage_instance(
 			DamageType.Type.MAGIC,

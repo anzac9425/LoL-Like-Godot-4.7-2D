@@ -37,17 +37,17 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
-func cast_q() -> bool:
+func cast_q(_cast_id: String) -> bool:
 	return false
 	
 
-func cast_w() -> bool:
+func cast_w(_cast_id: String) -> bool:
 	return false
 
 
-func cast_e() -> bool:
+func cast_e(_cast_id: String) -> bool:
 	return false
 
 
-func cast_r() -> bool:
+func cast_r(_cast_id: String) -> bool:
 	return false

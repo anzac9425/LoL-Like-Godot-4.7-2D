@@ -12,11 +12,11 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2.ZERO, "character", "team1")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2.ZERO, "character", "team1")
 	input_characters.append(player)
 	
-	#player.add_item(load(Paths.ITEM_DATA_ECLIPSE))
-	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+	#player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
+	#player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
 	
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 0), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 200), "character", "team2")

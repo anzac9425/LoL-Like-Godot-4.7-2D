@@ -17,7 +17,7 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	
 	var damage_amount: Dictionary
 	
-	var result_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim)
+	var result_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim, damage_info.cast_id)
 	
 	var is_critical: bool = randf() < damage_info.attacker.total_statistics.critical_chance
 	
