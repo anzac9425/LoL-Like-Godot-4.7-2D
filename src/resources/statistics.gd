@@ -22,6 +22,7 @@ class_name Statistics
 @export var critical_damage_multiplier: float
 
 @export var move_speed: float
+@export var move_speed_multiplier: float
 
 @export var armor_penetration_flat: float
 @export var armor_penetration_multiplier: float

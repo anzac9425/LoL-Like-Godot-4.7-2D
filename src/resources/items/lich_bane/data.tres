@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dv8td8i6vf6qr"]
+
+[ext_resource type="Script" uid="uid://877fpyx42j3x" path="res://src/resources/items/lich_bane/logic.gd" id="1_nto23"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_fk4bh"]
+[ext_resource type="Resource" uid="uid://co5befugt1lsg" path="res://src/resources/items/lich_bane/statistics.tres" id="3_3wyqp"]
+
+[resource]
+script = ExtResource("2_fk4bh")
+statistics = ExtResource("3_3wyqp")
+item_logic = ExtResource("1_nto23")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

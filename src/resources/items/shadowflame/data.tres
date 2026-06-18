@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://io4n5ngceos8"]
+
+[ext_resource type="Script" uid="uid://c1ocfh0hm42ge" path="res://src/resources/items/shadowflame/logic.gd" id="1_ud0sx"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_hu6im"]
+[ext_resource type="Resource" uid="uid://cfath1v164yw5" path="res://src/resources/items/shadowflame/statistics.tres" id="3_3i58o"]
+
+[resource]
+script = ExtResource("2_hu6im")
+statistics = ExtResource("3_3i58o")
+item_logic = ExtResource("1_ud0sx")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

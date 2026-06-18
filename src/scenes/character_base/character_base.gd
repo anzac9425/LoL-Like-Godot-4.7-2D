@@ -689,6 +689,7 @@ func calculate_statistics() -> void:
 	total_statistics.add(bonus_statistics)
 	
 	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
+	total_statistics.move_speed *= 1.0 + total_statistics.move_speed_multiplier
 	
 	var slow_amount: float
 	

@@ -5,4 +5,4 @@ var target: CharacterBase
 var stack: int
 var cooldown: Cooldown = Cooldown.new()
 
-var cast_id: String
+var cast_ids: Array[String]

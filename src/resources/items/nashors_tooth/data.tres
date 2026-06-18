@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://hwxp34hk3cq6"]
+
+[ext_resource type="Script" uid="uid://dh36jb088ob2l" path="res://src/resources/items/nashors_tooth/logic.gd" id="1_7h4bk"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_i4fys"]
+[ext_resource type="Resource" uid="uid://cejutsvwe4dnj" path="res://src/resources/items/nashors_tooth/statistics.tres" id="3_6y0qn"]
+
+[resource]
+script = ExtResource("2_i4fys")
+statistics = ExtResource("3_6y0qn")
+item_logic = ExtResource("1_7h4bk")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

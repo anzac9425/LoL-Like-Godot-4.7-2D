@@ -33,7 +33,7 @@ func _physics_process(delta: float) -> void:
 
 				continue
 			
-			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target, instance.cast_id)
+			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target, instance.cast_ids[0])
 			
 			passive_damage_info.add_damage_instance(
 				DamageType.Type.PHYSICAL,
@@ -78,7 +78,7 @@ func apply_passive(target: CharacterBase):
 	if !passive_instance:
 		passive_instance = Stack.new()
 		passive_instance.target = target
-		passive_instance.cast_id = DamageInfo.generate_cast_id()
+		passive_instance.cast_ids = [DamageInfo.generate_cast_id()]
 
 		passive_instances.append(passive_instance)
 	

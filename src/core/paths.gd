@@ -16,7 +16,13 @@ const ITEM_DATA_ECLIPSE: String = "res://src/resources/items/eclipse/data.tres"
 const ITEM_DATA_TRINITY_FORCE: String = "res://src/resources/items/trinity_force/data.tres"
 const ITEM_DATA_BLADE_OF_THE_RUINED_KING: String = "res://src/resources/items/blade_of_the_ruined_king/data.tres"
 
+const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
+const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"
+const ITEM_DATA_RABADONS_DEATHCAP: String = "res://src/resources/items/rabadons_deathcap/data.tres"
+const ITEM_DATA_SHADOWFLAME: String = "res://src/resources/items/shadowflame/data.tres"
+
 const RUNE_DATA_PRESS_THE_ATTACK: String = "res://src/resources/runes/press_the_attack/data.tres"
 const RUNE_DATA_LETHAL_TEMPO: String = "res://src/resources/runes/lethal_tempo/data.tres"
 const RUNE_DATA_FLEET_FOOTWORK: String = "res://src/resources/runes/fleet_footwork/data.tres"
 const RUNE_DATA_CONQUEROR: String = "res://src/resources/runes/conqueror/data.tres"
+const RUNE_DATA_ELECTROCUTE: String = "res://src/resources/runes/electrocute/data.tres"

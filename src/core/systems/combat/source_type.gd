@@ -13,7 +13,7 @@ enum Type {
 	SKILL_E,
 	SKILL_R,
 	
+	RUNE,
 	ITEM,
-	
-	RUNE
+	SPELL
 }
