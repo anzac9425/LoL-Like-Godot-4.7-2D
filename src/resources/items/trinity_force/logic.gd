@@ -39,7 +39,7 @@ func on_hit(damage_info: DamageInfo):
 			true
 		)
 
-		spellblade_cooldown.remaining_duration = 1.5
+		spellblade_cooldown.start(1.5, Cooldown.Type.ITEM, character_base.total_statistics)
 	
 	var had_move_speed: bool = move_speed_duration.remaining_duration > 0.0
 		

@@ -20,6 +20,11 @@ const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"
 const ITEM_DATA_RABADONS_DEATHCAP: String = "res://src/resources/items/rabadons_deathcap/data.tres"
 const ITEM_DATA_SHADOWFLAME: String = "res://src/resources/items/shadowflame/data.tres"
+const ITEM_DATA_VOID_STAFF: String = "res://src/resources/items/void_staff/data.tres"
+const ITEM_DATA_LIANDRYS_TORMENT: String = "res://src/resources/items/liandrys_torment/data.tres"
+const ITEM_DATA_SCETER_OF_BONKING: String = "res://src/resources/items/scepter_of_bonking/data.tres"
+const ITEM_DATA_MORELLONOMICON: String = "res://src/resources/items/morellonomicon/data.tres"
+const ITEM_DATA_MALIGNANCE: String = "res://src/resources/items/malignance/data.tres"
 
 const RUNE_DATA_PRESS_THE_ATTACK: String = "res://src/resources/runes/press_the_attack/data.tres"
 const RUNE_DATA_LETHAL_TEMPO: String = "res://src/resources/runes/lethal_tempo/data.tres"

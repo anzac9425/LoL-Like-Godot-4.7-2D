@@ -28,10 +28,6 @@ func on_hit(damage_info: DamageInfo) -> void:
 	elif stack.target != damage_info.victim:
 		stack = Stack.new()
 		stack.target = damage_info.victim
-	
-	if target == damage_info.victim:
-		duration.remaining_duration = 5.0
-		return
 
 	stack.stack += 1
 	stack.cooldown.remaining_duration = 4.0
@@ -89,12 +85,14 @@ func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: St
 	pass
 
 
-func on_deal_damage(_damage_info: DamageInfo) -> void:
-	pass
+func on_deal_damage(damage_info: DamageInfo) -> void:
+	if damage_info.victim == target:
+		duration.remaining_duration = 5.0
 
 
-func on_take_damage(_damage_info: DamageInfo) -> void:
-	pass
+func on_take_damage(damage_info: DamageInfo) -> void:
+	if damage_info.attacker == target:
+		duration.remaining_duration = 5.0
 
 
 func on_deal_projectile_hit(_projectile: Projectile) -> void:

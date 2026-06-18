@@ -228,7 +228,7 @@ func cast_q(cast_id: String) -> bool:
 func _q(cast_id: String) -> void:
 	add_passive()
 
-	q_cooldown.remaining_duration = max(0.0, 10.0 - 4.0 / 17.0 * character_base.level)
+	q_cooldown.start(max(0.0, 10.0 - 4.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.4)
 	
@@ -360,7 +360,7 @@ func _w(cast_id: String) -> void:
 
 	add_passive()
 
-	w_cooldown.remaining_duration = max(0.0, 12.0 - 6.0 / 17.0 * character_base.level)
+	w_cooldown.start(max(0.0, 12.0 - 6.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 	
 	var direction: Vector2 = (
 		target.global_position
@@ -449,7 +449,7 @@ func _e() -> void:
 	e_active = true
 	e_active_cooldown.remaining_duration = 3.5
 
-	e_cooldown.remaining_duration = max(0.0, 13.0 - 4.0 / 17.0 * character_base.level)
+	e_cooldown.start(max(0.0, 13.0 - 4.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 
 	var target_position: Vector2 = Ingame.current.get_global_mouse_position()
 
@@ -531,7 +531,7 @@ func _r() -> void:
 
 	r_active_cooldown.remaining_duration = 5.0
 
-	r_cooldown.remaining_duration = (120.0 - 40.0 / 17.0 * character_base.level)
+	r_cooldown.start(max(0.0, 120.0 - 40.0 / 17.0 * character_base.level), Cooldown.Type.ULTIMATE, character_base.total_statistics)
 
 
 func _cast_r2() -> void:

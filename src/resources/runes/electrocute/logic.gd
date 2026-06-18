@@ -71,7 +71,7 @@ func on_deal_damage(damage_info: DamageInfo) -> void:
 
 	instances.erase(instance)
 
-	cooldown.remaining_duration = 20.0
+	cooldown.start(20.0, Cooldown.Type.ITEM, character_base.total_statistics)
 	
 	await get_tree().create_timer(0.25).timeout
 	

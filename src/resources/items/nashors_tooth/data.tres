@@ -6,6 +6,8 @@
 
 [resource]
 script = ExtResource("2_i4fys")
+item_name = "nashors_tooth"
+item_price = 2900.0
 statistics = ExtResource("3_6y0qn")
 item_logic = ExtResource("1_7h4bk")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

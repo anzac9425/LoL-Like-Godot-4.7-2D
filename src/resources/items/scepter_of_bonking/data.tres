@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bb1fegk8xwu4d"]
+
+[ext_resource type="Script" uid="uid://bjy4nkj2r84ae" path="res://src/resources/items/scepter_of_bonking/logic.gd" id="1_4if71"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_xcxtt"]
+[ext_resource type="Resource" uid="uid://hn84hqsydavd" path="res://src/resources/items/scepter_of_bonking/statistics.tres" id="3_jukdy"]
+
+[resource]
+script = ExtResource("2_xcxtt")
+item_name = "scepter_of_bonking"
+item_price = 3100.0
+statistics = ExtResource("3_jukdy")
+item_logic = ExtResource("1_4if71")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

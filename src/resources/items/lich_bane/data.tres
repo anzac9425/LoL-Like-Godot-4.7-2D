@@ -6,6 +6,8 @@
 
 [resource]
 script = ExtResource("2_fk4bh")
+item_name = "lich_bane"
+item_price = 2900.0
 statistics = ExtResource("3_3wyqp")
 item_logic = ExtResource("1_nto23")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

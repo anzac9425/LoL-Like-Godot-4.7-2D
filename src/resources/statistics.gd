@@ -16,7 +16,10 @@ class_name Statistics
 
 @export var attack_speed: float
 @export var attack_speed_multiplier: float
+
 @export var skill_haste: float
+@export var ultimate_haste: float
+@export var item_haste: float
 
 @export var critical_chance: float
 @export var critical_damage_multiplier: float

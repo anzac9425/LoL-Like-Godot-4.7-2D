@@ -6,6 +6,8 @@
 
 [resource]
 script = ExtResource("2_6y26r")
+item_name = "rabadons_deathcap"
+item_price = 3500.0
 statistics = ExtResource("3_0wioe")
 item_logic = ExtResource("1_t8h1e")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

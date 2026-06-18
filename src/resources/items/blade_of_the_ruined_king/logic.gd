@@ -68,7 +68,7 @@ func on_hit(damage_info: DamageInfo) -> void:
 			0.30
 		)
 
-		cooldown.remaining_duration = 15.0
+		cooldown.start(15.0, Cooldown.Type.ITEM, character_base.total_statistics)
 
 
 func build_damage_info(_damage_info: DamageInfo) -> void:

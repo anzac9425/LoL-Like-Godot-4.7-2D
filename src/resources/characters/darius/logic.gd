@@ -33,7 +33,7 @@ func _physics_process(delta: float) -> void:
 
 				continue
 			
-			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target, instance.cast_ids[0])
+			var passive_damage_info: DamageInfo = DamageInfo.create(character_base, instance.target, instance.cast_ids[0], true)
 			
 			passive_damage_info.add_damage_instance(
 				DamageType.Type.PHYSICAL,
@@ -122,7 +122,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 				
 				w_active_cooldown.remaining_duration = 0.0
 				
-				w_cooldown.remaining_duration = 5.0
+				w_cooldown.start(5.0, Cooldown.Type.SKILL, character_base.total_statistics)
 				
 				damage_info.add_damage_instance(
 					DamageType.Type.PHYSICAL,
@@ -199,7 +199,7 @@ func cast_q(cast_id: String) -> bool:
 
 
 func _q(cast_id: String) -> void:
-	q_cooldown.remaining_duration = max(0.0, 9.0 - (4.0 / 17.0 * character_base.level))
+	q_cooldown.start(max(0.0, 9.0 - (4.0 / 17.0 * character_base.level)), Cooldown.Type.SKILL, character_base.total_statistics)
 
 	var outer_area: Area = Area.create_circle(
 		character_base.global_position,
@@ -308,7 +308,7 @@ func cast_e(_cast_id: String) -> bool:
 
 
 func _e() -> void:
-	e_cooldown.remaining_duration = max(0.0, 26.0 - 10.0 / 17.0 * character_base.level)
+	e_cooldown.start(max(0.0, 26.0 - 10.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 
 	Combat.apply_status(character_base,Status.Type.CANNOT_MOVE, 0.65)
 	Combat.apply_status(character_base,Status.Type.CANNOT_AUTO_ATTACK, 0.65)
@@ -408,7 +408,7 @@ func _r(cast_id: String) -> void:
 	if !target.can_be_targeted():
 		return
 	
-	r_cooldown.remaining_duration = max(0.0, 120.0 - 40.0 / 17.0 * character_base.level)
+	r_cooldown.start(max(0.0, 120.0 - 40.0 / 17.0 * character_base.level), Cooldown.Type.ULTIMATE, character_base.total_statistics)
 	
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.36)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.36)

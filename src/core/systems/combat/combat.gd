@@ -12,7 +12,9 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	damage_info.victim.build_damage_info(damage_info)
 	
 	if damage_info.on_hit:
-		for i in range(damage_info.on_hit_count):
+		damage_info.attacker.on_hit(damage_info)
+	
+		for i in range(damage_info.on_hit_count - 1):
 			damage_info.attacker.on_hit(damage_info)
 	
 	var damage_amount: Dictionary
@@ -80,6 +82,9 @@ static func apply_heal(target: CharacterBase, amount: float) -> void:
 		return
 	
 	amount *= (1.0 + target.total_statistics.heal_shield_power_multiplier)
+	
+	if target.has_effect(Effect.Type.GRIEVOUS_WOUNDS):
+		amount *= 1 - target.get_effect_amount(Effect.Type.GRIEVOUS_WOUNDS)
 	
 	target.current_health += amount
 
@@ -168,3 +173,18 @@ static func spend_mana(target: CharacterBase, amount: float) -> bool:
 	target.queue_redraw()
 
 	return true
+
+
+static func apply_effect(target: CharacterBase, type: Effect.Type, duration: float, amount: float):
+	if target.is_dead:
+		return
+
+	var effect: Effect = Effect.new()
+
+	effect.type = type
+	effect.remaining_duration = duration
+	effect.amount = amount
+
+	target.effects.append(effect)
+
+	target.calculate_statistics()

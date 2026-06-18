@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://du53wftcxk520"]
+
+[ext_resource type="Script" uid="uid://dae5n6ofnlxkj" path="res://src/resources/items/malignance/logic.gd" id="1_yw71u"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_00cco"]
+[ext_resource type="Resource" uid="uid://cx3akxuw6qhj4" path="res://src/resources/items/malignance/statistics.tres" id="3_rig00"]
+
+[resource]
+script = ExtResource("2_00cco")
+item_name = "malignance"
+item_price = 2700.0
+statistics = ExtResource("3_rig00")
+item_logic = ExtResource("1_yw71u")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -72,7 +72,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 
 	stack_.stack = 0
 
-	cooldown.remaining_duration = 6.0
+	cooldown.start(6.0, Cooldown.Type.ITEM, character_base.total_statistics)
 	
 	var damage: float
 

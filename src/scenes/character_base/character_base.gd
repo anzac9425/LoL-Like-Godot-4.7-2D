@@ -32,6 +32,8 @@ var item_logics: Array[CharacterLogic]
 var runes: Array[RuneData]
 var rune_logics: Array[CharacterLogic]
 
+var effects: Array[Effect]
+
 var character_radius: float
 var character_sprite_radius: float
 var character_collision_shape_radius: float
@@ -126,6 +128,17 @@ func _physics_process(delta: float) -> void:
 			if status.remaining_duration <= 0.0:
 				statuses.remove_at(i)
 	
+	if effects:
+		for i in range(effects.size() - 1, -1, -1):
+			var effect: Effect = effects[i]
+
+			effect.remaining_duration -= delta
+
+			if effect.remaining_duration <= 0.0:
+				effects.remove_at(i)
+
+				calculate_statistics()
+	
 	if auto_attack_cooldown.remaining_duration > 0.0:
 		auto_attack_cooldown.remaining_duration -= delta
 	
@@ -157,7 +170,7 @@ func _physics_process(delta: float) -> void:
 				if auto_attack_cooldown.remaining_duration <= 0.0:
 					if auto_attack_cast_time.remaining_duration <= 0.0:
 						auto_attack()
-	
+
 
 func _draw() -> void:
 	if is_dead:
@@ -284,6 +297,7 @@ func respawn() -> void:
 	barriers.clear()
 	crowd_controls.clear()
 	statuses.clear()
+	effects.clear()
 
 	target_position = global_position
 
@@ -519,6 +533,24 @@ func has_status(type: Status.Type) -> bool:
 	return false
 
 
+func has_effect(type: Effect.Type) -> bool:
+	for effect in effects:
+		if effect.type == type:
+			return true
+
+	return false
+
+
+func get_effect_amount(type: Effect.Type) -> float:
+	var amount: float
+
+	for effect in effects:
+		if effect.type == type:
+			amount = max(amount, effect.amount)
+
+	return amount
+
+
 func can_move() -> bool:
 	if is_dead:
 		return false
@@ -696,8 +728,12 @@ func calculate_statistics() -> void:
 	for crowd_control in crowd_controls:
 		if crowd_control.type == CrowdControl.Type.SLOW:
 			slow_amount = max(slow_amount,crowd_control.amount)
-
+	
 	total_statistics.move_speed *= (1.0 - slow_amount)
+
+	total_statistics.armor -= get_effect_amount(Effect.Type.ARMOR_REDUCTION)
+
+	total_statistics.magic_resistance -= get_effect_amount(Effect.Type.MAGIC_RESISTANCE_REDUCTION)
 	
 	current_health += max(0.0, total_statistics.health - old_total_statistics_health)
 	

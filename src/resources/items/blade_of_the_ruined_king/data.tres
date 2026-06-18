@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_cxcih")
 item_name = "blade_of_the_ruined_king"
-item_cost = 3200.0
+item_price = 3200.0
 statistics = ExtResource("3_3gske")
 item_logic = ExtResource("1_yj0c3")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

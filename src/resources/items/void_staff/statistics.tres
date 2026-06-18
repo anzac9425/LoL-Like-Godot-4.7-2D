@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://di4rso44yvu1r"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_eq1ag"]
+
+[resource]
+script = ExtResource("1_eq1ag")
+ability_power = 95.0
+magic_penetration_multiplier = 0.4
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

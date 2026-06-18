@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_6t4uj")
 item_name = "trinity force"
-item_cost = 3333.0
+item_price = 3333.0
 statistics = ExtResource("3_aocx7")
 item_logic = ExtResource("1_o0jh4")
 metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

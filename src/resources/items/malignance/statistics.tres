@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://cx3akxuw6qhj4"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_duady"]
+
+[resource]
+script = ExtResource("1_duady")
+mana = 600.0
+ability_power = 90.0
+skill_haste = 15.0
+ultimate_haste = 20.0
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"
