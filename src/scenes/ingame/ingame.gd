@@ -12,17 +12,14 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2.ZERO, "character", "team1")
 	input_characters.append(player)
 	
-	player.add_item(load(Paths.ITEM_DATA_STERAKS_GAGE))
-	player.add_item(load(Paths.ITEM_DATA_SUNDERED_SKY))
-	player.add_item(load(Paths.ITEM_DATA_THE_BLACK_CLEAVER))
-	player.add_item(load(Paths.ITEM_DATA_SPEAR_OF_SHOJIN))
-	player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
+	player.add_item(load(Paths.ITEM_DATA_GUARDIAN_ANGEL))
+	player.add_rune(load(Paths.RUNE_DATA_ELECTROCUTE))
 	
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 0), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 200), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 0), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 200), "character", "team2")
 	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
 	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
 	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")

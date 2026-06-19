@@ -360,6 +360,21 @@ func on_take_projectile_hit(projectile: Projectile):
 	character_logic.on_take_projectile_hit(projectile)
 
 
+func on_lethal_damage(damage_info: DamageInfo) -> bool:
+	for rune_logic in rune_logics:
+		if rune_logic.on_lethal_damage(damage_info):
+			return true
+
+	for item_logic in item_logics:
+		if item_logic.on_lethal_damage(damage_info):
+			return true
+
+	if character_logic.on_lethal_damage(damage_info):
+		return true
+
+	return false
+
+
 func on_cast(source_type: SourceType.Type):
 	var cast_id: String = DamageInfo.generate_cast_id()
 

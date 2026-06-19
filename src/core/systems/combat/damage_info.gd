@@ -30,6 +30,26 @@ static func create(attacker_: CharacterBase, victim_: CharacterBase, cast_id_: S
 	return instance
 
 
+func duplicate() -> DamageInfo:
+	var copy: DamageInfo = DamageInfo.create(attacker, victim, cast_id, is_dot)
+
+	copy.on_hit = on_hit
+	copy.on_hit_count = on_hit_count
+	
+	copy.cast_id = cast_id
+
+	for instance in damage_instances:
+		copy.add_damage_instance(
+			instance.damage_type,
+			instance.source_type,
+			instance.amount,
+			instance.allow_critical,
+			instance.allow_lifesteal
+		)
+
+	return copy
+
+
 func add_damage_instance(
 	damage_type: DamageType.Type,
 	source_type: SourceType.Type,

@@ -19,6 +19,8 @@ const ITEM_DATA_SPEAR_OF_SHOJIN: String = "res://src/resources/items/spear_of_sh
 const ITEM_DATA_THE_BLACK_CLEAVER: String = "res://src/resources/items/the_black_cleaver/data.tres"
 const ITEM_DATA_SUNDERED_SKY: String = "res://src/resources/items/sundered_sky/data.tres"
 const ITEM_DATA_STERAKS_GAGE: String = "res://src/resources/items/steraks_gage/data.tres"
+const ITEM_DATA_DEATHS_DANCE: String = "res://src/resources/items/deaths_dance/data.tres"
+const ITEM_DATA_GUARDIAN_ANGEL: String = "res://src/resources/items/guardian_angel/data.tres"
 
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"

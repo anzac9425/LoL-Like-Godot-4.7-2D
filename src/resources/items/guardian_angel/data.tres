@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://drn14qfxoyvoh"]
+
+[ext_resource type="Script" uid="uid://dyq40gd0e1hw3" path="res://src/resources/items/guardian_angel/logic.gd" id="1_bwgkt"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_kw43x"]
+[ext_resource type="Resource" uid="uid://blnt06gll0ql3" path="res://src/resources/items/guardian_angel/statistics.tres" id="3_sgcdy"]
+
+[resource]
+script = ExtResource("2_kw43x")
+item_name = "guardian_angel"
+item_price = 3200.0
+statistics = ExtResource("3_sgcdy")
+item_logic = ExtResource("1_bwgkt")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

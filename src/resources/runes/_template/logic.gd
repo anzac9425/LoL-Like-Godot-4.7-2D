@@ -37,5 +37,9 @@ func on_take_projectile_hit(_projectile: Projectile) -> void:
 	pass
 
 
+func on_lethal_damage(_damage_info: DamageInfo) -> bool:
+	return false
+
+
 func on_cast(_source_type: SourceType.Type):
 	pass

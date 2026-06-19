@@ -78,7 +78,8 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - damage_amount[type])
 	
 	if damage_info.victim.current_health <= 0:
-		damage_info.victim.die()
+		if !damage_info.victim.on_lethal_damage(damage_info):
+			damage_info.victim.die()
 	
 	damage_info.attacker.on_deal_damage(result_info)
 	damage_info.victim.on_take_damage(result_info)
