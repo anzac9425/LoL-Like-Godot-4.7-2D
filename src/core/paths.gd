@@ -11,6 +11,7 @@ const CHARACTER_DATA_TEST1: String = "res://src/resources/characters/test1/data.
 const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/data.tres"
 const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/data.tres"
 const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/data.tres"
+const CHARACTER_DATA_ASH: String = "res://src/resources/characters/ash/data.tres"
 
 const ITEM_DATA_ECLIPSE: String = "res://src/resources/items/eclipse/data.tres"
 const ITEM_DATA_TRINITY_FORCE: String = "res://src/resources/items/trinity_force/data.tres"
@@ -21,6 +22,8 @@ const ITEM_DATA_SUNDERED_SKY: String = "res://src/resources/items/sundered_sky/d
 const ITEM_DATA_STERAKS_GAGE: String = "res://src/resources/items/steraks_gage/data.tres"
 const ITEM_DATA_DEATHS_DANCE: String = "res://src/resources/items/deaths_dance/data.tres"
 const ITEM_DATA_GUARDIAN_ANGEL: String = "res://src/resources/items/guardian_angel/data.tres"
+const ITEM_DATA_EXPERIMENTAL_HEXPLATE: String = "res://src/resources/items/experimental_hexplate/data.tres"
+const ITEM_DATA_ENDLESS_HUNGER: String = "res://src/resources/items/endless_hunger/data.tres"
 
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"

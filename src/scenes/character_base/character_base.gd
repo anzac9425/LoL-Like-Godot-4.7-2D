@@ -434,7 +434,7 @@ func _auto_attack():
 		Ingame.current.spawn_projectile(
 			damage_info,
 			Projectile.Type.TARGET,
-			1024.0,
+			total_statistics.attack_projectile_speed,
 			8.0
 		)
 		

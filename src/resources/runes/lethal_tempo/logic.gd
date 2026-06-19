@@ -59,8 +59,6 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	if stacks < 6:
 		return
 
-	var bolt_damage_info: DamageInfo = DamageInfo.create(character_base, damage_info.victim, damage_info.cast_id)
-
 	var damage: float
 
 	if character_base.character_data.ranged:
@@ -81,19 +79,12 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	else:
 		damage_type = DamageType.Type.MAGIC
 
-	bolt_damage_info.add_damage_instance(
+	damage_info.add_damage_instance(
 		damage_type,
 		SourceType.Type.RUNE,
 		damage,
 		false,
 		false
-	)
-
-	Ingame.current.spawn_projectile(
-		bolt_damage_info,
-		Projectile.Type.TARGET,
-		2048.0,
-		8.0
 	)
 
 

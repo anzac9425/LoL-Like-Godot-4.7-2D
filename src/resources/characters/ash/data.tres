@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://vgscmv1ca75g"]
+
+[ext_resource type="Script" uid="uid://cem6joboykjbx" path="res://src/resources/characters/ash/logic.gd" id="1_43s4j"]
+[ext_resource type="Resource" uid="uid://bujrsmci57q6d" path="res://src/resources/characters/ash/growth_statistics.tres" id="2_ya3j6"]
+[ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="3_cc61h"]
+[ext_resource type="Resource" uid="uid://crus0urxevdn4" path="res://src/resources/characters/ash/statistics.tres" id="4_y36j7"]
+
+[resource]
+script = ExtResource("3_cc61h")
+character_name = "ash"
+ranged = true
+auto_attack_windup_multiplier = 0.219
+statistics = ExtResource("4_y36j7")
+growth_statistics = ExtResource("2_ya3j6")
+character_logic = ExtResource("1_43s4j")
+metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

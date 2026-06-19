@@ -16,6 +16,7 @@ class_name Statistics
 
 @export var attack_speed: float
 @export var attack_speed_multiplier: float
+@export var attack_projectile_speed: float
 
 @export var skill_haste: float
 @export var ultimate_haste: float
@@ -61,6 +62,7 @@ func add(other: Statistics) -> void:
 
 	attack_speed += other.attack_speed
 	attack_speed_multiplier += other.attack_speed_multiplier
+	attack_projectile_speed += other.attack_projectile_speed
 	
 	skill_haste += other.skill_haste
 	ultimate_haste += other.ultimate_haste
@@ -116,6 +118,7 @@ func multiply(value: float) -> void:
 
 	move_speed *= value
 	move_speed_multiplier *= value
+	attack_projectile_speed *= attack_projectile_speed
 
 	armor_penetration_flat *= value
 	armor_penetration_multiplier *= value

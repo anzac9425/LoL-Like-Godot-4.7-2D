@@ -12,6 +12,7 @@ attack_damage = 64.0
 armor = 37.0
 magic_resistance = 32.0
 attack_speed = 0.625
+attack_projectile_speed = 2048.0
 critical_damage_multiplier = 2.0
 move_speed = 340.0
 attack_range = 175.0

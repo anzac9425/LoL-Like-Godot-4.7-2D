@@ -9,16 +9,30 @@ var heal_duration: Cooldown = Cooldown.new()
 
 
 func _physics_process(delta: float) -> void:
+	var tick_damages: Array[DamageInfo]
+
 	for i in range(damage_infos.size() - 1, -1, -1):
 		var damage_info: DamageInfo = damage_infos[i]
 		var raw_damage_info: DamageInfo = raw_damage_infos[i]
 
-		var tick_damage: DamageInfo = DamageInfo.create(
-			damage_info.attacker,
-			damage_info.victim,
-			damage_info.cast_id,
-			true
-		)
+		var tick_damage: DamageInfo = null
+
+		for info in tick_damages:
+			if info.attacker == damage_info.attacker:
+				tick_damage = info
+				break
+
+		if !tick_damage:
+			tick_damage = DamageInfo.create(
+				damage_info.attacker,
+				damage_info.victim,
+				damage_info.cast_id,
+				true
+			)
+
+			tick_damage.is_dot = true
+
+			tick_damages.append(tick_damage)
 
 		var finished: bool = true
 
@@ -30,26 +44,27 @@ func _physics_process(delta: float) -> void:
 				continue
 
 			var amount: float = min(instance.amount, raw_instance.amount * delta / 3.0)
-
+			
 			tick_damage.add_damage_instance(
 				instance.damage_type,
 				SourceType.Type.ITEM,
 				amount,
-				instance.allow_critical,
-				instance.allow_lifesteal
+				false,
+				false
 			)
 
 			instance.amount -= amount
 
 			if instance.amount > 0.0:
 				finished = false
-		
-		if tick_damage.damage_instances:
-			Combat.apply_damage(tick_damage)
 
 		if finished:
 			damage_infos.remove_at(i)
 			raw_damage_infos.remove_at(i)
+
+	for tick_damage in tick_damages:
+		if tick_damage.damage_instances.size() > 0:
+			Combat.apply_damage(tick_damage)
 	
 	if heal_duration.remaining_duration > 0.0:
 		var heal: float = min(heal_remaining, heal_remaining * delta / heal_duration.remaining_duration)
@@ -58,7 +73,6 @@ func _physics_process(delta: float) -> void:
 
 		heal_remaining -= heal
 		heal_duration.remaining_duration -= delta
-
 
 
 func clear():

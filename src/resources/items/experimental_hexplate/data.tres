@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b7dofdudn5dw7"]
+
+[ext_resource type="Script" uid="uid://cpq7jf8pd13rr" path="res://src/resources/items/experimental_hexplate/logic.gd" id="1_eqhvy"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_umuic"]
+[ext_resource type="Resource" uid="uid://d2txjenvfvg1x" path="res://src/resources/items/experimental_hexplate/statistics.tres" id="3_qkohv"]
+
+[resource]
+script = ExtResource("2_umuic")
+item_name = "experimental_hexplate"
+item_price = 3000.0
+statistics = ExtResource("3_qkohv")
+item_logic = ExtResource("1_eqhvy")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

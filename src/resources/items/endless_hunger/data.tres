@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bnkxpfnrnph0c"]
+
+[ext_resource type="Script" uid="uid://5l78utgwqigj" path="res://src/resources/items/endless_hunger/logic.gd" id="1_wt7xq"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_cms8x"]
+[ext_resource type="Resource" uid="uid://16mfm11q6kux" path="res://src/resources/items/endless_hunger/statistics.tres" id="3_rvh6p"]
+
+[resource]
+script = ExtResource("2_cms8x")
+item_name = "endless_hunger"
+item_price = 3100.0
+statistics = ExtResource("3_rvh6p")
+item_logic = ExtResource("1_wt7xq")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

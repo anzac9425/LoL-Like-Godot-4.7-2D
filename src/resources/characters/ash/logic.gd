@@ -41,5 +41,17 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 	return false
 
 
-func on_cast(_source_type: SourceType.Type) -> void:
-	pass
+func cast_q(_cast_id: String) -> bool:
+	return false
+	
+
+func cast_w(_cast_id: String) -> bool:
+	return false
+
+
+func cast_e(_cast_id: String) -> bool:
+	return false
+
+
+func cast_r(_cast_id: String) -> bool:
+	return false

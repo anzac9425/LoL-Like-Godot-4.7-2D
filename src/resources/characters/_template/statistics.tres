@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_gsahy")
+attack_projectile_speed = 2048.0
 critical_damage_multiplier = 2.0
 radius = 64.0
 metadata/_custom_type_script = "uid://b8abtl1va6o4b"

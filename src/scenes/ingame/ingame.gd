@@ -12,23 +12,21 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2.ZERO, "character", "team1")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_ASH), Vector2(500, -500), "character", "team1")
 	input_characters.append(player)
 	
-	player.add_item(load(Paths.ITEM_DATA_GUARDIAN_ANGEL))
-	player.add_rune(load(Paths.RUNE_DATA_ELECTROCUTE))
+	player.add_item(load(Paths.ITEM_DATA_RABADONS_DEATHCAP))
+	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
 	
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 0), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 200), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
 	
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
-			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
-			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
 
 
 func _process(delta: float) -> void:
