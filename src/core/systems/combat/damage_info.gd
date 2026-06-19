@@ -28,8 +28,8 @@ static func create(attacker_: CharacterBase, victim_: CharacterBase, cast_id_: S
 	instance.is_dot = is_dot_
 
 	return instance
-	
-	
+
+
 func add_damage_instance(
 	damage_type: DamageType.Type,
 	source_type: SourceType.Type,

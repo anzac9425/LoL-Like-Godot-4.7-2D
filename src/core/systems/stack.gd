@@ -2,7 +2,7 @@ class_name Stack
 
 
 var target: CharacterBase
-var stack: int
+var stack: float
 var cooldown: Cooldown = Cooldown.new()
 
 var cast_ids: Array[String]

@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_gsahy")
+critical_damage_multiplier = 2.0
+radius = 64.0
 metadata/_custom_type_script = "uid://b8abtl1va6o4b"

@@ -55,11 +55,6 @@ func _ready() -> void:
 	character_logic.character_base = self
 	add_child(character_logic)
 
-	character_radius = character_data.radius
-
-	set_radius_sprite(character_radius)
-	set_radius_collision_shape(character_radius)
-
 	calculate_statistics()
 
 	respawn()
@@ -185,89 +180,64 @@ func _draw() -> void:
 	for barrier in barriers:
 		barrier_amount += barrier.amount
 		
-	var max_health_barrier: float = (total_statistics.health + barrier_amount)
+	var max_health_barrier: float = max(total_statistics.health, current_health + barrier_amount)
 
 	var health_ratio: float = current_health / max_health_barrier
 
-	var barrier_ratio: float = barrier_amount / max_health_barrier
-
 	var pos: Vector2 = Vector2(width / -2, -128.0)
 	var mana_pos: Vector2 = Vector2(width / -2, -128.0 + height + 4.0)
-	
 
-	draw_rect(
-		Rect2(pos, Vector2(width, height)),
-		Color.BLACK
-	)
+	draw_rect(Rect2(pos, Vector2(width, height)), Color.BLACK)
 
-	draw_rect(
-		Rect2(pos, Vector2(width * health_ratio, height)),
-		Color.RED
-	)
+	draw_rect(Rect2(pos, Vector2(width * health_ratio, height)), Color.RED)
 
-	if barrier_amount:
-		var barrier_x := pos.x + width * health_ratio
-		var barrier_width: float = min(
-			width * barrier_ratio,
-			width - width * health_ratio
-		)
+	if barrier_amount > 0.0:
+		var current_x: float = pos.x + width * health_ratio
 
-		draw_rect(
-			Rect2(
-				Vector2(barrier_x, pos.y),
-				Vector2(barrier_width, height)
-			),
-			Color.YELLOW
-		)
-	
+		for barrier in barriers:
+			var barrier_width: float = (barrier.amount / max_health_barrier) * width
+
+			var color: Color
+
+			match barrier.type:
+				Barrier.Type.NORMAL:
+					color = Color.YELLOW
+
+				Barrier.Type.PHYSICAL:
+					color = Color.ORANGE
+
+				Barrier.Type.MAGIC:
+					color = Color.PURPLE
+
+				_:
+					color = Color.WHITE
+
+			draw_rect(Rect2(Vector2(current_x, pos.y), Vector2(barrier_width, height)), color)
+
+			current_x += barrier_width
+
 	if total_statistics.mana > 0:
 		var mana_ratio: float = current_mana / total_statistics.mana
 
-		draw_rect(
-			Rect2(mana_pos, Vector2(width, mana_height)),
-			Color.BLACK
-		)
+		draw_rect(Rect2(mana_pos, Vector2(width, mana_height)), Color.BLACK)
 
-		draw_rect(
-			Rect2(mana_pos, Vector2(width * mana_ratio, mana_height)),
-			Color.BLUE
-		)
+		draw_rect(Rect2(mana_pos, Vector2(width * mana_ratio, mana_height)), Color.BLUE)
 
-		draw_rect(
-			Rect2(mana_pos, Vector2(width, mana_height)),
-			Color.WHITE,
-			false,
-			1.0
-		)
+		draw_rect(Rect2(mana_pos, Vector2(width, mana_height)), Color.WHITE, false, 1.0)
 
 	if total_statistics.health:
 		for hp in range(100, int(max_health_barrier), 100):
 			var x: float = pos.x + (float(hp) / max_health_barrier) * width
 
-			draw_line(
-				Vector2(x, pos.y + height * 0.5),
-				Vector2(x, pos.y),
-				Color.BLACK,
-				1.0
-			)
+			draw_line(Vector2(x, pos.y + height * 0.5), Vector2(x, pos.y), Color.BLACK, 1.0)
 
-	if total_statistics.health > 1000:
+	if max_health_barrier > 1000:
 		for hp in range(1000, int(max_health_barrier), 1000):
 			var x: float = pos.x + (float(hp) / max_health_barrier) * width
 
-			draw_line(
-				Vector2(x, pos.y),
-				Vector2(x, pos.y + height),
-				Color.BLACK,
-				2.0
-			)
+			draw_line(Vector2(x, pos.y), Vector2(x, pos.y + height), Color.BLACK, 2.0)
 
-	draw_rect(
-		Rect2(pos, Vector2(width, height)),
-		Color.WHITE,
-		false,
-		2.0
-	)
+	draw_rect(Rect2(pos, Vector2(width, height)), Color.WHITE, false, 2.0)
 
 
 func die() -> void:
@@ -738,5 +708,8 @@ func calculate_statistics() -> void:
 	current_health += max(0.0, total_statistics.health - old_total_statistics_health)
 	
 	current_health = min(current_health, total_statistics.health)
+	
+	set_radius_sprite(total_statistics.radius)
+	set_radius_collision_shape(total_statistics.radius)
 	
 	queue_redraw()

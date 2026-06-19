@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ugefh5quqnch"]
+
+[ext_resource type="Script" uid="uid://yq61lrj8kk4u" path="res://src/resources/items/deaths_dance/logic.gd" id="1_4o8tl"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_oyac0"]
+[ext_resource type="Resource" uid="uid://brdiy3ry6gh1d" path="res://src/resources/items/deaths_dance/statistics.tres" id="3_qml0d"]
+
+[resource]
+script = ExtResource("2_oyac0")
+item_name = "deaths_dance"
+item_price = 3300.0
+statistics = ExtResource("3_qml0d")
+item_logic = ExtResource("1_4o8tl")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

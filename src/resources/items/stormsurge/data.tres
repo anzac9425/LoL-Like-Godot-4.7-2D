@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://6w5t64yuya5w"]
+
+[ext_resource type="Script" uid="uid://dc64c05irdcso" path="res://src/resources/items/stormsurge/logic.gd" id="1_rbn6c"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_mp7vt"]
+[ext_resource type="Resource" uid="uid://blodnfo8docl6" path="res://src/resources/items/stormsurge/statistics.tres" id="3_bratr"]
+
+[resource]
+script = ExtResource("2_mp7vt")
+item_name = "stormsurge"
+item_price = 2800.0
+statistics = ExtResource("3_bratr")
+item_logic = ExtResource("1_rbn6c")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

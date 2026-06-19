@@ -440,7 +440,7 @@ func _r(cast_id: String) -> void:
 		r_cooldown.remaining_duration = 0.0
 		return
 	
-	var stack: int
+	var stack: float
 
 	for instance in passive_instances:
 		if instance.target == target:

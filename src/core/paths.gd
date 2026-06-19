@@ -15,6 +15,10 @@ const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/data.
 const ITEM_DATA_ECLIPSE: String = "res://src/resources/items/eclipse/data.tres"
 const ITEM_DATA_TRINITY_FORCE: String = "res://src/resources/items/trinity_force/data.tres"
 const ITEM_DATA_BLADE_OF_THE_RUINED_KING: String = "res://src/resources/items/blade_of_the_ruined_king/data.tres"
+const ITEM_DATA_SPEAR_OF_SHOJIN: String = "res://src/resources/items/spear_of_shojin/data.tres"
+const ITEM_DATA_THE_BLACK_CLEAVER: String = "res://src/resources/items/the_black_cleaver/data.tres"
+const ITEM_DATA_SUNDERED_SKY: String = "res://src/resources/items/sundered_sky/data.tres"
+const ITEM_DATA_STERAKS_GAGE: String = "res://src/resources/items/steraks_gage/data.tres"
 
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"
@@ -22,9 +26,10 @@ const ITEM_DATA_RABADONS_DEATHCAP: String = "res://src/resources/items/rabadons_
 const ITEM_DATA_SHADOWFLAME: String = "res://src/resources/items/shadowflame/data.tres"
 const ITEM_DATA_VOID_STAFF: String = "res://src/resources/items/void_staff/data.tres"
 const ITEM_DATA_LIANDRYS_TORMENT: String = "res://src/resources/items/liandrys_torment/data.tres"
-const ITEM_DATA_SCETER_OF_BONKING: String = "res://src/resources/items/scepter_of_bonking/data.tres"
+const ITEM_DATA_SCEPER_OF_BONKING: String = "res://src/resources/items/scepter_of_bonking/data.tres"
 const ITEM_DATA_MORELLONOMICON: String = "res://src/resources/items/morellonomicon/data.tres"
 const ITEM_DATA_MALIGNANCE: String = "res://src/resources/items/malignance/data.tres"
+const ITEM_DATA_STORMSURGE: String = "res://src/resources/items/stormsurge/data.tres"
 
 const RUNE_DATA_PRESS_THE_ATTACK: String = "res://src/resources/runes/press_the_attack/data.tres"
 const RUNE_DATA_LETHAL_TEMPO: String = "res://src/resources/runes/lethal_tempo/data.tres"

@@ -49,23 +49,33 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 		result_info.add_damage_instance(instance.damage_type, instance.source_type, amount, instance.allow_critical, instance.allow_lifesteal)
 	
 	for type in damage_amount:
-		var amount: float = damage_amount[type]
-
 		for i in range(damage_info.victim.barriers.size() - 1, -1, -1):
-			if amount <= 0.0:
+			if damage_amount[type] <= 0.0:
 				break
 
 			var barrier: Barrier = damage_info.victim.barriers[i]
 
-			var absorbed: float = min(barrier.amount, amount)
+			match barrier.type:
+				Barrier.Type.NORMAL:
+					pass
+
+				Barrier.Type.PHYSICAL:
+					if type != DamageType.Type.PHYSICAL:
+						continue
+
+				Barrier.Type.MAGIC:
+					if type != DamageType.Type.MAGIC:
+						continue
+
+			var absorbed: float = min(barrier.amount, damage_amount[type])
 
 			barrier.amount -= absorbed
-			amount -= absorbed
+			damage_amount[type] -= absorbed
 
 			if barrier.amount <= 0.0:
 				damage_info.victim.barriers.remove_at(i)
-			
-		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - amount)
+
+		damage_info.victim.current_health = max(0.0, damage_info.victim.current_health - damage_amount[type])
 	
 	if damage_info.victim.current_health <= 0:
 		damage_info.victim.die()
@@ -77,21 +87,24 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	damage_info.victim.queue_redraw()
 
 
-static func apply_heal(target: CharacterBase, amount: float) -> void:
+static func apply_heal(target: CharacterBase, amount: float) -> Array[float]:
 	if target.is_dead:
-		return
+		return [0, 0]
 	
 	amount *= (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	
 	if target.has_effect(Effect.Type.GRIEVOUS_WOUNDS):
 		amount *= 1 - target.get_effect_amount(Effect.Type.GRIEVOUS_WOUNDS)
 	
+	var request_amount: float = amount
+	
+	amount = min(amount, target.total_statistics.health - target.current_health)
+	
 	target.current_health += amount
-
-	if target.current_health > target.total_statistics.health:
-		target.current_health = target.total_statistics.health
 	
 	target.queue_redraw()
+	
+	return [request_amount, amount]
 
 
 static func apply_mana_restore(target: CharacterBase, amount: float) -> void:
@@ -106,12 +119,13 @@ static func apply_mana_restore(target: CharacterBase, amount: float) -> void:
 	target.queue_redraw()
 
 
-static func apply_barrier(target: CharacterBase, amount: float, duration: float) -> void:
+static func apply_barrier(target: CharacterBase, amount: float, duration: float, type: Barrier.Type = Barrier.Type.NORMAL) -> void:
 	if target.is_dead:
 		return
 	
 	var barrier: Barrier = Barrier.new()
-
+	
+	barrier.type = type
 	barrier.amount = amount * (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	barrier.remaining_duration = duration
 

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bsuw1jt0lmio"]
+
+[ext_resource type="Script" uid="uid://4mmgarbxt4yq" path="res://src/resources/items/spear_of_shojin/logic.gd" id="1_7eit2"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_fh3ie"]
+[ext_resource type="Resource" uid="uid://bmrk2f8anultb" path="res://src/resources/items/spear_of_shojin/statistics.tres" id="3_iira2"]
+
+[resource]
+script = ExtResource("2_fh3ie")
+item_name = "spear_of_shojin"
+item_price = 3100.0
+statistics = ExtResource("3_iira2")
+item_logic = ExtResource("1_7eit2")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

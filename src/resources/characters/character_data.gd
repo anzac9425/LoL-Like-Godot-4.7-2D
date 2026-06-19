@@ -4,8 +4,6 @@ class_name CharacterData
 
 @export var character_name: String
 
-@export var radius: float
-
 @export var ranged: bool
 
 @export var auto_attack_windup_multiplier: float = 0.001

@@ -15,18 +15,23 @@ func _ready() -> void:
 	var player = spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2.ZERO, "character", "team1")
 	input_characters.append(player)
 	
-	player.add_item(load(Paths.ITEM_DATA_MALIGNANCE))
-	#player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+	player.add_item(load(Paths.ITEM_DATA_STERAKS_GAGE))
+	player.add_item(load(Paths.ITEM_DATA_SUNDERED_SKY))
+	player.add_item(load(Paths.ITEM_DATA_THE_BLACK_CLEAVER))
+	player.add_item(load(Paths.ITEM_DATA_SPEAR_OF_SHOJIN))
+	player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
 	
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 0), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, 200), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
 	
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
+			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
 
 
 func _process(delta: float) -> void:

@@ -42,6 +42,8 @@ class_name Statistics
 
 @export var heal_shield_power_multiplier: float
 
+@export var radius: float
+
 
 func add(other: Statistics) -> void:
 	health += other.health
@@ -59,12 +61,16 @@ func add(other: Statistics) -> void:
 
 	attack_speed += other.attack_speed
 	attack_speed_multiplier += other.attack_speed_multiplier
+	
 	skill_haste += other.skill_haste
+	ultimate_haste += other.ultimate_haste
+	item_haste += other.item_haste
 
 	critical_chance += other.critical_chance
 	critical_damage_multiplier += other.critical_damage_multiplier
 
 	move_speed += other.move_speed
+	move_speed_multiplier += other.move_speed_multiplier
 
 	armor_penetration_flat += other.armor_penetration_flat
 	armor_penetration_multiplier += other.armor_penetration_multiplier
@@ -80,6 +86,8 @@ func add(other: Statistics) -> void:
 	tenacity += other.tenacity
 
 	heal_shield_power_multiplier += other.heal_shield_power_multiplier
+
+	radius += other.radius
 
 
 func multiply(value: float) -> void:
@@ -98,12 +106,16 @@ func multiply(value: float) -> void:
 
 	attack_speed *= value
 	attack_speed_multiplier *= value
+	
 	skill_haste *= value
+	ultimate_haste *= value
+	item_haste *= value
 
 	critical_chance *= value
 	critical_damage_multiplier *= value
 
 	move_speed *= value
+	move_speed_multiplier *= value
 
 	armor_penetration_flat *= value
 	armor_penetration_multiplier *= value
@@ -119,3 +131,5 @@ func multiply(value: float) -> void:
 	tenacity *= value
 
 	heal_shield_power_multiplier *= value
+	
+	radius *= value

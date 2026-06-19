@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ju1odk42ep43"]
+
+[ext_resource type="Script" uid="uid://ed5p4lwmed21" path="res://src/resources/items/sundered_sky/logic.gd" id="1_nwakf"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_k0o2l"]
+[ext_resource type="Resource" uid="uid://d4md8mpi31lqs" path="res://src/resources/items/sundered_sky/statistics.tres" id="3_kq1gt"]
+
+[resource]
+script = ExtResource("2_k0o2l")
+item_name = "sundered_sky"
+item_price = 3100.0
+statistics = ExtResource("3_kq1gt")
+item_logic = ExtResource("1_nwakf")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

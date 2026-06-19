@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://iu587qrd0w7f"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_dpaa3"]
+
+[resource]
+script = ExtResource("1_dpaa3")
+health = 400.0
+tenacity = 0.2
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

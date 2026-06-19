@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c5qlxnicbucsi"]
+
+[ext_resource type="Script" uid="uid://nmpvfixf1326" path="res://src/resources/items/steraks_gage/logic.gd" id="1_n66m2"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_qajr6"]
+[ext_resource type="Resource" uid="uid://iu587qrd0w7f" path="res://src/resources/items/steraks_gage/statistics.tres" id="3_lcnyd"]
+
+[resource]
+script = ExtResource("2_qajr6")
+item_name = "steraks_gage"
+item_price = 3200.0
+statistics = ExtResource("3_lcnyd")
+item_logic = ExtResource("1_n66m2")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

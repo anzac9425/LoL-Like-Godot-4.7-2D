@@ -70,7 +70,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	for instance in damage_info.damage_instances:
 		if instance.source_type == SourceType.Type.AUTO_ATTACK:
 			if r_active:
-				Combat.apply_heal(character_base, 0.1 * (character_base.total_statistics.health - character_base.current_health))
+				Combat.apply_heal(character_base, 0.05 * (character_base.total_statistics.health - character_base.current_health))
 			else:
 				passive_amount -= 1
 			
