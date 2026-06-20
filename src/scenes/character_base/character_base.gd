@@ -312,13 +312,9 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	apply_damage_info_hook_stage([character_logic], "build_damage_info", damage_info)
 
 
-func apply_damage_info_hook_stage(
-	logics: Array,
-	hook_name: String,
-	damage_info: DamageInfo
-) -> void:
+func apply_damage_info_hook_stage(logics: Array, hook_name: String,damage_info: DamageInfo) -> void:
 	var stage_input: DamageInfo = damage_info.duplicate()
-	var stage_outputs: Array[DamageInfo] = []
+	var stage_outputs: Array[DamageInfo]
 
 	for logic in logics:
 		var hook_damage_info: DamageInfo = stage_input.duplicate()
@@ -330,24 +326,16 @@ func apply_damage_info_hook_stage(
 		apply_damage_info_delta(damage_info, stage_input, hook_damage_info)
 
 
-func apply_damage_info_delta(
-	target: DamageInfo,
-	before: DamageInfo,
-	after: DamageInfo
-) -> void:
-	if after.on_hit != before.on_hit:
-		target.on_hit = after.on_hit
+func apply_damage_info_delta(target: DamageInfo, before: DamageInfo, after: DamageInfo) -> void:
+	target.on_hit = after.on_hit
 
 	target.on_hit_count += after.on_hit_count - before.on_hit_count
 
-	if after.is_dot != before.is_dot:
-		target.is_dot = after.is_dot
+	target.is_dot = after.is_dot
 
-	if after.cast_id != before.cast_id:
-		target.cast_id = after.cast_id
+	target.cast_id = after.cast_id
 
-	if after.was_crit != before.was_crit:
-		target.was_crit = after.was_crit
+	target.was_crit = after.was_crit
 
 	var shared_count: int = min(
 		min(before.damage_instances.size(), after.damage_instances.size()),
@@ -367,11 +355,9 @@ func apply_damage_info_delta(
 
 		target_instance.amount += after_instance.amount - before_instance.amount
 
-		if after_instance.allow_critical != before_instance.allow_critical:
-			target_instance.allow_critical = after_instance.allow_critical
+		target_instance.allow_critical = after_instance.allow_critical
 
-		if after_instance.allow_lifesteal != before_instance.allow_lifesteal:
-			target_instance.allow_lifesteal = after_instance.allow_lifesteal
+		target_instance.allow_lifesteal = after_instance.allow_lifesteal
 
 	for i in range(before.damage_instances.size(), after.damage_instances.size()):
 		var after_instance: DamageInstance = after.damage_instances[i]
