@@ -19,6 +19,8 @@ var projectile_radius: float
 var projectile_sprite_radius: float
 var projectile_collision_shape_radius: float
 
+var spawn_position: Vector2
+
 var direction: Vector2
 
 var max_distance: float
@@ -32,8 +34,13 @@ var hit_targets: Array[CharacterBase]
 func _ready() -> void:
 	set_radius_sprite(projectile_radius)
 	set_radius_collision_shape(projectile_radius)
-	
-	global_position = damage_info.attacker.global_position
+
+	match projectile_type:
+		Type.LINEAR:
+			global_position = spawn_position
+
+		_:
+			global_position = damage_info.attacker.global_position
 
 
 func _physics_process(delta: float) -> void:
@@ -49,10 +56,11 @@ func _physics_process(delta: float) -> void:
 			)
 
 			if global_position.distance_to(damage_info.victim.global_position) <= projectile_radius + damage_info.victim.character_collision_shape_radius:
-				Combat.apply_damage(damage_info)
-				
 				damage_info.attacker.on_deal_projectile_hit(self)
 				damage_info.victim.on_take_projectile_hit(self)
+				
+				Combat.apply_damage(damage_info)
+				
 				
 				queue_free()
 				return
@@ -78,11 +86,11 @@ func _physics_process(delta: float) -> void:
 					hit_targets.append(area)
 
 					damage_info.victim = area
-
-					Combat.apply_damage(damage_info)
 				
 					damage_info.attacker.on_deal_projectile_hit(self)
 					damage_info.victim.on_take_projectile_hit(self)
+
+					Combat.apply_damage(damage_info)
 
 					if !pierce:
 						queue_free()

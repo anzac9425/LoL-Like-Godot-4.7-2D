@@ -1,12 +1,12 @@
 extends CharacterLogic
 
 
-var q_cooldown: Cooldown = Cooldown.new()
 var q_stack: Stack = Stack.new()
 var q_active: bool
 var q_duration: Cooldown = Cooldown.new()
 
 var w_cooldown: Cooldown = Cooldown.new()
+var w_hits: Array[Stack]
 
 var e_cooldown: Cooldown = Cooldown.new()
 
@@ -14,9 +14,6 @@ var r_cooldown: Cooldown = Cooldown.new()
 
 
 func _physics_process(delta: float) -> void:
-	if q_cooldown.remaining_duration > 0:
-		q_cooldown.remaining_duration -= delta
-	
 	if q_stack.cooldown.remaining_duration > 0:
 		q_stack.cooldown.remaining_duration -= delta
 		
@@ -41,19 +38,15 @@ func _physics_process(delta: float) -> void:
 		r_cooldown.remaining_duration -= delta
 
 
-func on_hit(_damage_info: DamageInfo) -> void:
-	pass
-
-
-func build_damage_info(damage_info: DamageInfo) -> void:
+func on_attack(damage_info: DamageInfo) -> void:
 	if damage_info.attacker != character_base:
 		return
 	
-	var aa: bool
+	var has_auto_attack: bool
 	
 	for instance in damage_info.damage_instances:
 		if instance.source_type == SourceType.Type.AUTO_ATTACK:
-			aa = true
+			has_auto_attack = true
 			instance.allow_critical = false
 			
 			if character_base.total_statistics.critical_chance:
@@ -66,8 +59,16 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 			if q_active:
 				instance.amount *= 0.22 + 0.04 / 17.0 * character_base.level
 		
-		if q_active and aa:
-			_q_(damage_info)
+	if q_active and has_auto_attack:
+		_q_(damage_info)
+
+
+func on_hit(_damage_info: DamageInfo) -> void:
+	pass
+
+
+func build_damage_info(_damage_info: DamageInfo) -> void:
+	pass
 
 
 func modify_base_statistics(_base_statistics: Statistics) -> void:
@@ -117,8 +118,23 @@ func on_take_damage(_damage_info: DamageInfo) -> void:
 	pass
 
 
-func on_deal_projectile_hit(_projectile: Projectile) -> void:
-	pass
+func on_deal_projectile_hit(projectile: Projectile) -> void:
+	for instance in projectile.damage_info.damage_instances:
+		if instance.source_type != SourceType.Type.SKILL_W:
+			continue
+
+		for stack: Stack in w_hits:
+			if stack.target == projectile.damage_info.victim:
+				projectile.damage_info.damage_instances.clear()
+				return
+
+		var stack: Stack = Stack.new()
+
+		stack.target = projectile.damage_info.victim
+
+		w_hits.append(stack)
+
+		return
 
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
@@ -130,7 +146,16 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 
 
 func cast_q(_cast_id: String) -> bool:
-	if q_stack.stack != 4.0:
+	if !character_base.can_cast():
+		return false
+
+	if q_active:
+		return false
+
+	if q_stack.stack < 4.0:
+		return false
+
+	if !Combat.spend_mana(character_base, 30.0):
 		return false
 	
 	_q()
@@ -139,6 +164,8 @@ func cast_q(_cast_id: String) -> bool:
 
 
 func _q() -> void:
+	character_base.auto_attack_cooldown.remaining_duration = 0.0
+	
 	q_stack.stack = 0
 	q_stack.cooldown.remaining_duration = 0
 	
@@ -171,13 +198,96 @@ func _q_(damage_info: DamageInfo) -> void:
 		Ingame.current.spawn_projectile(damage_info_, Projectile.Type.TARGET, character_base.total_statistics.attack_projectile_speed, 8.0)
 
 
-func cast_w(_cast_id: String) -> bool:
-	return false
+func cast_w(cast_id: String) -> bool:
+	if !character_base.can_cast():
+		return false
+	
+	if w_cooldown.remaining_duration > 0:
+		return false
+	
+	if !Combat.spend_mana(character_base, max(0.0, 75.0 - 20.0 / 17.0 * character_base.level)):
+		return false
+	
+	_w(cast_id)
+	
+	return true
 
+
+func _w(cast_id: String) -> void:
+	w_hits.clear()
+	
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_MOVE,
+		0.25
+	)
+
+	Combat.apply_status(
+		character_base,
+		Status.Type.CANNOT_AUTO_ATTACK,
+		0.25
+	)
+	
+	w_cooldown.remaining_duration = max(0.0, 18.0 - 14.0 / 17.0 * character_base.level)
+	
+	var direction: Vector2 = (character_base.get_global_mouse_position() - character_base.global_position).normalized()
+	
+	await get_tree().create_timer(0.25).timeout
+	
+	if character_base.is_dead:
+		return
+
+	var damage_info: DamageInfo = DamageInfo.create(
+		character_base,
+		character_base,
+		cast_id
+	)
+
+	damage_info.add_damage_instance(
+		DamageType.Type.PHYSICAL,
+		SourceType.Type.SKILL_W,
+		60.0 + 140.0 / 17.0 * character_base.level
+		+ character_base.bonus_statistics.attack_damage,
+		true,
+		true
+	)
+
+	var perpendicular: Vector2 = direction.orthogonal()
+
+	var arrow_count: int = floor(7.0 + 4.0 / 17.0 * character_base.level)
+
+	var total_width: float = floor(75.0 + 48.0 / 17.0 * character_base.level)
+
+	var angle_step: float = deg_to_rad(4.625)
+
+	for i in range(arrow_count):
+		var offset: float = lerp(
+			- total_width * 0.5,
+			total_width * 0.5,
+			float(i) / float(max(1, arrow_count - 1))
+		)
+
+		var angle: float = (
+			float(i) - float(arrow_count - 1) * 0.5
+		) * angle_step
+
+		Ingame.current.spawn_projectile(
+			damage_info.duplicate(),
+			Projectile.Type.LINEAR,
+			2000.0,
+			20.0,
+			character_base.global_position
+			+ direction * 75.0
+			+ perpendicular * offset,
+			direction.rotated(-angle),
+			1200.0
+		)
 
 func cast_e(_cast_id: String) -> bool:
 	return false
 
 
 func cast_r(_cast_id: String) -> bool:
+	if !Combat.spend_mana(character_base, 100.0):
+		return false
 	return false

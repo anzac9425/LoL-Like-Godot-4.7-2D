@@ -1,6 +1,10 @@
 extends CharacterLogic
 
 
+func on_attack(_damage_info: DamageInfo) -> void:
+	pass
+
+
 func on_hit(_damage_info: DamageInfo) -> void:
 	pass
 

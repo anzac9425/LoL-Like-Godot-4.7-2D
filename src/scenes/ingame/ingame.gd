@@ -12,7 +12,7 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_ASH), Vector2(500, -500), "character", "team1")
+	var player = spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(500, -500), "character", "team1")
 	input_characters.append(player)
 	
 	player.add_item(load(Paths.ITEM_DATA_RABADONS_DEATHCAP))
@@ -124,9 +124,13 @@ func spawn_projectile(
 	damage_info: DamageInfo,
 	type: Projectile.Type,
 	speed: float,
-	radius: float
+	radius: float,
+	spawn_position: Vector2 = Vector2.ZERO,
+	direction: Vector2 = Vector2.ZERO,
+	max_distance: float = 0.0,
+	pierce: bool = false
 ) -> Projectile:
-
+	
 	var projectile: Projectile = load(Paths.PROJECTILE).instantiate()
 
 	projectile.projectile_type = type
@@ -134,6 +138,12 @@ func spawn_projectile(
 	projectile.damage_info = damage_info
 	projectile.projectile_speed = speed
 	projectile.projectile_radius = radius
+
+	projectile.spawn_position = spawn_position
+	projectile.direction = direction.normalized()
+
+	projectile.max_distance = max_distance
+	projectile.pierce = pierce
 
 	$Projectiles.add_child(projectile)
 

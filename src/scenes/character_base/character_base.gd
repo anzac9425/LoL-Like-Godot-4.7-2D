@@ -16,7 +16,7 @@ var team: String
 
 var is_dead: bool
 
-var level: int = 17
+var level: int
 var experience: float
 
 var current_health: float
@@ -300,6 +300,12 @@ func set_radius_collision_shape(radius: float) -> void:
 	character_collision_shape_radius = radius
 
 
+func on_attack(damage_info):
+	apply_damage_info_hook_stage(rune_logics, "on_attack", damage_info)
+	apply_damage_info_hook_stage(item_logics, "on_attack", damage_info)
+	apply_damage_info_hook_stage([character_logic], "on_attack", damage_info)
+
+
 func on_hit(damage_info: DamageInfo):
 	apply_damage_info_hook_stage(rune_logics, "on_hit", damage_info)
 	apply_damage_info_hook_stage(item_logics, "on_hit", damage_info)
@@ -312,7 +318,7 @@ func build_damage_info(damage_info: DamageInfo) -> void:
 	apply_damage_info_hook_stage([character_logic], "build_damage_info", damage_info)
 
 
-func apply_damage_info_hook_stage(logics: Array, hook_name: String,damage_info: DamageInfo) -> void:
+func apply_damage_info_hook_stage(logics: Array, hook_name: String, damage_info: DamageInfo) -> void:
 	var stage_input: DamageInfo = damage_info.duplicate()
 	var stage_outputs: Array[DamageInfo]
 
@@ -466,6 +472,7 @@ func auto_attack():
 func _auto_attack():
 	if !auto_attack_target:
 		return
+	
 	if !auto_attack_target.can_be_targeted():
 		return
 		
@@ -481,6 +488,8 @@ func _auto_attack():
 	
 	damage_info.on_hit = true
 	
+	on_attack(damage_info)
+  
 	if character_data.ranged:
 		Ingame.current.spawn_projectile(
 			damage_info,

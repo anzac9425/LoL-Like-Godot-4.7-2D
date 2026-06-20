@@ -11,7 +11,7 @@ const CHARACTER_DATA_TEST1: String = "res://src/resources/characters/test1/data.
 const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/data.tres"
 const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/data.tres"
 const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/data.tres"
-const CHARACTER_DATA_ASH: String = "res://src/resources/characters/ash/data.tres"
+const CHARACTER_DATA_ASHE: String = "res://src/resources/characters/ashe/data.tres"
 
 const ITEM_DATA_ECLIPSE: String = "res://src/resources/items/eclipse/data.tres"
 const ITEM_DATA_TRINITY_FORCE: String = "res://src/resources/items/trinity_force/data.tres"

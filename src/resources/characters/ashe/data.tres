@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("3_cc61h")
-character_name = "ash"
+character_name = "ashe"
 ranged = true
 auto_attack_windup_multiplier = 0.219
 statistics = ExtResource("4_y36j7")

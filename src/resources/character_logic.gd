@@ -5,6 +5,10 @@ class_name CharacterLogic
 var character_base: CharacterBase
 
 
+func on_attack(_damage_info: DamageInfo) -> void:
+	pass
+
+
 func on_hit(_damage_info: DamageInfo) -> void:
 	pass
 
