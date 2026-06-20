@@ -19,9 +19,10 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	
 	var damage_amount: Dictionary
 	
-	var result_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim, damage_info.cast_id)
-	
 	var is_critical: bool = randf() < damage_info.attacker.total_statistics.critical_chance
+	
+	if is_critical:
+		damage_info.was_crit = true
 	
 	for type in DamageType.Type.values():
 		damage_amount[type] = 0.0
@@ -46,8 +47,6 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 		
 		damage_amount[instance.damage_type] += amount
 		
-		result_info.add_damage_instance(instance.damage_type, instance.source_type, amount, instance.allow_critical, instance.allow_lifesteal)
-	
 	for type in damage_amount:
 		for i in range(damage_info.victim.barriers.size() - 1, -1, -1):
 			if damage_amount[type] <= 0.0:
@@ -80,6 +79,8 @@ static func apply_damage(damage_info: DamageInfo) -> void:
 	if damage_info.victim.current_health <= 0:
 		if !damage_info.victim.on_lethal_damage(damage_info):
 			damage_info.victim.die()
+	
+	var result_info: DamageInfo = damage_info.duplicate()
 	
 	damage_info.attacker.on_deal_damage(result_info)
 	damage_info.victim.on_take_damage(result_info)
@@ -146,6 +147,10 @@ static func apply_crowd_control(target: CharacterBase, type: CrowdControl.Type, 
 	crowd_control.type = type
 	crowd_control.amount = amount
 	crowd_control.remaining_duration = duration
+	
+	if type == CrowdControl.Type.SLOW:
+		crowd_control.amount = clamp(amount, 0.0, 1.0)
+	
 	if type != CrowdControl.Type.AIRBORNE:
 		crowd_control.remaining_duration *= max(0.0, (1.0 - target.total_statistics.tenacity))
 	

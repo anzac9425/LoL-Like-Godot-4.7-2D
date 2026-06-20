@@ -14,6 +14,8 @@ var is_dot: bool
 
 var cast_id: String
 
+var was_crit: bool
+
 
 static func generate_cast_id() -> String:
 	return str(Time.get_ticks_usec(), "_", randi())
@@ -35,8 +37,7 @@ func duplicate() -> DamageInfo:
 
 	copy.on_hit = on_hit
 	copy.on_hit_count = on_hit_count
-	
-	copy.cast_id = cast_id
+	copy.was_crit = was_crit
 
 	for instance in damage_instances:
 		copy.add_damage_instance(
