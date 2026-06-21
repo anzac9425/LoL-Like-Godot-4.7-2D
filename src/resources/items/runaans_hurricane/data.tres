@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bsvyrfp0eadxy"]
+
+[ext_resource type="Script" uid="uid://dyyx4pq1vm6mq" path="res://src/resources/items/runaans_hurricane/logic.gd" id="1_lm7hx"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_4b4uy"]
+[ext_resource type="Resource" uid="uid://bxcgsi6yyk7yb" path="res://src/resources/items/runaans_hurricane/statistics.tres" id="3_wmmmk"]
+
+[resource]
+script = ExtResource("2_4b4uy")
+item_name = "runaans_hurricane"
+item_price = 2650.0
+statistics = ExtResource("3_wmmmk")
+item_logic = ExtResource("1_lm7hx")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

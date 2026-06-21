@@ -1,17 +1,10 @@
-extends Node
-class_name CharacterLogic
-
-
-var character_base: CharacterBase
-
-var q_cooldown: Cooldown = Cooldown.new()
-var w_cooldown: Cooldown = Cooldown.new()
-var e_cooldown: Cooldown = Cooldown.new()
-var r_cooldown: Cooldown = Cooldown.new()
+extends CharacterLogic
 
 
 func on_attack(_damage_info: DamageInfo) -> void:
-	pass
+	character_base.character_logic.q_cooldown.remaining_duration *= 0.85
+	character_base.character_logic.w_cooldown.remaining_duration *= 0.85
+	character_base.character_logic.e_cooldown.remaining_duration *= 0.85
 
 
 func on_hit(_damage_info: DamageInfo) -> void:
@@ -26,8 +19,8 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 	pass
 
 
-func modify_bonus_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics) -> void:
-	pass
+func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
+	bonus_statistics.ultimate_haste += 30.0
 
 
 func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
@@ -54,17 +47,5 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 	return false
 
 
-func cast_q(_cast_id: String) -> bool:
-	return false
-	
-
-func cast_w(_cast_id: String) -> bool:
-	return false
-
-
-func cast_e(_cast_id: String) -> bool:
-	return false
-
-
-func cast_r(_cast_id: String) -> bool:
-	return false
+func on_cast(_source_type: SourceType.Type) -> void:
+	pass

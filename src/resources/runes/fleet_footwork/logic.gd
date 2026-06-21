@@ -40,13 +40,12 @@ func add_charges(value: float):
 	if old_energized != new_energized:
 		character_base.calculate_statistics()
 
-
-func on_hit(damage_info: DamageInfo) -> void:
-	for instance in damage_info.damage_instances:
-		if instance.source_type == SourceType.Type.AUTO_ATTACK:
-			return
-
+func on_attack(_damage_info: DamageInfo) -> void:
 	add_charges(6.0)
+
+
+func on_hit(_damage_info: DamageInfo) -> void:
+	pass
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:

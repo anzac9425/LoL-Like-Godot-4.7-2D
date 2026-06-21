@@ -1,13 +1,4 @@
-extends Node
-class_name CharacterLogic
-
-
-var character_base: CharacterBase
-
-var q_cooldown: Cooldown = Cooldown.new()
-var w_cooldown: Cooldown = Cooldown.new()
-var e_cooldown: Cooldown = Cooldown.new()
-var r_cooldown: Cooldown = Cooldown.new()
+extends CharacterLogic
 
 
 func on_attack(_damage_info: DamageInfo) -> void:
@@ -18,8 +9,10 @@ func on_hit(_damage_info: DamageInfo) -> void:
 	pass
 
 
-func build_damage_info(_damage_info: DamageInfo) -> void:
-	pass
+func build_damage_info(damage_info: DamageInfo) -> void:
+	if damage_info.attacker == character_base:
+		for instance in damage_info.damage_instances:
+			instance.amount *= 1.0 + 0.15 * min(1.0, damage_info.victim.bonus_statistics.health / 1500.0)
 
 
 func modify_base_statistics(_base_statistics: Statistics) -> void:
@@ -54,17 +47,5 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 	return false
 
 
-func cast_q(_cast_id: String) -> bool:
-	return false
-	
-
-func cast_w(_cast_id: String) -> bool:
-	return false
-
-
-func cast_e(_cast_id: String) -> bool:
-	return false
-
-
-func cast_r(_cast_id: String) -> bool:
-	return false
+func on_cast(_source_type: SourceType.Type) -> void:
+	pass

@@ -25,6 +25,16 @@ const ITEM_DATA_GUARDIAN_ANGEL: String = "res://src/resources/items/guardian_ang
 const ITEM_DATA_EXPERIMENTAL_HEXPLATE: String = "res://src/resources/items/experimental_hexplate/data.tres"
 const ITEM_DATA_ENDLESS_HUNGER: String = "res://src/resources/items/endless_hunger/data.tres"
 
+const ITEM_DATA_THE_COLLECTOR: String = "res://src/resources/items/the_collector/data.tres"
+const ITEM_DATA_HEXOPTICS_C44: String = "res://src/resources/items/hexoptics_c44/data.tres"
+const ITEM_DATA_KRAKEN_SLAYER: String = "res://src/resources/items/kraken_slayer/data.tres"
+const ITEM_DATA_PHANTOM_DANCER: String = "res://src/resources/items/phantom_dancer/data.tres"
+const ITEM_DATA_RUNAANS_HURRICANE: String = "res://src/resources/items/runaans_hurricane/data.tres"
+const ITEM_DATA_RAPID_FIRECANNON: String = "res://src/resources/items/rapid_firecannon/data.tres"
+const ITEM_DATA_NAVORI_FLICKERBLADE: String = "res://src/resources/items/navori_flickerblade/data.tres"
+const ITEM_DATA_FIENDHUNTER_BOLTS: String = "res://src/resources/items/fiendhunter_bolts/data.tres"
+const ITEM_DATA_LORD_DOMINIKS_REGARDS: String = "res://src/resources/items/lord_dominiks_regards/data.tres"
+
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"
 const ITEM_DATA_RABADONS_DEATHCAP: String = "res://src/resources/items/rabadons_deathcap/data.tres"

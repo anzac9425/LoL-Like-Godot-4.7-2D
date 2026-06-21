@@ -8,7 +8,6 @@
 [resource]
 script = ExtResource("1_h32tj")
 character_name = "test1"
-radius = 64.0
 ranged = true
 auto_attack_windup_multiplier = 0.2
 statistics = ExtResource("3_qp0j6")

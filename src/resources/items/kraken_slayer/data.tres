@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dl07qyr1leb0u"]
+
+[ext_resource type="Script" uid="uid://tdqtks0idw5r" path="res://src/resources/items/kraken_slayer/logic.gd" id="1_qqdnm"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_q15k7"]
+[ext_resource type="Resource" uid="uid://hi6kkhlqqbuh" path="res://src/resources/items/kraken_slayer/statistics.tres" id="3_5ao08"]
+
+[resource]
+script = ExtResource("2_q15k7")
+item_name = "kraken_slayer"
+item_price = 3000.0
+statistics = ExtResource("3_5ao08")
+item_logic = ExtResource("1_qqdnm")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

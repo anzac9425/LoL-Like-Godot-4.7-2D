@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bqtjmqy8nme7l"]
+
+[ext_resource type="Script" uid="uid://b7pxlp5jp2hfy" path="res://src/resources/items/hexoptics_c44/logic.gd" id="1_y8o2u"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_xxhfa"]
+[ext_resource type="Resource" uid="uid://dmvxv3qksy01s" path="res://src/resources/items/hexoptics_c44/statistics.tres" id="3_igohb"]
+
+[resource]
+script = ExtResource("2_xxhfa")
+item_name = "hexoptics_c44"
+item_price = 2800.0
+statistics = ExtResource("3_igohb")
+item_logic = ExtResource("1_y8o2u")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

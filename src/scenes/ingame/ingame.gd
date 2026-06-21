@@ -6,30 +6,46 @@ static var current: Ingame
 
 var input_characters: Array[CharacterBase]
 
+var player
+
 
 func _ready() -> void:
 	current = self
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	var player = spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(500, -500), "character", "team1")
+	player = spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(1000, 0), "character", "team1")
 	input_characters.append(player)
 	
-	player.add_item(load(Paths.ITEM_DATA_RABADONS_DEATHCAP))
 	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+	player.add_item(load(Paths.ITEM_DATA_THE_COLLECTOR))
+	player.add_item(load(Paths.ITEM_DATA_HEXOPTICS_C44))
+	player.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
+	player.add_item(load(Paths.ITEM_DATA_RUNAANS_HURRICANE))
+	player.add_item(load(Paths.ITEM_DATA_FIENDHUNTER_BOLTS))
+	player.add_item(load(Paths.ITEM_DATA_LORD_DOMINIKS_REGARDS))
 	
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 0), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(0, 0), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 200), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, 400), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -200), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_TEST1), Vector2(0, -400), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(0, 400), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(0, -200), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(0, -400), "character", "team2")
 	
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
+			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+			character.add_item(load(Paths.ITEM_DATA_THE_COLLECTOR))
+			character.add_item(load(Paths.ITEM_DATA_HEXOPTICS_C44))
+			character.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
+			character.add_item(load(Paths.ITEM_DATA_RUNAANS_HURRICANE))
+			character.add_item(load(Paths.ITEM_DATA_FIENDHUNTER_BOLTS))
+			character.add_item(load(Paths.ITEM_DATA_LORD_DOMINIKS_REGARDS))
 
 
 func _process(delta: float) -> void:
+	#$Camera2D.global_position = player.global_position
+	
 	if Input.is_action_pressed("zoom_in"):
 		$Camera2D.zoom += Vector2.ONE * delta
 
@@ -125,7 +141,7 @@ func spawn_projectile(
 	type: Projectile.Type,
 	speed: float,
 	radius: float,
-	spawn_position: Vector2 = Vector2.ZERO,
+	spawn_position: Vector2 = damage_info.attacker.global_position,
 	direction: Vector2 = Vector2.ZERO,
 	max_distance: float = 0.0,
 	pierce: bool = false

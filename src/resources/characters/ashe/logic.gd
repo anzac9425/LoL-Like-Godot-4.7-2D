@@ -5,12 +5,7 @@ var q_stack: Stack = Stack.new()
 var q_active: bool
 var q_duration: Cooldown = Cooldown.new()
 
-var w_cooldown: Cooldown = Cooldown.new()
 var w_hits: Array[Stack]
-
-var e_cooldown: Cooldown = Cooldown.new()
-
-var r_cooldown: Cooldown = Cooldown.new()
 
 
 func _physics_process(delta: float) -> void:
@@ -120,21 +115,42 @@ func on_take_damage(_damage_info: DamageInfo) -> void:
 
 func on_deal_projectile_hit(projectile: Projectile) -> void:
 	for instance in projectile.damage_info.damage_instances:
-		if instance.source_type != SourceType.Type.SKILL_W:
-			continue
+		match instance.source_type:
+			SourceType.Type.SKILL_W:
+				for stack: Stack in w_hits:
+					if stack.target == projectile.damage_info.victim:
+						projectile.damage_info.damage_instances.clear()
+						return
 
-		for stack: Stack in w_hits:
-			if stack.target == projectile.damage_info.victim:
-				projectile.damage_info.damage_instances.clear()
+				var stack: Stack = Stack.new()
+
+				stack.target = projectile.damage_info.victim
+
+				w_hits.append(stack)
+
 				return
 
-		var stack: Stack = Stack.new()
+			SourceType.Type.SKILL_R:
+				var stun_duration: float = 1.0 + 2.5 / 2800.0 * projectile.traveled_distance
 
-		stack.target = projectile.damage_info.victim
+				Combat.apply_crowd_control(projectile.damage_info.victim, CrowdControl.Type.STUN, stun_duration)
 
-		w_hits.append(stack)
+				var area: Area = Area.create_circle(projectile.damage_info.victim.global_position, 400.0)
 
-		return
+				for target: CharacterBase in area.get_targets():
+					if target == projectile.damage_info.victim:
+						continue
+
+					if target == character_base:
+						continue
+
+					var damage_info: DamageInfo = projectile.damage_info.duplicate()
+
+					damage_info.victim = target
+
+					Combat.apply_damage(damage_info)
+
+				return
 
 
 func on_take_projectile_hit(_projectile: Projectile) -> void:
@@ -216,17 +232,11 @@ func cast_w(cast_id: String) -> bool:
 func _w(cast_id: String) -> void:
 	w_hits.clear()
 	
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_MOVE,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_AUTO_ATTACK,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
 	
 	w_cooldown.remaining_duration = max(0.0, 18.0 - 14.0 / 17.0 * character_base.level)
 	
@@ -287,7 +297,55 @@ func cast_e(_cast_id: String) -> bool:
 	return false
 
 
-func cast_r(_cast_id: String) -> bool:
+func cast_r(cast_id: String) -> bool:
+	if !character_base.can_cast():
+		return false
+	
+	if r_cooldown.remaining_duration > 0:
+		return false
+	
 	if !Combat.spend_mana(character_base, 100.0):
 		return false
-	return false
+	
+	_r(cast_id)
+	
+	return true
+
+
+func _r(cast_id: String) -> void:
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+	
+	r_cooldown.remaining_duration = max(0.0, 100.0 - 40.0 / 17.0 * character_base.level)
+	
+	var direction: Vector2 = (character_base.get_global_mouse_position() - character_base.global_position).normalized()
+	
+	await get_tree().create_timer(0.25).timeout
+	
+	if character_base.is_dead:
+		return
+
+	var damage_info: DamageInfo = DamageInfo.create(character_base, character_base, cast_id)
+
+	damage_info.add_damage_instance(
+		DamageType.Type.MAGIC,
+		SourceType.Type.SKILL_R,
+		200.0 + 400.0 / 17.0 * character_base.level
+		+ character_base.total_statistics.ability_power * 1.2,
+		false,
+		false
+	)
+
+	Ingame.current.spawn_projectile(
+		damage_info,
+		Projectile.Type.LINEAR,
+		1500.0,
+		130.0,
+		character_base.global_position,
+		direction,
+		INF
+	)
+	

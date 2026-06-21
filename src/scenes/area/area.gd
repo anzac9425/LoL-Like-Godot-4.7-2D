@@ -100,10 +100,7 @@ func get_targets_circle() -> Array[CharacterBase]:
 	var query: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 
 	query.shape = shape_circle
-	query.transform = Transform2D(
-		0.0,
-		global_position
-	)
+	query.transform = Transform2D(0.0, global_position)
 
 	query.collide_with_areas = true
 
@@ -118,7 +115,6 @@ func get_targets_circle() -> Array[CharacterBase]:
 
 	for hit in result:
 		var collider: Object = hit["collider"]
-
 		if collider is CharacterBase:
 			targets.append(collider)
 

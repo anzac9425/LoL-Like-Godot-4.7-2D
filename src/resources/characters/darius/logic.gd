@@ -4,15 +4,9 @@ extends CharacterLogic
 var passive_instances: Array[Stack]
 var passive_full: int
 
-var q_cooldown: Cooldown = Cooldown.new()
 
 var w_active: bool
-var w_cooldown: Cooldown = Cooldown.new()
 var w_active_cooldown: Cooldown = Cooldown.new()
-
-var e_cooldown: Cooldown = Cooldown.new()
-
-var r_cooldown: Cooldown = Cooldown.new()
 
 
 func _physics_process(delta: float) -> void:

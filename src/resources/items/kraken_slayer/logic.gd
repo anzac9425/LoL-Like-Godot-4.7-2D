@@ -1,21 +1,34 @@
-extends Node
-class_name CharacterLogic
+extends CharacterLogic
 
 
-var character_base: CharacterBase
-
-var q_cooldown: Cooldown = Cooldown.new()
-var w_cooldown: Cooldown = Cooldown.new()
-var e_cooldown: Cooldown = Cooldown.new()
-var r_cooldown: Cooldown = Cooldown.new()
+var stack: Stack = Stack.new()
 
 
 func on_attack(_damage_info: DamageInfo) -> void:
 	pass
 
 
-func on_hit(_damage_info: DamageInfo) -> void:
-	pass
+func on_hit(damage_info: DamageInfo) -> void:
+	if stack.stack != 2.0:
+		stack.stack += 1.0
+	
+	else:
+		stack.stack = 0.0
+		var damage: float
+		
+		if character_base.character_data.ranged:
+			damage = 150.0 + 60.0 / 17.0 * character_base.level
+		
+		else:
+			damage = 120.0 + 48.0 / 17.0 * character_base.level
+			
+		damage_info.add_damage_instance(
+			DamageType.Type.PHYSICAL,
+			SourceType.Type.ITEM,
+			damage * (1 + 0.75 * (1 - damage_info.victim.current_health / damage_info.victim.total_statistics.health)),
+			false,
+			false
+		)
 
 
 func build_damage_info(_damage_info: DamageInfo) -> void:
@@ -54,17 +67,5 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 	return false
 
 
-func cast_q(_cast_id: String) -> bool:
-	return false
-	
-
-func cast_w(_cast_id: String) -> bool:
-	return false
-
-
-func cast_e(_cast_id: String) -> bool:
-	return false
-
-
-func cast_r(_cast_id: String) -> bool:
-	return false
+func on_cast(_source_type: SourceType.Type) -> void:
+	pass

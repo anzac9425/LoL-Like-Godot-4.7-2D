@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cqcjjojman30k"]
+
+[ext_resource type="Script" uid="uid://bg3o2vtq3wrma" path="res://src/resources/items/the_collector/logic.gd" id="1_42b4y"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_xw618"]
+[ext_resource type="Resource" uid="uid://5gl55phdyg86" path="res://src/resources/items/the_collector/statistics.tres" id="3_hhdqx"]
+
+[resource]
+script = ExtResource("2_xw618")
+item_name = "the_collector"
+item_price = 3000.0
+statistics = ExtResource("3_hhdqx")
+item_logic = ExtResource("1_42b4y")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

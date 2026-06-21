@@ -4,16 +4,10 @@ extends CharacterLogic
 var passive_amount: int
 var passive_cooldown: Cooldown = Cooldown.new()
 
-var q_cooldown: Cooldown = Cooldown.new()
-
-var w_cooldown: Cooldown = Cooldown.new()
-
 var e_active: bool
-var e_cooldown: Cooldown = Cooldown.new()
 var e_active_cooldown: Cooldown = Cooldown.new()
 
 var r_active: bool
-var r_cooldown: Cooldown = Cooldown.new()
 var r_active_cooldown: Cooldown = Cooldown.new()
 
 

@@ -7,14 +7,8 @@ var passive_cooldown: Cooldown = Cooldown.new()
 var q_index: int
 var q_casting: bool
 var q_rotation: float
-var q_cooldown: Cooldown = Cooldown.new()
 var q_recast: Cooldown = Cooldown.new()
 
-var w_cooldown: Cooldown = Cooldown.new()
-
-var e_cooldown: Cooldown = Cooldown.new()
-
-var r_cooldown: Cooldown = Cooldown.new()
 var r_active: bool
 var r_duration: Cooldown = Cooldown.new()
 var r_bonus_ad_multiplier: float

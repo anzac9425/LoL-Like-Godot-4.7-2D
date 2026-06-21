@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ptkrlp3e177v"]
+
+[ext_resource type="Script" uid="uid://b3dld84d7y236" path="res://src/resources/items/rapid_firecannon/logic.gd" id="1_jt5eq"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_j4hlh"]
+[ext_resource type="Resource" uid="uid://bfcwi1c3kbptl" path="res://src/resources/items/rapid_firecannon/statistics.tres" id="3_ymoy5"]
+
+[resource]
+script = ExtResource("2_j4hlh")
+item_name = "rapid_firecannon"
+item_price = 2650.0
+statistics = ExtResource("3_ymoy5")
+item_logic = ExtResource("1_jt5eq")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"
