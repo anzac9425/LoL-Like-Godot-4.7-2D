@@ -115,7 +115,7 @@ func get_targets_circle() -> Array[CharacterBase]:
 
 	for hit in result:
 		var collider: Object = hit["collider"]
-		if collider is CharacterBase:
+		if collider is CharacterBase and !collider.is_dead:
 			targets.append(collider)
 
 	return targets
@@ -152,7 +152,7 @@ func get_targets_rectangle() -> Array[CharacterBase]:
 	for hit in result:
 		var collider: Object = hit["collider"]
 
-		if collider is CharacterBase:
+		if collider is CharacterBase and !collider.is_dead:
 			targets.append(collider)
 
 	return targets
@@ -186,7 +186,7 @@ func get_targets_polygon() -> Array[CharacterBase]:
 	for hit in result:
 		var collider = hit["collider"]
 
-		if collider is CharacterBase:
+		if collider is CharacterBase and !collider.is_dead:
 			targets.append(collider)
 
 	return targets

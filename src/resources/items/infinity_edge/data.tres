@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://y57p4px7pi2c"]
+
+[ext_resource type="Script" uid="uid://b05yl7s5fiovr" path="res://src/resources/items/infinity_edge/logic.gd" id="1_27p4v"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_rqa1d"]
+[ext_resource type="Resource" uid="uid://djpwml1pqjoyd" path="res://src/resources/items/infinity_edge/statistics.tres" id="3_bkr46"]
+
+[resource]
+script = ExtResource("2_rqa1d")
+item_name = "infinity_edge"
+item_price = 3500.0
+statistics = ExtResource("3_bkr46")
+item_logic = ExtResource("1_27p4v")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -4,7 +4,6 @@ extends CharacterLogic
 var passive_instances: Array[Stack]
 var passive_full: int
 
-
 var w_active: bool
 var w_active_cooldown: Cooldown = Cooldown.new()
 

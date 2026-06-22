@@ -23,8 +23,9 @@ func _physics_process(delta: float) -> void:
 		for target in areas[i].get_targets():
 			if !target.is_enemy_team(character_base):
 				continue
-				
-			Combat.apply_effect(target, Effect.Type.MAGIC_RESISTANCE_REDUCTION, delta, 10)
+			
+			if !target.get_effect_amount(Effect.Type.MAGIC_RESISTANCE_REDUCTION):
+				Combat.apply_effect(target, Effect.Type.MAGIC_RESISTANCE_REDUCTION, 3.0, 10.0)
 			
 			var damage_info: DamageInfo = DamageInfo.create(
 				character_base,

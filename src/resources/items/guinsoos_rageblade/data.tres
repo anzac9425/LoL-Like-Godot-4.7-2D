@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cobotxlqw1rfa"]
+
+[ext_resource type="Script" uid="uid://0cc5xhebjvfd" path="res://src/resources/items/guinsoos_rageblade/logic.gd" id="1_lg568"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_ca5gt"]
+[ext_resource type="Resource" uid="uid://c5a65fssosjc0" path="res://src/resources/items/guinsoos_rageblade/statistics.tres" id="3_gxt1b"]
+
+[resource]
+script = ExtResource("2_ca5gt")
+item_name = "guinsoos_rageblade"
+item_price = 3000.0
+statistics = ExtResource("3_gxt1b")
+item_logic = ExtResource("1_lg568")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

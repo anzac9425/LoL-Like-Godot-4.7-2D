@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://drphtcg37egoh"]
+
+[ext_resource type="Script" uid="uid://cglvdkh06evnh" path="res://src/resources/items/terminus/logic.gd" id="1_1buy1"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_0eksv"]
+[ext_resource type="Resource" uid="uid://bjqv208ng14qk" path="res://src/resources/items/terminus/statistics.tres" id="3_gckgo"]
+
+[resource]
+script = ExtResource("2_0eksv")
+item_name = "terminus"
+item_price = 3000.0
+statistics = ExtResource("3_gckgo")
+item_logic = ExtResource("1_1buy1")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dymvgaap24u03"]
+
+[ext_resource type="Script" uid="uid://by5kxoohu2qt4" path="res://src/resources/items/serpents_fang/logic.gd" id="1_rk22g"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_mdvy5"]
+[ext_resource type="Resource" uid="uid://8y8yk7wq42et" path="res://src/resources/items/serpents_fang/statistics.tres" id="3_dvclu"]
+
+[resource]
+script = ExtResource("2_mdvy5")
+item_name = "serpents_fang"
+item_price = 2500.0
+statistics = ExtResource("3_dvclu")
+item_logic = ExtResource("1_rk22g")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

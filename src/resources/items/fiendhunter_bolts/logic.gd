@@ -27,7 +27,9 @@ func on_attack(damage_info: DamageInfo) -> void:
 	
 	damage_info.was_crit = true
 	
-	for instance in damage_info.damage_instances:
+	for i in range(damage_info.damage_instances.size() - 1, -1, -1):
+		var instance = damage_info.damage_instances[i]
+		
 		instance.allow_critical = false
 		
 		if randf() < character_base.total_statistics.critical_chance:
@@ -56,7 +58,7 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 
 func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
 	if duration.remaining_duration > 0:
-		bonus_statistics.attack_speed_multiplier += 10.5
+		bonus_statistics.attack_speed_multiplier += 0.5
 
 
 func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
@@ -84,8 +86,10 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 
 
 func on_cast(source_type: SourceType.Type) -> void:
-	if source_type == SourceType.Type.SKILL_R:
-		duration.remaining_duration = 8.0
-		stack = 3
-		
-		character_base.calculate_statistics()
+	if cooldown.remaining_duration <= 0:
+		if source_type == SourceType.Type.SKILL_R:
+			cooldown.start(45.0, Cooldown.Type.ITEM, character_base.total_statistics)
+			duration.remaining_duration = 8.0
+			stack = 3
+			
+			character_base.calculate_statistics()

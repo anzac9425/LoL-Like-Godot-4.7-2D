@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d0e41bbca5ewr"]
+
+[ext_resource type="Script" uid="uid://f5x5jxma3x48" path="res://src/resources/items/chempunk_chainsword/logic.gd" id="1_vn8ra"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_f8is7"]
+[ext_resource type="Resource" uid="uid://bfxsj8k0hsxs6" path="res://src/resources/items/chempunk_chainsword/statistics.tres" id="3_xiw0p"]
+
+[resource]
+script = ExtResource("2_f8is7")
+item_name = "chempunk_chainsword"
+item_price = 3000.0
+statistics = ExtResource("3_xiw0p")
+item_logic = ExtResource("1_vn8ra")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

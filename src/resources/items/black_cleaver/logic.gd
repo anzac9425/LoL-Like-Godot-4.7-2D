@@ -44,6 +44,9 @@ func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: St
 
 
 func on_deal_damage(damage_info: DamageInfo) -> void:
+	if damage_info.is_dot:
+		return
+	
 	var has_physical_damage: bool
 
 	for instance in damage_info.damage_instances:

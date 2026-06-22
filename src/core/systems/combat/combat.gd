@@ -95,8 +95,8 @@ static func apply_heal(target: CharacterBase, amount: float) -> Array[float]:
 	
 	amount *= (1.0 + target.total_statistics.heal_shield_power_multiplier)
 	
-	if target.has_effect(Effect.Type.GRIEVOUS_WOUNDS):
-		amount *= 1 - target.get_effect_amount(Effect.Type.GRIEVOUS_WOUNDS)
+	if target.has_effect(Effect.Type.HEAL_REDUCTION):
+		amount *= 1 - target.get_effect_amount(Effect.Type.HEAL_REDUCTION)
 	
 	var request_amount: float = amount
 	
@@ -129,6 +129,7 @@ static func apply_barrier(target: CharacterBase, amount: float, duration: float,
 	
 	barrier.type = type
 	barrier.amount = amount * (1.0 + target.total_statistics.heal_shield_power_multiplier)
+	barrier.amount *= max(0.0, 1.0 - target.get_effect_amount(Effect.Type.BARRIER_REDUCTION))
 	barrier.remaining_duration = duration
 
 	target.barriers.push_back(barrier)

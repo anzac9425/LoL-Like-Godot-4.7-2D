@@ -136,3 +136,53 @@ func multiply(value: float) -> void:
 	heal_shield_power_multiplier *= value
 	
 	radius *= value
+
+
+func get_delta(before: Statistics) -> Statistics:
+	var delta: Statistics = Statistics.new()
+
+	delta.health = health - before.health
+	delta.health_regeneration = health_regeneration - before.health_regeneration
+
+	delta.mana = mana - before.mana
+	delta.mana_regeneration = mana_regeneration - before.mana_regeneration
+
+	delta.attack_damage = attack_damage - before.attack_damage
+	delta.ability_power = ability_power - before.ability_power
+	delta.adaptive_force = adaptive_force - before.adaptive_force
+
+	delta.armor = armor - before.armor
+	delta.magic_resistance = magic_resistance - before.magic_resistance
+
+	delta.attack_speed = attack_speed - before.attack_speed
+	delta.attack_speed_multiplier = attack_speed_multiplier - before.attack_speed_multiplier
+	delta.attack_projectile_speed = attack_projectile_speed - before.attack_projectile_speed
+
+	delta.skill_haste = skill_haste - before.skill_haste
+	delta.ultimate_haste = ultimate_haste - before.ultimate_haste
+	delta.item_haste = item_haste - before.item_haste
+
+	delta.critical_chance = critical_chance - before.critical_chance
+	delta.critical_damage_multiplier = critical_damage_multiplier - before.critical_damage_multiplier
+
+	delta.move_speed = move_speed - before.move_speed
+	delta.move_speed_multiplier = move_speed_multiplier - before.move_speed_multiplier
+
+	delta.armor_penetration_flat = armor_penetration_flat - before.armor_penetration_flat
+	delta.armor_penetration_multiplier = armor_penetration_multiplier - before.armor_penetration_multiplier
+
+	delta.magic_penetration_flat = magic_penetration_flat - before.magic_penetration_flat
+	delta.magic_penetration_multiplier = magic_penetration_multiplier - before.magic_penetration_multiplier
+
+	delta.lifesteal = lifesteal - before.lifesteal
+	delta.omnivamp = omnivamp - before.omnivamp
+
+	delta.attack_range = attack_range - before.attack_range
+
+	delta.tenacity = tenacity - before.tenacity
+
+	delta.heal_shield_power_multiplier = heal_shield_power_multiplier - before.heal_shield_power_multiplier
+
+	delta.radius = radius - before.radius
+
+	return delta

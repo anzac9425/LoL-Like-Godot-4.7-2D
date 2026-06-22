@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ikyvtikejdlh"]
+
+[ext_resource type="Script" uid="uid://dbputwvutusx" path="res://src/resources/items/essence_reaver/logic.gd" id="1_y4hah"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_owqy3"]
+[ext_resource type="Resource" uid="uid://d4a4y68vvso7a" path="res://src/resources/items/essence_reaver/statistics.tres" id="3_o8bm4"]
+
+[resource]
+script = ExtResource("2_owqy3")
+item_name = "essence_reaver"
+item_price = 3050.0
+statistics = ExtResource("3_o8bm4")
+item_logic = ExtResource("1_y4hah")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

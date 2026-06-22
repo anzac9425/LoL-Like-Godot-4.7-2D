@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d1v2gxepgtpvf"]
+
+[ext_resource type="Script" uid="uid://lugaexrvdw3q" path="res://src/resources/items/maw_of_malmortius/logic.gd" id="1_unryo"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_60tw0"]
+[ext_resource type="Resource" uid="uid://dtbr7umvfk1jq" path="res://src/resources/items/maw_of_malmortius/statistics.tres" id="3_g0hx7"]
+
+[resource]
+script = ExtResource("2_60tw0")
+item_name = "maw_of_malmortius"
+item_price = 3100.0
+statistics = ExtResource("3_g0hx7")
+item_logic = ExtResource("1_unryo")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

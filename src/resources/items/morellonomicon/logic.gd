@@ -24,7 +24,7 @@ func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: St
 func on_deal_damage(damage_info: DamageInfo) -> void:
 	for instance in damage_info.damage_instances:
 		if instance.damage_type == DamageType.Type.MAGIC:
-			Combat.apply_effect(damage_info.victim, Effect.Type.GRIEVOUS_WOUNDS, 3.0, 0.4)
+			Combat.apply_effect(damage_info.victim, Effect.Type.HEAL_REDUCTION, 3.0, 0.4)
 			
 			return
 

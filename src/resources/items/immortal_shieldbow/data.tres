@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dsojvbpdjg7yn"]
+
+[ext_resource type="Script" uid="uid://bwokp2hxbbxsm" path="res://src/resources/items/immortal_shieldbow/logic.gd" id="1_l2bun"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_jgimd"]
+[ext_resource type="Resource" uid="uid://b4qog4fh61tu7" path="res://src/resources/items/immortal_shieldbow/statistics.tres" id="3_jmi04"]
+
+[resource]
+script = ExtResource("2_jgimd")
+item_name = "immortal_shieldbow"
+item_price = 3000.0
+statistics = ExtResource("3_jmi04")
+item_logic = ExtResource("1_l2bun")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -11,9 +11,6 @@ var q_recast: Cooldown = Cooldown.new()
 
 var r_active: bool
 var r_duration: Cooldown = Cooldown.new()
-var r_bonus_ad_multiplier: float
-var r_bonus_heal_force: float
-var r_bonus_move_speed_multiplier: float
 
 
 func _physics_process(delta: float) -> void:
@@ -97,11 +94,11 @@ func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Sta
 
 func modify_total_statistics(_base_statistics: Statistics, bonus_statistics: Statistics, raw_total_statistics: Statistics) -> void:
 	if r_active:
-		bonus_statistics.attack_damage += raw_total_statistics.attack_damage *  r_bonus_ad_multiplier
+		bonus_statistics.attack_damage += (0.20 + (0.20 / 17.0 * character_base.level)) * raw_total_statistics.attack_damage
 		
-		bonus_statistics.heal_shield_power_multiplier += (r_bonus_heal_force)
+		bonus_statistics.heal_shield_power_multiplier += 0.50 + (0.50 / 17.0 * character_base.level)
 		
-		bonus_statistics.move_speed += raw_total_statistics.move_speed * r_bonus_move_speed_multiplier
+		bonus_statistics.move_speed += (0.60 + (0.40 / 17.0 * character_base.level)) * raw_total_statistics.move_speed
 
 
 func on_deal_damage(damage_info: DamageInfo) -> void:
@@ -402,22 +399,11 @@ func cast_w(cast_id: String) -> bool:
 
 
 func _w(cast_id: String) -> void:
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_MOVE,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_AUTO_ATTACK,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
 	
-	var direction: Vector2 = (
-		Ingame.current.get_global_mouse_position()
-		- character_base.global_position
-	).normalized()
+	var direction: Vector2 = (Ingame.current.get_global_mouse_position() - character_base.global_position).normalized()
 	
 	w_cooldown.start(max(0.0, 20.0 - (6.0 / 17.0 * character_base.level)), Cooldown.Type.SKILL, character_base.total_statistics)
 
@@ -503,17 +489,9 @@ func cast_r(_cast_id: String) -> bool:
 func _r() -> void:
 	r_cooldown.start(max(0.0, 120.0 - (40.0 / 17.0 * character_base.level)), Cooldown.Type.ULTIMATE, character_base.total_statistics)
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_MOVE,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_AUTO_ATTACK,
-		0.25
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
 
 	await get_tree().create_timer(0.25).timeout
 
@@ -523,20 +501,5 @@ func _r() -> void:
 	r_active = true
 
 	r_duration.remaining_duration = 10.0
-
-	r_bonus_ad_multiplier = (
-		0.20
-		+ (0.20 / 17.0 * character_base.level)
-	)
-
-	r_bonus_heal_force = (
-		0.50
-		+ (0.50 / 17.0 * character_base.level)
-	)
-
-	r_bonus_move_speed_multiplier = (
-		0.60
-		+ (0.40 / 17.0 * character_base.level)
-	)
 
 	character_base.calculate_statistics()

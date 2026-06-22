@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b8l6o3ompxdms"]
+
+[ext_resource type="Script" uid="uid://qc85rmrkby8g" path="res://src/resources/items/mortal_reminder/logic.gd" id="1_a17vk"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_ndtkl"]
+[ext_resource type="Resource" uid="uid://bh3nmfvljorug" path="res://src/resources/items/mortal_reminder/statistics.tres" id="3_dsw3t"]
+
+[resource]
+script = ExtResource("2_ndtkl")
+item_name = "mortal_reminder"
+item_price = 3000.0
+statistics = ExtResource("3_dsw3t")
+item_logic = ExtResource("1_a17vk")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

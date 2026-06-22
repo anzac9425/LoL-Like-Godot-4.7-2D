@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b7bqigd3yt1y2"]
+
+[ext_resource type="Script" uid="uid://cmc5fc6bn035q" path="res://src/resources/items/muramana/logic.gd" id="1_4jkti"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_j54x5"]
+[ext_resource type="Resource" uid="uid://bvsr7oh73k6y" path="res://src/resources/items/muramana/statistics.tres" id="3_3pgcr"]
+
+[resource]
+script = ExtResource("2_j54x5")
+item_name = "muramana"
+item_price = 2900.0
+statistics = ExtResource("3_3pgcr")
+item_logic = ExtResource("1_4jkti")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

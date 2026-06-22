@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://8y8yk7wq42et"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_hhnhk"]
+
+[resource]
+script = ExtResource("1_hhnhk")
+attack_damage = 55.0
+armor_penetration_flat = 15.0
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

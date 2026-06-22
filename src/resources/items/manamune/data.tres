@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b3oebd0670n3h"]
+
+[ext_resource type="Script" uid="uid://bm7syof13j8o7" path="res://src/resources/items/manamune/logic.gd" id="1_lbp30"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_2qkly"]
+[ext_resource type="Resource" uid="uid://bppqok4qxl4yw" path="res://src/resources/items/manamune/statistics.tres" id="3_fnx5r"]
+
+[resource]
+script = ExtResource("2_2qkly")
+item_name = "manamune"
+item_price = 2900.0
+statistics = ExtResource("3_fnx5r")
+item_logic = ExtResource("1_lbp30")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

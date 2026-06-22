@@ -27,14 +27,16 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
 	if duration.remaining_duration > 0:
 		bonus_statistics.omnivamp += 0.15
-
-
-func modify_total_statistics(_base_statistics: Statistics, bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
+	
 	if character_base.character_data.ranged:
 		bonus_statistics.skill_haste += 5 + 0.1 * bonus_statistics.attack_damage
 	
 	else:
 		bonus_statistics.skill_haste += 5 + 0.13 * bonus_statistics.attack_damage
+
+
+func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
+	pass
 
 
 func on_deal_damage(damage_info: DamageInfo) -> void:

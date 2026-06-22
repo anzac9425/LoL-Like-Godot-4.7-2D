@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d3rxl1yduehy4"]
+
+[ext_resource type="Script" uid="uid://bhrtxdgydtdql" path="res://src/resources/items/bloodthirster/logic.gd" id="1_1b05s"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_fsmcq"]
+[ext_resource type="Resource" uid="uid://b6gr2xusihluj" path="res://src/resources/items/bloodthirster/statistics.tres" id="3_7u6q2"]
+
+[resource]
+script = ExtResource("2_fsmcq")
+item_name = "bloodthirster"
+item_price = 3400.0
+statistics = ExtResource("3_7u6q2")
+item_logic = ExtResource("1_1b05s")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

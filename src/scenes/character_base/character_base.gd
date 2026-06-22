@@ -49,6 +49,7 @@ var auto_attack_target: CharacterBase
 var auto_attack_available: bool = true
 var auto_attack_cooldown: Cooldown = Cooldown.new()
 var auto_attack_cast_time: Cooldown = Cooldown.new()
+var auto_attack_range: Area
 
 
 func _ready() -> void:
@@ -240,6 +241,16 @@ func _draw() -> void:
 			draw_line(Vector2(x, pos.y), Vector2(x, pos.y + height), Color.BLACK, 2.0)
 
 	draw_rect(Rect2(pos, Vector2(width, height)), Color.WHITE, false, 2.0)
+	
+	draw_arc(
+		Vector2.ZERO,
+		total_statistics.attack_range,
+		0.0,
+		TAU,
+		128,
+		Color(1, 1, 1, 0.5),
+		2.0
+	)
 
 
 func die() -> void:
@@ -709,6 +720,54 @@ func can_die():
 	return true
 
 
+func apply_base_statistics_hook_stage(logics: Array, target_statistics: Statistics) -> void:
+	var stage_input: Statistics = target_statistics.duplicate(true)
+	var stage_outputs: Array[Statistics]
+
+	for logic in logics:
+		var hook_statistics: Statistics = stage_input.duplicate(true)
+
+		logic.modify_base_statistics(hook_statistics)
+
+		stage_outputs.append(hook_statistics)
+
+	for hook_statistics in stage_outputs:
+		target_statistics.add(hook_statistics.get_delta(stage_input))
+
+
+func apply_bonus_statistics_hook_stage(logics: Array, base_statistics_: Statistics, target_statistics: Statistics) -> void:
+	var stage_input: Statistics = target_statistics.duplicate(true)
+	var stage_outputs: Array[Statistics]
+
+	for logic in logics:
+		var hook_statistics: Statistics = stage_input.duplicate(true)
+
+		logic.modify_bonus_statistics(base_statistics_, hook_statistics)
+
+		stage_outputs.append(hook_statistics)
+
+	for hook_statistics in stage_outputs:
+		target_statistics.add(hook_statistics.get_delta(stage_input))
+
+
+func apply_total_statistics_hook_stage(logics: Array, base_statistics_: Statistics, bonus_statistics_: Statistics, raw_total_statistics: Statistics) -> void:
+	var stage_input: Statistics = raw_total_statistics.duplicate(true)
+	var stage_outputs: Array[Statistics]
+
+	for logic in logics:
+		var hook_statistics: Statistics = stage_input.duplicate(true)
+
+		logic.modify_total_statistics(base_statistics_, bonus_statistics_, hook_statistics)
+
+		stage_outputs.append(hook_statistics)
+
+	for hook_statistics in stage_outputs:
+		var delta: Statistics = hook_statistics.get_delta(stage_input)
+
+		bonus_statistics_.add(delta)
+		raw_total_statistics.add(delta)
+
+
 func calculate_statistics() -> void:
 	var old_total_statistics_health: float = total_statistics.health
 	
@@ -721,13 +780,11 @@ func calculate_statistics() -> void:
 	base_statistics.add(character_data.statistics)
 	base_statistics.add(growthed_statistics)
 	
-	for rune_logic in rune_logics:
-		rune_logic.modify_base_statistics(base_statistics)
+	apply_base_statistics_hook_stage(rune_logics, base_statistics)
 	
-	for item_logic in item_logics:
-		item_logic.modify_base_statistics(base_statistics)
+	apply_base_statistics_hook_stage(item_logics, base_statistics)
 	
-	character_logic.modify_base_statistics(base_statistics)
+	apply_base_statistics_hook_stage([character_logic], base_statistics)
 	
 	bonus_statistics = Statistics.new()
 
@@ -735,13 +792,11 @@ func calculate_statistics() -> void:
 		if item.statistics:
 			bonus_statistics.add(item.statistics)
 	
-	for rune_logic in rune_logics:
-		rune_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	apply_bonus_statistics_hook_stage(rune_logics, base_statistics, bonus_statistics)
 	
-	for item_logic in item_logics:
-		item_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	apply_bonus_statistics_hook_stage(item_logics, base_statistics, bonus_statistics)
 	
-	character_logic.modify_bonus_statistics(base_statistics, bonus_statistics)
+	apply_bonus_statistics_hook_stage([character_logic], base_statistics, bonus_statistics)
 	
 	if bonus_statistics.attack_damage >= bonus_statistics.ability_power:
 		bonus_statistics.attack_damage += bonus_statistics.adaptive_force * 0.6
@@ -754,21 +809,25 @@ func calculate_statistics() -> void:
 	raw_total_statistics.add(base_statistics)
 	raw_total_statistics.add(bonus_statistics)
 	
-	for rune_logic in rune_logics:
-		rune_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
+	apply_total_statistics_hook_stage(rune_logics, base_statistics, bonus_statistics, raw_total_statistics)
 	
-	for item_logic in item_logics:
-		item_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
-		
-	character_logic.modify_total_statistics(base_statistics, bonus_statistics, raw_total_statistics)
+	apply_total_statistics_hook_stage(item_logics, base_statistics, bonus_statistics, raw_total_statistics)
+	
+	apply_total_statistics_hook_stage([character_logic], base_statistics, bonus_statistics, raw_total_statistics)
 	
 	total_statistics = Statistics.new()
 	
 	total_statistics.add(base_statistics)
 	total_statistics.add(bonus_statistics)
 	
-	total_statistics.attack_speed *= 1.0 + total_statistics.attack_speed_multiplier
-	total_statistics.move_speed *= 1.0 + total_statistics.move_speed_multiplier
+	var attack_speed_multipliered: float = total_statistics.attack_speed * total_statistics.attack_speed_multiplier
+	var move_speed_multipliered: float = total_statistics.move_speed * total_statistics.move_speed_multiplier
+	
+	bonus_statistics.attack_speed += attack_speed_multipliered
+	bonus_statistics.move_speed += move_speed_multipliered
+	
+	total_statistics.attack_speed += attack_speed_multipliered
+	total_statistics.move_speed += move_speed_multipliered
 	
 	var slow_amount: float
 	

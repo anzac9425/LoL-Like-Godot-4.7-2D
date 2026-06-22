@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cmiat7bqujdg1"]
 
-[ext_resource type="Script" uid="uid://12bl5emoo3jv" path="res://src/resources/items/the_black_cleaver/logic.gd" id="1_omj7t"]
+[ext_resource type="Script" uid="uid://12bl5emoo3jv" path="res://src/resources/items/black_cleaver/logic.gd" id="1_omj7t"]
 [ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_atdjv"]
-[ext_resource type="Resource" uid="uid://bwteyjxwisewl" path="res://src/resources/items/the_black_cleaver/statistics.tres" id="3_71df3"]
+[ext_resource type="Resource" uid="uid://bwteyjxwisewl" path="res://src/resources/items/black_cleaver/statistics.tres" id="3_71df3"]
 
 [resource]
 script = ExtResource("2_atdjv")

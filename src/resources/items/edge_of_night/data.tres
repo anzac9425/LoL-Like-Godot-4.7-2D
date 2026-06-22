@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://34m77hl545c1"]
+
+[ext_resource type="Script" uid="uid://tn067rp7ugro" path="res://src/resources/items/edge_of_night/logic.gd" id="1_dxpfq"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_i8wag"]
+[ext_resource type="Resource" uid="uid://olhlsqmnkho4" path="res://src/resources/items/edge_of_night/statistics.tres" id="3_nm20y"]
+
+[resource]
+script = ExtResource("2_i8wag")
+item_name = "edge_of_night"
+item_price = 3000.0
+statistics = ExtResource("3_nm20y")
+item_logic = ExtResource("1_dxpfq")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

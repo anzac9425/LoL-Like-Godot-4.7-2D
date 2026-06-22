@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://co5d1a8wphf3v"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_qoulw"]
+
+[resource]
+script = ExtResource("1_qoulw")
+attack_speed_multiplier = 0.25
+move_speed = 45.0
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

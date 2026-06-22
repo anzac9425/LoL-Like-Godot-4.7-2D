@@ -55,13 +55,13 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 	pass
 
 
-func modify_bonus_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics) -> void:
-	pass
-
-
-func modify_total_statistics(_base_statistics: Statistics, bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
+func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
 	if move_speed_duration.remaining_duration > 0.0:
 		bonus_statistics.move_speed += 20.0
+
+
+func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
+	pass
 
 
 func on_deal_damage(_damage_info: DamageInfo) -> void:
