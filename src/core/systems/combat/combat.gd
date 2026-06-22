@@ -209,3 +209,12 @@ static func apply_effect(target: CharacterBase, type: Effect.Type, duration: flo
 	target.effects.append(effect)
 
 	target.calculate_statistics()
+
+
+static func break_spell_shield(target: CharacterBase) -> bool:
+	for i in range(target.statuses.size() - 1, -1, -1):
+		if target.statuses[i].type == Status.Type.SPELL_SHIELD:
+			target.statuses.remove_at(i)
+			return true
+
+	return false

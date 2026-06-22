@@ -156,6 +156,9 @@ func on_deal_damage(damage_info: DamageInfo) -> void:
 				apply_passive(damage_info.victim)
 
 			SourceType.Type.SKILL_W:
+				if Combat.break_spell_shield(damage_info.victim):
+					continue
+				
 				Combat.apply_crowd_control(damage_info.victim, CrowdControl.Type.SLOW, 1.0, 0.9)
 				
 				if damage_info.victim.is_dead:
@@ -228,6 +231,9 @@ func _q(cast_id: String) -> void:
 
 	for target in targets:
 		if !character_base.is_enemy_team(target):
+			continue
+		
+		if Combat.break_spell_shield(target):
 			continue
 		
 		var is_inner: bool
@@ -339,6 +345,9 @@ func _e() -> void:
 	for target in area.get_targets():
 		if !character_base.is_enemy_team(target):
 			continue
+		
+		if Combat.break_spell_shield(target):
+			continue
 
 		var destination: Vector2 = (
 			character_base.global_position
@@ -417,6 +426,10 @@ func _r(cast_id: String) -> void:
 	Combat.apply_forced_movement(character_base, destination, character_base.global_position.distance_to(destination) / 0.36)
 
 	await get_tree().create_timer(0.36).timeout
+	
+	if Combat.break_spell_shield(target):
+		return
+	
 	if character_base.is_dead:
 		r_cooldown.remaining_duration = 0.0
 		return

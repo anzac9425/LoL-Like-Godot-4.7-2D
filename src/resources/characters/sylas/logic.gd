@@ -148,6 +148,9 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 		return
 	
 	var target: CharacterBase = projectile.damage_info.victim
+	
+	if !character_base.is_enemy_team(target):
+		return
 
 	var destination: Vector2 = (
 		target.global_position
@@ -167,11 +170,7 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, travel_time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, travel_time)
 
-	Combat.apply_forced_movement(
-		character_base,
-		destination,
-		1800.0
-	)
+	Combat.apply_forced_movement(character_base, destination, 1800.0)
 	
 	var cast_id: String = projectile.damage_info.cast_id
 
@@ -181,6 +180,9 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 		return
 
 	if target.is_dead:
+		return
+	
+	if Combat.break_spell_shield(target):
 		return
 
 	var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
@@ -250,9 +252,9 @@ func _q(cast_id: String) -> void:
 	Ingame.current.add_child(area)
 	
 	for target in area.get_targets():
-		if !character_base.is_enemy_team(target):
+		if !character_base.is_enemy_team(target) or Combat.break_spell_shield(target):
 			continue
-
+		
 		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
 		damage_info.add_damage_instance(
@@ -285,7 +287,7 @@ func _q(cast_id: String) -> void:
 	Ingame.current.add_child(explosion_area)
 
 	for target in explosion_area.get_targets():
-		if !character_base.is_enemy_team(target):
+		if !character_base.is_enemy_team(target) or Combat.break_spell_shield(target):
 			continue
 
 		var damage_info: DamageInfo = DamageInfo.create(character_base, target, DamageInfo.generate_cast_id())
@@ -386,6 +388,9 @@ func _w(cast_id: String) -> void:
 		return
 
 	if !target.can_be_targeted():
+		return
+	
+	if Combat.break_spell_shield(target):
 		return
 
 	var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
@@ -537,7 +542,7 @@ func _cast_r2() -> void:
 	Ingame.current.add_child(area)
 
 	for target in area.get_targets():
-		if !character_base.is_enemy_team(target):
+		if !character_base.is_enemy_team(target) or Combat.break_spell_shield(target):
 			continue
 
 		var damage_info: DamageInfo = DamageInfo.create(character_base, target, DamageInfo.generate_cast_id())

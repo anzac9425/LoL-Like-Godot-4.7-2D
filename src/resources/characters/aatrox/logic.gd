@@ -128,6 +128,9 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 			var target: CharacterBase = projectile.damage_info.victim
 			var damage_info: DamageInfo = projectile.damage_info
 			
+			if Combat.break_spell_shield(target):
+				return
+			
 			var area: Area = Area.create_polygon(
 				projectile.damage_info.victim.global_position,
 				(target.global_position - character_base.global_position).angle(),
@@ -159,11 +162,7 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 				return
 			
 			if target in area.get_targets():
-				Combat.apply_forced_movement(
-					target,
-					area.global_position,
-					area.global_position.distance_to(target.global_position) / 0.1
-				)
+				Combat.apply_forced_movement(target, area.global_position, area.global_position.distance_to(target.global_position) / 0.1)
 				
 				var second_damage_info: DamageInfo = DamageInfo.create(damage_info.attacker, damage_info.victim, damage_info.cast_id)
 				
@@ -218,17 +217,9 @@ func _q(cast_id: String) -> void:
 
 	q_casting = true
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_MOVE,
-		0.6
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.6)
 
-	Combat.apply_status(
-		character_base,
-		Status.Type.CANNOT_AUTO_ATTACK,
-		0.6
-	)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.6)
 
 	var area: Area
 	var sweet_area: Area
@@ -346,6 +337,9 @@ func _q(cast_id: String) -> void:
 	for target in area.get_targets():
 		if !character_base.is_enemy_team(target):
 			continue
+		
+		if Combat.break_spell_shield(target):
+			continue
 
 		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
 
@@ -354,11 +348,7 @@ func _q(cast_id: String) -> void:
 		if target in sweet_targets:
 			damage *= 1.75
 
-			Combat.apply_crowd_control(
-				target,
-				CrowdControl.Type.AIRBORNE,
-				0.25
-			)
+			Combat.apply_crowd_control(target, CrowdControl.Type.AIRBORNE, 0.25)
 			
 			passive_cooldown.remaining_duration -= 2.0
 
@@ -380,6 +370,7 @@ func _q(cast_id: String) -> void:
 		q_recast.remaining_duration = 0.0
 		q_cooldown.start(max(0.0, 14.0 - 8.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 		q_casting = false
+	
 	else:
 		q_index = next_index
 		await get_tree().create_timer(0.4).timeout
@@ -453,23 +444,13 @@ func cast_e(_cast_id: String) -> bool:
 func _e() -> void:
 	e_cooldown.start(max(0.0, 9.0 - (4.0 / 17.0 * character_base.level)), Cooldown.Type.SKILL, character_base.total_statistics)
 
-	var direction: Vector2 = (
-		Ingame.current.get_global_mouse_position()
-		- character_base.global_position
-	).normalized()
+	var direction: Vector2 = (Ingame.current.get_global_mouse_position() - character_base.global_position).normalized()
 
 	var mouse_pos: Vector2 = Ingame.current.get_global_mouse_position()
 
-	var distance: float = min(
-		character_base.global_position.distance_to(mouse_pos),
-		300.0
-	)
+	var distance: float = min(character_base.global_position.distance_to(mouse_pos), 300.0)
 
-	Combat.apply_forced_movement(
-		character_base,
-		character_base.global_position + direction * distance,
-		800.0
-	)
+	Combat.apply_forced_movement(character_base, character_base.global_position + direction * distance, 800.0)
 	
 	character_base.auto_attack_cooldown.remaining_duration = 0.0
 

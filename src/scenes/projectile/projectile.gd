@@ -50,10 +50,7 @@ func _physics_process(delta: float) -> void:
 				queue_free()
 				return
 
-			global_position = global_position.move_toward(
-				damage_info.victim.global_position,
-				projectile_speed * delta
-			)
+			global_position = global_position.move_toward(damage_info.victim.global_position, projectile_speed * delta)
 
 			if global_position.distance_to(damage_info.victim.global_position) <= projectile_radius + damage_info.victim.character_collision_shape_radius:
 				damage_info.attacker.on_deal_projectile_hit(self)

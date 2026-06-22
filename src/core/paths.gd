@@ -51,6 +51,7 @@ const ITEM_DATA_BLOODTHIRSTER: String = "res://src/resources/items/bloodthirster
 const ITEM_DATA_ESSENCE_REAVER: String = "res://src/resources/items/essence_reaver/data.tres"
 
 const ITEM_DATA_SERPENTS_FANG: String = "res://src/resources/items/serpents_fang/data.tres"
+const ITEM_DATA_EDGE_OF_NIGHT: String = "res://src/resources/items/edge_of_night/data.tres"
 
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"

@@ -14,21 +14,14 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	player = spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(3000, 0), "character", "team1")
+	player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2(3000, 0), "character", "team1")
 	input_characters.append(player)
 	
-	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
-	player.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
-	player.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
-	player.add_item(load(Paths.ITEM_DATA_RUNAANS_HURRICANE))
-	player.add_item(load(Paths.ITEM_DATA_HEXOPTICS_C44))
-	player.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
-	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
-	player.add_item(load(Paths.ITEM_DATA_LORD_DOMINIKS_REGARDS))
-	player.add_item(load(Paths.ITEM_DATA_GUARDIAN_ANGEL))
+	player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
+	player.add_item(load(Paths.ITEM_DATA_EDGE_OF_NIGHT))
 	
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 0), "characster", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 0), "characster", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 1000), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, -1000), "character", "team2")
 	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 1000), "character", "team2")
@@ -37,14 +30,8 @@ func _ready() -> void:
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
-			character.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
-			character.add_item(load(Paths.ITEM_DATA_TRINITY_FORCE))
-			character.add_item(load(Paths.ITEM_DATA_SPEAR_OF_SHOJIN))
-			character.add_item(load(Paths.ITEM_DATA_BLACK_CLEAVER))
-			character.add_item(load(Paths.ITEM_DATA_SUNDERED_SKY))
-			character.add_item(load(Paths.ITEM_DATA_STERAKS_GAGE))
-			character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
-			character.add_item(load(Paths.ITEM_DATA_OVERLORDS_BLOODMAIL))
+			
+			Combat.apply_status(character, Status.Type.SPELL_SHIELD, INF)
 
 func _process(delta: float) -> void:
 	$Camera2D.global_position = $Camera2D.global_position.lerp(player.global_position, 1.0 * delta)

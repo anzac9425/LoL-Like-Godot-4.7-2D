@@ -1,6 +1,19 @@
 extends CharacterLogic
 
 
+var cooldown: Cooldown = Cooldown.new()
+
+
+func _physics_process(delta: float) -> void:
+	if cooldown.remaining_duration > 0:
+		cooldown.remaining_duration -= delta
+		
+		if cooldown.remaining_duration <= 0:
+			cooldown.start(40.0, Cooldown.Type.ITEM, character_base.total_statistics)
+			
+			Combat.apply_status(character_base, Status.Type.SPELL_SHIELD, INF)
+
+
 func on_attack(_damage_info: DamageInfo) -> void:
 	pass
 
@@ -30,7 +43,7 @@ func on_deal_damage(_damage_info: DamageInfo) -> void:
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
-	pass
+	cooldown.start(40.0, Cooldown.Type.ITEM, character_base.total_statistics)
 
 
 func on_deal_projectile_hit(_projectile: Projectile) -> void:

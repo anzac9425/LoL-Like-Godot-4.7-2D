@@ -117,6 +117,17 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 	for instance in projectile.damage_info.damage_instances:
 		match instance.source_type:
 			SourceType.Type.SKILL_W:
+				if !character_base.is_enemy_team(projectile.damage_info.victim) or Combat.break_spell_shield(projectile.damage_info.victim):
+					projectile.damage_info.damage_instances.clear()
+					
+					var stack_: Stack = Stack.new()
+
+					stack_.target = projectile.damage_info.victim
+
+					w_hits.append(stack_)
+					
+					return
+				
 				for stack: Stack in w_hits:
 					if stack.target == projectile.damage_info.victim:
 						projectile.damage_info.damage_instances.clear()
@@ -131,6 +142,10 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 				return
 
 			SourceType.Type.SKILL_R:
+				if !character_base.is_enemy_team(projectile.damage_info.victim) or Combat.break_spell_shield(projectile.damage_info.victim):
+					projectile.damage_info.damage_instances.clear()
+					return
+				
 				var stun_duration: float = 1.0 + 2.5 / 2800.0 * projectile.traveled_distance
 
 				Combat.apply_crowd_control(projectile.damage_info.victim, CrowdControl.Type.STUN, stun_duration)
@@ -142,6 +157,12 @@ func on_deal_projectile_hit(projectile: Projectile) -> void:
 						continue
 
 					if target == character_base:
+						continue
+					
+					if !character_base.is_enemy_team(target):
+						continue
+					
+					if Combat.break_spell_shield(target):
 						continue
 
 					var damage_info: DamageInfo = projectile.damage_info.duplicate()
