@@ -189,6 +189,8 @@ static func apply_forced_movement(
 static func spend_mana(target: CharacterBase, amount: float) -> bool:
 	if target.current_mana < amount:
 		return false
+	
+	target.on_spend_mana(amount)
 
 	target.current_mana -= amount
 	target.queue_redraw()

@@ -52,6 +52,10 @@ const ITEM_DATA_ESSENCE_REAVER: String = "res://src/resources/items/essence_reav
 
 const ITEM_DATA_SERPENTS_FANG: String = "res://src/resources/items/serpents_fang/data.tres"
 const ITEM_DATA_EDGE_OF_NIGHT: String = "res://src/resources/items/edge_of_night/data.tres"
+const ITEM_DATA_VOLTAIC_CYCLOSWORD: String = "res://src/resources/items/voltaic_cyclosword/data.tres"
+const ITEM_DATA_HUBRIS: String = "res://src/resources/items/hubris/data.tres"
+const ITEM_DATA_AXIOM_ARC: String = "res://src/resources/items/axiom_arc/data.tres"
+const ITEM_DATA_SERYLDAS_GRUDGE: String = "res://src/resources/items/seryldas_grudge/data.tres"
 
 const ITEM_DATA_NASHORS_TOOTH: String = "res://src/resources/items/nashors_tooth/data.tres"
 const ITEM_DATA_LICH_BANE: String = "res://src/resources/items/lich_bane/data.tres"
@@ -63,6 +67,10 @@ const ITEM_DATA_SCEPER_OF_BONKING: String = "res://src/resources/items/scepter_o
 const ITEM_DATA_MORELLONOMICON: String = "res://src/resources/items/morellonomicon/data.tres"
 const ITEM_DATA_MALIGNANCE: String = "res://src/resources/items/malignance/data.tres"
 const ITEM_DATA_STORMSURGE: String = "res://src/resources/items/stormsurge/data.tres"
+const ITEM_DATA_MEJAIS_SOULSTEALER: String = "res://src/resources/items/mejais_soulstealer/data.tres"
+const ITEM_DATA_ROD_OF_AGES: String = "res://src/resources/items/rod_of_ages/data.tres"
+const ITEM_DATA_ARCHANGELS_STAFF: String = "res://src/resources/items/archangels_staff/data.tres"
+const ITEM_DATA_SERAPHS_EMBRACE: String = "res://src/resources/items/seraphs_embrace/data.tres"
 
 const RUNE_DATA_PRESS_THE_ATTACK: String = "res://src/resources/runes/press_the_attack/data.tres"
 const RUNE_DATA_LETHAL_TEMPO: String = "res://src/resources/runes/lethal_tempo/data.tres"

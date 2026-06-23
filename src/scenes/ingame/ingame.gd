@@ -18,7 +18,7 @@ func _ready() -> void:
 	input_characters.append(player)
 	
 	player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
-	player.add_item(load(Paths.ITEM_DATA_EDGE_OF_NIGHT))
+	player.add_item(load(Paths.ITEM_DATA_ARCHANGELS_STAFF))
 	
 	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
 	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 0), "characster", "team2")
@@ -30,8 +30,6 @@ func _ready() -> void:
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
-			
-			Combat.apply_status(character, Status.Type.SPELL_SHIELD, INF)
 
 func _process(delta: float) -> void:
 	$Camera2D.global_position = $Camera2D.global_position.lerp(player.global_position, 1.0 * delta)

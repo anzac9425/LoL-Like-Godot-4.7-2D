@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b4qh1b1fmx1k4"]
+
+[ext_resource type="Script" uid="uid://bqajqxxuglhs1" path="res://src/resources/items/mejais_soulstealer/logic.gd" id="1_x8ph2"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_q1ric"]
+[ext_resource type="Resource" uid="uid://d2qh5foy2f0fs" path="res://src/resources/items/mejais_soulstealer/statistics.tres" id="3_c2knh"]
+
+[resource]
+script = ExtResource("2_q1ric")
+item_name = "mejais_soulstealer"
+item_price = 1500.0
+statistics = ExtResource("3_c2knh")
+item_logic = ExtResource("1_x8ph2")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

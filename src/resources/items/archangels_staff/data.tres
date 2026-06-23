@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://jyunkiyjuowq"]
+
+[ext_resource type="Script" uid="uid://dyc34301hh6pd" path="res://src/resources/items/archangels_staff/logic.gd" id="1_gdxfy"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_x8ix3"]
+[ext_resource type="Resource" uid="uid://b6gxovdoh4xc3" path="res://src/resources/items/archangels_staff/statistics.tres" id="3_1l2g1"]
+
+[resource]
+script = ExtResource("2_x8ix3")
+item_name = "archangels_staff"
+item_price = 2900.0
+statistics = ExtResource("3_1l2g1")
+item_logic = ExtResource("1_gdxfy")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

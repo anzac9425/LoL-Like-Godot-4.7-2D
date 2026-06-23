@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bl77tiul53mv"]
+
+[ext_resource type="Script" uid="uid://cvlswoaxnhdow" path="res://src/resources/items/seraphs_embrace/logic.gd" id="1_5ongn"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_snqwc"]
+[ext_resource type="Resource" uid="uid://b5kxd6b6rjnpc" path="res://src/resources/items/seraphs_embrace/statistics.tres" id="3_xenb0"]
+
+[resource]
+script = ExtResource("2_snqwc")
+item_name = "seraphs_embrace"
+item_price = 2900.0
+statistics = ExtResource("3_xenb0")
+item_logic = ExtResource("1_5ongn")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

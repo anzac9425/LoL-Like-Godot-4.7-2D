@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dtifips41jlxh"]
+
+[ext_resource type="Script" uid="uid://db0yeuyqowa3n" path="res://src/resources/items/seryldas_grudge/logic.gd" id="1_s8ds6"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_evmtn"]
+[ext_resource type="Resource" uid="uid://cyn3gnhdnx4bl" path="res://src/resources/items/seryldas_grudge/statistics.tres" id="3_rvhva"]
+
+[resource]
+script = ExtResource("2_evmtn")
+item_name = "seryldas_grudge"
+item_price = 3000.0
+statistics = ExtResource("3_rvhva")
+item_logic = ExtResource("1_s8ds6")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

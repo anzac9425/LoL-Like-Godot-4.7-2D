@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d1qusem6mam4f"]
+
+[ext_resource type="Script" uid="uid://18gpmroojf80" path="res://src/resources/items/axiom_arc/logic.gd" id="1_6w2wu"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_w0qwp"]
+[ext_resource type="Resource" uid="uid://bbhyyopnma7g8" path="res://src/resources/items/axiom_arc/statistics.tres" id="3_j3ond"]
+
+[resource]
+script = ExtResource("2_w0qwp")
+item_name = "axiom_arc"
+item_price = 2750.0
+statistics = ExtResource("3_j3ond")
+item_logic = ExtResource("1_6w2wu")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

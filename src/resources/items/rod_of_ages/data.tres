@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b5kix656exmlv"]
+
+[ext_resource type="Script" uid="uid://lmvmjkqw7gef" path="res://src/resources/items/rod_of_ages/logic.gd" id="1_36rjl"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_8ykne"]
+[ext_resource type="Resource" uid="uid://b2samvwka6x5m" path="res://src/resources/items/rod_of_ages/statistics.tres" id="3_imtcj"]
+
+[resource]
+script = ExtResource("2_8ykne")
+item_name = "rod_of_ages"
+item_price = 2600.0
+statistics = ExtResource("3_imtcj")
+item_logic = ExtResource("1_36rjl")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

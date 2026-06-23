@@ -1,13 +1,12 @@
-extends Node
-class_name CharacterLogic
+extends CharacterLogic
 
 
-var character_base: CharacterBase
+var cooldown: Cooldown = Cooldown.new()
 
-var q_cooldown: Cooldown = Cooldown.new()
-var w_cooldown: Cooldown = Cooldown.new()
-var e_cooldown: Cooldown = Cooldown.new()
-var r_cooldown: Cooldown = Cooldown.new()
+
+func _physics_process(delta: float) -> void:
+	if cooldown.remaining_duration > 0:
+		cooldown.remaining_duration -= delta
 
 
 func on_attack(_damage_info: DamageInfo) -> void:
@@ -26,8 +25,8 @@ func modify_base_statistics(_base_statistics: Statistics) -> void:
 	pass
 
 
-func modify_bonus_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics) -> void:
-	pass
+func modify_bonus_statistics(_base_statistics: Statistics, bonus_statistics: Statistics) -> void:
+	bonus_statistics.ability_power += 0.02 * bonus_statistics.mana
 
 
 func modify_total_statistics(_base_statistics: Statistics, _bonus_statistics: Statistics, _raw_total_statistics: Statistics) -> void:
@@ -39,7 +38,15 @@ func on_deal_damage(_damage_info: DamageInfo) -> void:
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
-	pass
+	if cooldown.remaining_duration > 0:
+		return
+	
+	if character_base.current_health / character_base.total_statistics.health >= 0.3:
+		return
+	
+	cooldown.remaining_duration = 90.0
+	
+	Combat.apply_barrier(character_base, 0.18 * character_base.total_statistics.mana, 3.0)
 
 
 func on_deal_projectile_hit(_projectile: Projectile) -> void:
@@ -54,21 +61,5 @@ func on_lethal_damage(_damage_info: DamageInfo) -> bool:
 	return false
 
 
-func on_spend_mana(_amount: float) -> void:
+func on_cast(_source_type: SourceType.Type) -> void:
 	pass
-
-
-func cast_q(_cast_id: String) -> bool:
-	return false
-	
-
-func cast_w(_cast_id: String) -> bool:
-	return false
-
-
-func cast_e(_cast_id: String) -> bool:
-	return false
-
-
-func cast_r(_cast_id: String) -> bool:
-	return false

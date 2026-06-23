@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dwp25d0ish2ew"]
+
+[ext_resource type="Script" uid="uid://cvt05jp7xdwyq" path="res://src/resources/items/voltaic_cyclosword/logic.gd" id="1_3n2tu"]
+[ext_resource type="Script" uid="uid://6dvxr8q7yxwm" path="res://src/resources/items/item_data.gd" id="2_7y653"]
+[ext_resource type="Resource" uid="uid://kx6w2a4ltc56" path="res://src/resources/items/voltaic_cyclosword/statistics.tres" id="3_158bq"]
+
+[resource]
+script = ExtResource("2_7y653")
+item_name = "voltaic_cyclosword"
+item_price = 3000.0
+statistics = ExtResource("3_158bq")
+item_logic = ExtResource("1_3n2tu")
+metadata/_custom_type_script = "uid://6dvxr8q7yxwm"

@@ -473,6 +473,16 @@ func on_cast(source_type: SourceType.Type):
 		item_logic.on_cast(source_type)
 
 
+func on_spend_mana(amount: float) -> void:
+	for rune_logic in rune_logics:
+		rune_logic.on_spend_mana(amount)
+		
+	for item_logic in item_logics:
+		item_logic.on_spend_mana(amount)
+	
+	character_logic.on_spend_mana(amount)
+
+
 func auto_attack():
 	if !can_auto_attack():
 		return
@@ -781,9 +791,7 @@ func calculate_statistics() -> void:
 	base_statistics.add(growthed_statistics)
 	
 	apply_base_statistics_hook_stage(rune_logics, base_statistics)
-	
 	apply_base_statistics_hook_stage(item_logics, base_statistics)
-	
 	apply_base_statistics_hook_stage([character_logic], base_statistics)
 	
 	bonus_statistics = Statistics.new()
@@ -810,9 +818,7 @@ func calculate_statistics() -> void:
 	raw_total_statistics.add(bonus_statistics)
 	
 	apply_total_statistics_hook_stage(rune_logics, base_statistics, bonus_statistics, raw_total_statistics)
-	
 	apply_total_statistics_hook_stage(item_logics, base_statistics, bonus_statistics, raw_total_statistics)
-	
 	apply_total_statistics_hook_stage([character_logic], base_statistics, bonus_statistics, raw_total_statistics)
 	
 	total_statistics = Statistics.new()
