@@ -274,7 +274,7 @@ func _q3(damage_info: DamageInfo) -> void:
 		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_Q, 25.0 + 100.0 / 17.0 * character_base.level, true, true)
 		
 		q_targets.append(damage_info.victim)
-
+		
 		Combat.apply_crowd_control(damage_info.victim, CrowdControl.Type.AIRBORNE, 0.75)
 	
 	else:
@@ -403,6 +403,7 @@ func _e2() -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, time)
+	Combat.apply_status(character_base, Status.Type.UNSTOPPABLE, time)
 
 	Combat.apply_forced_movement(character_base, e_location, 1200.0)
 
@@ -421,5 +422,85 @@ func _e2() -> void:
 	character_base.calculate_statistics()
 
 
-func cast_r(_cast_id: String) -> bool:
-	return false
+func cast_r(cast_id: String) -> bool:
+	if !character_base.can_cast():
+		return false
+
+	if r_cooldown.remaining_duration > 0.0:
+		return false
+	
+	_r(cast_id)
+	
+	return true
+
+
+func _r(cast_id: String) -> void:
+	r_cooldown.start(max(0.0, 120.0 - 40.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
+	
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.75)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.75)
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.75)
+	
+	var mouse_pos: Vector2 = Ingame.current.get_global_mouse_position()
+	
+	var direction: Vector2 = (mouse_pos - character_base.global_position).normalized()
+
+	var area: Area = Area.create_rectangle(
+		character_base.global_position + direction * 500.0,
+		direction.angle(),
+		1000.0,
+		225.0,
+		true
+	)
+	
+	Ingame.current.add_child(area)
+	
+	await get_tree().create_timer(0.75).timeout
+	
+	if character_base.is_dead:
+		area.queue_free()
+		
+		return
+	
+	var targets: Array[CharacterBase]
+	var farthest_projection: float = -INF
+	var last_target: CharacterBase
+	var blink_position: Vector2 = character_base.global_position + direction * 1000.0
+	
+	for target in area.get_targets():
+		if !character_base.is_enemy_team(target) or Combat.break_spell_shield(target):
+			continue
+		
+		var projection: float = (target.global_position - character_base.global_position).dot(direction)
+
+		if projection > farthest_projection:
+			farthest_projection = projection
+			last_target = target
+		
+		targets.append(target)
+		
+		Combat.apply_crowd_control(target, CrowdControl.Type.STUN, 1.0)
+	
+	if last_target:
+		blink_position = last_target.global_position + direction * 200.0
+		
+	character_base.global_position = blink_position
+	
+	await get_tree().create_timer(0.3).timeout
+	
+	
+	for target in targets:
+		var damage_info: DamageInfo = DamageInfo.create(character_base, target, cast_id)
+		var damage: float = 100.0 + 200.0 / 17.0 * character_base.level + 0.8 * character_base.bonus_statistics.attack_damage
+		
+		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_R, damage, false, false)
+		
+		damage_info.add_damage_instance(DamageType.Type.MAGIC, SourceType.Type.SKILL_R, damage, false, false)
+		
+		Combat.apply_damage(damage_info)
+		
+		Combat.apply_crowd_control(target, CrowdControl.Type.AIRBORNE, 0.75)
+		
+		Combat.apply_forced_movement(target, blink_position, target.global_position.distance_to(blink_position) / 0.75)
+	
+	area.queue_free()

@@ -4,6 +4,7 @@ class_name Ingame
 
 static var current: Ingame
 
+var characters: Array[CharacterBase]
 var input_characters: Array[CharacterBase]
 
 var player
@@ -15,27 +16,54 @@ func _ready() -> void:
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
 	player = spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(0, 0), "character", "team1")
-	input_characters.append(player)
+	characters.append(player)
+	input_characters.append(player)	
 	
 	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
 	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
 	player.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
-	player.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
 	
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 0), "characster", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 1000), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, -1000), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 1000), "character", "team2")
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, -1000), "character", "team2")
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, 0), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 0), "characster", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, 1000), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, -1000), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 1000), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, -1000), "character", "team2"))
 	
-	for character: CharacterBase in $Characters.get_children():
-		if character != player:
+	for character in characters:
+		if character not in input_characters:
 			character.auto_attack_target = player
-			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
-			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
-			character.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
-			character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+
+
+func _physics_process(_delta: float) -> void:
+	for child in get_children():
+		if child is CharacterBase and !child.is_dead:
+			characters.append(child)
+
+	for i in range(characters.size()):
+		for j in range(i + 1, characters.size()):
+			var a: CharacterBase = characters[i]
+			var b: CharacterBase = characters[j]
+			
+			if a.forced_movement or b.forced_movement:
+				continue
+
+			var diff = b.global_position - a.global_position
+			var dist = diff.length()
+
+			var min_dist = a.character_collision_shape_radius + b.character_collision_shape_radius
+
+			if dist < min_dist:
+				var push = (min_dist - dist) * 0.5
+
+				if dist <= 0.001:
+					diff = Vector2.RIGHT
+				else:
+					diff /= dist
+
+				a.global_position -= diff * push
+				b.global_position += diff * push
+
 
 func _process(delta: float) -> void:
 	$Camera2D.global_position = $Camera2D.global_position.lerp(player.global_position, 1.0 * delta)

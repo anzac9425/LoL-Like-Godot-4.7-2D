@@ -169,7 +169,6 @@ func _physics_process(delta: float) -> void:
 					if auto_attack_cast_time.remaining_duration <= 0.0:
 						auto_attack()
 
-
 func _draw() -> void:
 	if is_dead:
 		return
@@ -497,6 +496,9 @@ func _auto_attack():
 		return
 	
 	if !auto_attack_target.can_be_targeted():
+		return
+		
+	if !auto_attack_target.can_auto_attack():
 		return
 		
 	var damage_info: DamageInfo = DamageInfo.create(self, auto_attack_target, DamageInfo.generate_cast_id())
