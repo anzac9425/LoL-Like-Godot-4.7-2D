@@ -12,6 +12,7 @@ const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/dat
 const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/data.tres"
 const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/data.tres"
 const CHARACTER_DATA_ASHE: String = "res://src/resources/characters/ashe/data.tres"
+const CHARACTER_DATA_YONE: String = "res://src/resources/characters/yone/data.tres"
 
 const ITEM_DATA_BERSERKERS_GREAVES: String = "res://src/resources/items/berserkers_greaves/data.tres"
 

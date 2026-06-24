@@ -14,22 +14,28 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	player = spawn_character(load(Paths.CHARACTER_DATA_SYLAS), Vector2(3000, 0), "character", "team1")
+	player = spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(0, 0), "character", "team1")
 	input_characters.append(player)
 	
-	player.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
-	player.add_item(load(Paths.ITEM_DATA_ARCHANGELS_STAFF))
+	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
+	player.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+	player.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
 	
-	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
+	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2")
 	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 0), "characster", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 1000), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, -1000), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 1000), "character", "team2")
-	spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, -1000), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 1000), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, -1000), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, 1000), "character", "team2")
+	#spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(1000, -1000), "character", "team2")
 	
 	for character: CharacterBase in $Characters.get_children():
 		if character != player:
 			character.auto_attack_target = player
+			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
+			character.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+			character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
 
 func _process(delta: float) -> void:
 	$Camera2D.global_position = $Camera2D.global_position.lerp(player.global_position, 1.0 * delta)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://d26oo0fer3l4l"]
+
+[ext_resource type="Script" uid="uid://cd4grssjkny8" path="res://src/resources/characters/yone/logic.gd" id="1_ujdv2"]
+[ext_resource type="Resource" uid="uid://dq3axt1pgrywc" path="res://src/resources/characters/yone/growth_statistics.tres" id="2_bpiix"]
+[ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="3_8dr0e"]
+[ext_resource type="Resource" uid="uid://bdvtl7may3prr" path="res://src/resources/characters/yone/statistics.tres" id="4_ba1pk"]
+
+[resource]
+script = ExtResource("3_8dr0e")
+character_name = "yone"
+auto_attack_windup_multiplier = 0.22
+statistics = ExtResource("4_ba1pk")
+growth_statistics = ExtResource("2_bpiix")
+character_logic = ExtResource("1_ujdv2")
+metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

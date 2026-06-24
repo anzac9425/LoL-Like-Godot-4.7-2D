@@ -313,7 +313,7 @@ func set_radius_collision_shape(radius: float) -> void:
 	character_collision_shape_radius = radius
 
 
-func on_attack(damage_info):
+func on_attack(damage_info: DamageInfo):
 	apply_damage_info_hook_stage(rune_logics, "on_attack", damage_info)
 	apply_damage_info_hook_stage(item_logics, "on_attack", damage_info)
 	apply_damage_info_hook_stage([character_logic], "on_attack", damage_info)

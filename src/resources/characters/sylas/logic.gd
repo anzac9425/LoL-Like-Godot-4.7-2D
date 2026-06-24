@@ -235,6 +235,9 @@ func _q(cast_id: String) -> void:
 	var target_position: Vector2 = Ingame.current.get_global_mouse_position()
 
 	await get_tree().create_timer(0.4).timeout
+	
+	if character_base.is_dead:
+		return
 
 	var direction: Vector2 = target_position - character_base.global_position
 
