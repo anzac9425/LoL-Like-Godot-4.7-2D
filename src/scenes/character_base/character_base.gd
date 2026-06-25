@@ -36,12 +36,16 @@ var rune_logics: Array[CharacterLogic]
 
 var effects: Array[Effect]
 
+var spells: Array[Spell]
+
 var character_radius: float
 var character_sprite_radius: float
 var character_collision_shape_radius: float
 
 var is_moving: bool
 var target_position: Vector2
+
+var is_ghost: bool
 
 var forced_movement: ForcedMovement
 
@@ -56,7 +60,11 @@ func _ready() -> void:
 	character_logic = character_data.character_logic.new()
 	character_logic.name = "CharacterLogic"
 	character_logic.character_base = self
+	
 	add_child(character_logic)
+	
+	spells.append(Spell.new())
+	spells.append(Spell.new())
 
 	calculate_statistics()
 
@@ -131,11 +139,25 @@ func _physics_process(delta: float) -> void:
 			var effect: Effect = effects[i]
 
 			effect.remaining_duration -= delta
+			
+			if effect.type == Effect.Type.DOT:
+				var damage_info: DamageInfo = effect.damage_info.duplicate()
+				
+				for instance in damage_info.damage_instances:
+					instance.amount /= effect.amount
+					instance.amount *= delta
+				
+				Combat.apply_damage(damage_info)
 
 			if effect.remaining_duration <= 0.0:
 				effects.remove_at(i)
-
+				
 				calculate_statistics()
+	
+	if spells:
+		for spell in spells:
+			if spell.cooldown.remaining_duration > 0:
+				spell.cooldown.remaining_duration -= delta
 	
 	if auto_attack_cooldown.remaining_duration > 0.0:
 		auto_attack_cooldown.remaining_duration -= delta
@@ -579,6 +601,27 @@ func add_rune(rune_data: RuneData):
 	calculate_statistics()
 
 
+func add_spell(type: Spell.Type, slot: int) -> void:
+	var spell: Spell
+
+	match type:
+		Spell.Type.BLINK:
+			spell = Blink.new()
+		
+		Spell.Type.IGNITE:
+			spell = Ignite.new()
+
+	spells[slot] = spell
+
+
+func spell_1() -> void:
+	spells[0].cast(self)
+
+
+func spell_2() -> void:
+	spells[1].cast(self)
+
+
 func is_same_team(target: CharacterBase) -> bool:
 	return team == target.team
 
@@ -662,7 +705,7 @@ func can_auto_attack() -> bool:
 	return true
 
 
-func can_cast():
+func can_cast() -> bool:
 	if is_dead:
 		return false
 	
@@ -694,7 +737,7 @@ func can_be_targeted() -> bool:
 	return true
 
 
-func can_take_damage():
+func can_take_damage() -> bool:
 	if is_dead:
 		return false
 		
@@ -707,7 +750,7 @@ func can_take_damage():
 	return true
 
 
-func can_be_crowd_controlled():
+func can_be_crowd_controlled() -> bool:
 	if is_dead:
 		return false
 	
@@ -719,7 +762,7 @@ func can_be_crowd_controlled():
 	
 	return true
 
-func can_die():
+func can_die() -> bool:
 	if is_dead:
 		return false
 	

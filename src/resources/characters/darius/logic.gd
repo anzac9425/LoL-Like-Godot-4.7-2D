@@ -196,20 +196,13 @@ func cast_q(cast_id: String) -> bool:
 
 func _q(cast_id: String) -> void:
 	q_cooldown.start(max(0.0, 9.0 - (4.0 / 17.0 * character_base.level)), Cooldown.Type.SKILL, character_base.total_statistics)
+	
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.75)
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.75)
 
-	var outer_area: Area = Area.create_circle(
-		character_base.global_position,
-		425.0,
-		true,
-		character_base
-	)
+	var outer_area: Area = Area.create_circle(character_base.global_position, 425.0, true, character_base)
 
-	var inner_area: Area = Area.create_circle(
-		character_base.global_position,
-		205.0,
-		true,
-		character_base
-	)
+	var inner_area: Area = Area.create_circle(character_base.global_position, 205.0, true, character_base)
 
 	Ingame.current.spawn_area(outer_area)
 	Ingame.current.spawn_area(inner_area)

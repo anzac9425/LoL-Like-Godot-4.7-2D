@@ -3,7 +3,8 @@ class_name Cooldown
 enum Type {
 	SKILL,
 	ULTIMATE,
-	ITEM
+	ITEM,
+	SPELL
 }
 
 var remaining_duration: float

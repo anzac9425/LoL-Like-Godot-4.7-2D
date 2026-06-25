@@ -198,7 +198,7 @@ static func spend_mana(target: CharacterBase, amount: float) -> bool:
 	return true
 
 
-static func apply_effect(target: CharacterBase, type: Effect.Type, duration: float, amount: float):
+static func apply_effect(target: CharacterBase, type: Effect.Type, duration: float, amount: float, damage_info: DamageInfo = DamageInfo.new()):
 	if target.is_dead:
 		return
 
@@ -207,6 +207,7 @@ static func apply_effect(target: CharacterBase, type: Effect.Type, duration: flo
 	effect.type = type
 	effect.remaining_duration = duration
 	effect.amount = amount
+	effect.damage_info = damage_info
 
 	target.effects.append(effect)
 

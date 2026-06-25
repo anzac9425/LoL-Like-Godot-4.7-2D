@@ -47,6 +47,9 @@ func _physics_process(delta: float) -> void:
 
 		if r_duration.remaining_duration <= 0.0:
 			r_active = false
+			
+			character_base.is_ghost = false
+	
 			character_base.calculate_statistics()
 
 
@@ -480,7 +483,9 @@ func _r() -> void:
 		return
 
 	r_active = true
-
+	
+	character_base.is_ghost = true
+	
 	r_duration.remaining_duration = 10.0
-
+	
 	character_base.calculate_statistics()

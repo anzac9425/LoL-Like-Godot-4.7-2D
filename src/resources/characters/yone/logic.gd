@@ -103,7 +103,9 @@ func on_deal_damage(damage_info: DamageInfo) -> void:
 
 
 func on_take_damage(_damage_info: DamageInfo) -> void:
-	pass
+	if character_base.is_dead:
+		if e_duration.remaining_duration > 0:
+			_e2()
 
 
 func on_deal_projectile_hit(projectile: Projectile) -> void:
@@ -364,16 +366,18 @@ func cast_e(cast_id: String) -> bool:
 	if !character_base.can_cast():
 		return false
 
-	if e_cooldown.remaining_duration > 0:
-		if e_duration.remaining_duration <= 4.5 and e_duration.remaining_duration > 0:
+	if e_duration.remaining_duration > 0:
+		if e_duration.remaining_duration <= 4.5:
 			_e2()
-		
-		else:
-			return false
-	else:
-		e_cast_id = cast_id
-		_e()
-	
+
+		return true
+
+	if e_cooldown.remaining_duration > 0:
+		return false
+
+	e_cast_id = cast_id
+	_e()
+
 	return true
 
 
@@ -381,6 +385,8 @@ func _e() -> void:
 	e_cooldown.start(max(0.0, 22.0 - 12.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 	
 	e_duration.remaining_duration = 5.0
+	
+	character_base.is_ghost = true
 	
 	var time: float = 300.0 / 1200.0
 	
@@ -397,6 +403,8 @@ func _e() -> void:
 
 func _e2() -> void:
 	e_duration.remaining_duration = 0
+	
+	character_base.is_ghost = false
 	
 	var time: float = character_base.global_position.distance_to(e_location) / 1200.0
 	

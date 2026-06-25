@@ -20,32 +20,46 @@ func _ready() -> void:
 	input_characters.append(player)	
 	
 	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+	player.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
 	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
 	player.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+	player.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+	player.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
+	player.add_item(load(Paths.ITEM_DATA_KRAKEN_SLAYER))
 	
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, 0), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 0), "characster", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, 1000), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, -1000), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 1000), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, -1000), "character", "team2"))
+	player.add_spell(Spell.Type.BLINK, 0)
+	player.add_spell(Spell.Type.IGNITE, 1)
+	
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(1000, 0), "character", "team2"))
+	characters.append(spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(-1000, 1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, -1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, -1000), "character", "team2"))
 	
 	for character in characters:
 		if character not in input_characters:
 			character.auto_attack_target = player
+	
+			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+			character.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
+			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
+			character.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+			character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+			character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
+			character.add_item(load(Paths.ITEM_DATA_KRAKEN_SLAYER))
 
 
 func _physics_process(_delta: float) -> void:
-	for child in get_children():
-		if child is CharacterBase and !child.is_dead:
-			characters.append(child)
-
 	for i in range(characters.size()):
 		for j in range(i + 1, characters.size()):
 			var a: CharacterBase = characters[i]
 			var b: CharacterBase = characters[j]
 			
 			if a.forced_movement or b.forced_movement:
+				continue
+				
+			if a.is_ghost or b.is_ghost:
 				continue
 
 			var diff = b.global_position - a.global_position
@@ -59,8 +73,9 @@ func _physics_process(_delta: float) -> void:
 				if dist <= 0.001:
 					diff = Vector2.RIGHT
 				else:
+				
 					diff /= dist
-
+				
 				a.global_position -= diff * push
 				b.global_position += diff * push
 
@@ -112,6 +127,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("skill_r"):
 		for character in input_characters:
 			character.on_cast(SourceType.Type.SKILL_R)
+	
+	if event.is_action_pressed("spell_1"):
+		for character in input_characters:
+			character.spell_1()
+	
+	if event.is_action_pressed("spell_2"):
+		for character in input_characters:
+			character.spell_2()
 
 
 func get_target_at_mouse_position() -> CharacterBase:
