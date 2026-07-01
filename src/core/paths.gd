@@ -6,6 +6,7 @@ const MAIN_PATH: String = "res://src/scenes/main/main.tscn"
 const INGAME_PATH: String = "res://src/scenes/ingame/ingame.tscn"
 const CHARACTER_BASE: String = "res://src/scenes/character_base/character_base.tscn"
 const PROJECTILE: String = "res://src/scenes/projectile/projectile.tscn"
+const AREA: String = "res://src/scenes/area/area.tscn"
 
 const CHARACTER_DATA_TEST1: String = "res://src/resources/characters/test1/data.tres"
 const CHARACTER_DATA_AATROX: String = "res://src/resources/characters/aatrox/data.tres"
@@ -13,6 +14,7 @@ const CHARACTER_DATA_DARIUS: String = "res://src/resources/characters/darius/dat
 const CHARACTER_DATA_SYLAS: String = "res://src/resources/characters/sylas/data.tres"
 const CHARACTER_DATA_ASHE: String = "res://src/resources/characters/ashe/data.tres"
 const CHARACTER_DATA_YONE: String = "res://src/resources/characters/yone/data.tres"
+const CHARACTER_DATA_ZED: String = "res://src/resources/characters/zed/data.tres"
 
 const ITEM_DATA_BERSERKERS_GREAVES: String = "res://src/resources/items/berserkers_greaves/data.tres"
 

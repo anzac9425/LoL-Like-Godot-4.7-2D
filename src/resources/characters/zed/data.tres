@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://ua3lcsxljkuu"]
+
+[ext_resource type="Script" uid="uid://crxyeg5owcbni" path="res://src/resources/characters/zed/logic.gd" id="1_lb65c"]
+[ext_resource type="Resource" uid="uid://dsi0byojrv30j" path="res://src/resources/characters/zed/growth_statistics.tres" id="2_eppke"]
+[ext_resource type="Script" uid="uid://c5nrg3dfghsbm" path="res://src/resources/characters/character_data.gd" id="3_pcbuf"]
+[ext_resource type="Resource" uid="uid://cpe1jrksqe5hc" path="res://src/resources/characters/zed/statistics.tres" id="4_u4v6y"]
+
+[resource]
+script = ExtResource("3_pcbuf")
+character_name = "zed"
+auto_attack_windup_multiplier = 0.198
+statistics = ExtResource("4_u4v6y")
+growth_statistics = ExtResource("2_eppke")
+character_logic = ExtResource("1_lb65c")
+metadata/_custom_type_script = "uid://c5nrg3dfghsbm"

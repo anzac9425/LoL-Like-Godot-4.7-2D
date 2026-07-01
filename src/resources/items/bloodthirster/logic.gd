@@ -10,6 +10,9 @@ func on_hit(_damage_info: DamageInfo) -> void:
 
 
 func build_damage_info(damage_info: DamageInfo) -> void:
+	if damage_info.attacker != character_base:
+		return
+	
 	for instance in damage_info.damage_instances:
 		if instance.allow_lifesteal:
 			instance.allow_lifesteal = false

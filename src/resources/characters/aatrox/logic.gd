@@ -224,6 +224,8 @@ func _q(cast_id: String) -> void:
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.6)
 
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+
 	var area: Area
 	var sweet_area: Area
 	var damage_multiplier: float
@@ -396,6 +398,10 @@ func _w(cast_id: String) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.25)
 	
 	var direction: Vector2 = (Ingame.current.get_global_mouse_position() - character_base.global_position).normalized()
 	
@@ -476,6 +482,10 @@ func _r() -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.25)
 
 	await get_tree().create_timer(0.25).timeout
 

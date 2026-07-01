@@ -305,6 +305,7 @@ func _e() -> void:
 	Combat.apply_status(character_base,Status.Type.CANNOT_MOVE, 0.65)
 	Combat.apply_status(character_base,Status.Type.CANNOT_AUTO_ATTACK, 0.65)
 	Combat.apply_status(character_base,Status.Type.CANNOT_CAST, 0.65)
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.25)
 	
 	var radius: float = 535.0 + character_base.character_collision_shape_radius
 	var points: PackedVector2Array = PackedVector2Array()
@@ -408,6 +409,7 @@ func _r(cast_id: String) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.36)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.36)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.36)
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.25)
 	
 	var direction: Vector2 = (target.global_position - character_base.global_position).normalized()
 

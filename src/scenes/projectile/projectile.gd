@@ -58,7 +58,6 @@ func _physics_process(delta: float) -> void:
 				
 				Combat.apply_damage(damage_info)
 				
-				
 				queue_free()
 				return
 		

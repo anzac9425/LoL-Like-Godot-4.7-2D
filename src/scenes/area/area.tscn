@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://ba5u6deb0odt" path="res://src/scenes/area/area.gd" id="1_ybrte"]
 
-[node name="Area" type="Node2D" unique_id=964916043]
+[node name="Area" type="Area2D" unique_id=628038582]
 script = ExtResource("1_ybrte")

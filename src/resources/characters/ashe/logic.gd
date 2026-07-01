@@ -339,6 +339,8 @@ func _r(cast_id: String) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.25)
 	
 	r_cooldown.start(max(0.0, 100.0 - 40.0 / 17.0 * character_base.level), Cooldown.Type.ULTIMATE, character_base.total_statistics)
 	

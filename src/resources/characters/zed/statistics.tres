@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Statistics" format=3 uid="uid://cpe1jrksqe5hc"]
+
+[ext_resource type="Script" uid="uid://b8abtl1va6o4b" path="res://src/resources/statistics.gd" id="1_vchhw"]
+
+[resource]
+script = ExtResource("1_vchhw")
+health = 654.0
+health_regeneration = 7.0
+mana = 200.0
+mana_regeneration = 50.0
+attack_damage = 63.0
+armor = 32.0
+magic_resistance = 29.0
+attack_speed = 0.651
+attack_projectile_speed = 2048.0
+critical_damage_multiplier = 2.0
+move_speed = 345.0
+attack_range = 125.0
+radius = 64.0
+metadata/_custom_type_script = "uid://b8abtl1va6o4b"

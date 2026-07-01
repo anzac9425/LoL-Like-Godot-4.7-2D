@@ -227,9 +227,7 @@ func _q(cast_id: String) -> void:
 	q_cooldown.start(max(0.0, 10.0 - 4.0 / 17.0 * character_base.level), Cooldown.Type.SKILL, character_base.total_statistics)
 
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.4)
-	
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.4)
-	
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.4)
 	
 	var target_position: Vector2 = Ingame.current.get_global_mouse_position()
@@ -379,6 +377,7 @@ func _w(cast_id: String) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, time)
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, time)
 
 	Combat.apply_forced_movement(character_base, destination, 1024.0)
 
@@ -477,9 +476,7 @@ func _cast_e2(cast_id: String) -> void:
 	add_passive()
 	
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
-	
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
-	
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
 	
 	var mouse_position: Vector2 = Ingame.current.get_global_mouse_position()
@@ -527,6 +524,15 @@ func cast_r(_cast_id: String) -> bool:
 
 
 func _r() -> void:
+	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.25)
+	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.25)
+	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.25)
+	
+	await get_tree().create_timer(0.25).timeout
+	
+	if character_base.is_dead:
+		return
+	
 	r_active = true
 	
 	add_passive()

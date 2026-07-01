@@ -15,42 +15,79 @@ func _ready() -> void:
 	
 	$Camera2D.zoom = Vector2(0.625 , 0.625)
 	
-	player = spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(0, 0), "character", "team1")
+	player = spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(0, 0), "character", "team1")
 	characters.append(player)
-	input_characters.append(player)	
+	input_characters.append(player)
 	
 	player.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
-	player.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
-	player.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
-	player.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
 	player.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+	player.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
+	player.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+	player.add_item(load(Paths.ITEM_DATA_BLOODTHIRSTER))
 	player.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
-	player.add_item(load(Paths.ITEM_DATA_KRAKEN_SLAYER))
+	player.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
 	
 	player.add_spell(Spell.Type.BLINK, 0)
 	player.add_spell(Spell.Type.IGNITE, 1)
 	
 	characters.append(spawn_character(load(Paths.CHARACTER_DATA_DARIUS), Vector2(-1000, 0), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(1000, 0), "character", "team2"))
-	characters.append(spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(-1000, 1000), "character", "team2"))
-	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(-1000, -1000), "character", "team2"))
-	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, 1000), "character", "team2"))
-	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_YONE), Vector2(1000, -1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_ASHE), Vector2(1000, 0), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(-1000, 1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(-1000, -1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(1000, 1000), "character", "team2"))
+	#characters.append(spawn_character(load(Paths.CHARACTER_DATA_AATROX), Vector2(1000, -1000), "character", "team2"))
 	
+	for character in characters:
+		if character in input_characters:
+			continue
+
+		match character.character_data.character_name:
+			"ashe":
+				character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+
+				character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+				character.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
+				character.add_item(load(Paths.ITEM_DATA_RUNAANS_HURRICANE))
+				character.add_item(load(Paths.ITEM_DATA_LORD_DOMINIKS_REGARDS))
+				character.add_item(load(Paths.ITEM_DATA_BLOODTHIRSTER))
+				character.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
+
+			"aatrox":
+				character.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
+
+				character.add_item(load(Paths.ITEM_DATA_BLACK_CLEAVER))
+				character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
+				character.add_item(load(Paths.ITEM_DATA_STERAKS_GAGE))
+				character.add_item(load(Paths.ITEM_DATA_SUNDERED_SKY))
+				character.add_item(load(Paths.ITEM_DATA_SPEAR_OF_SHOJIN))
+				character.add_item(load(Paths.ITEM_DATA_OVERLORDS_BLOODMAIL))
+
+			"darius":
+				character.add_rune(load(Paths.RUNE_DATA_CONQUEROR))
+
+				character.add_item(load(Paths.ITEM_DATA_BLACK_CLEAVER))
+				character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
+				character.add_item(load(Paths.ITEM_DATA_STERAKS_GAGE))
+				character.add_item(load(Paths.ITEM_DATA_SUNDERED_SKY))
+				character.add_item(load(Paths.ITEM_DATA_SPEAR_OF_SHOJIN))
+				character.add_item(load(Paths.ITEM_DATA_OVERLORDS_BLOODMAIL))
+
+			"yone":
+				character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
+				
+				character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
+				character.add_item(load(Paths.ITEM_DATA_PHANTOM_DANCER))
+				character.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
+				character.add_item(load(Paths.ITEM_DATA_BLOODTHIRSTER))
+				character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
+				character.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
+
+
+func _physics_process(_delta: float) -> void:
 	for character in characters:
 		if character not in input_characters:
 			character.auto_attack_target = player
 	
-			character.add_rune(load(Paths.RUNE_DATA_LETHAL_TEMPO))
-			character.add_item(load(Paths.ITEM_DATA_BERSERKERS_GREAVES))
-			character.add_item(load(Paths.ITEM_DATA_BLADE_OF_THE_RUINED_KING))
-			character.add_item(load(Paths.ITEM_DATA_IMMORTAL_SHIELDBOW))
-			character.add_item(load(Paths.ITEM_DATA_INFINITY_EDGE))
-			character.add_item(load(Paths.ITEM_DATA_DEATHS_DANCE))
-			character.add_item(load(Paths.ITEM_DATA_KRAKEN_SLAYER))
-
-
-func _physics_process(_delta: float) -> void:
 	for i in range(characters.size()):
 		for j in range(i + 1, characters.size()):
 			var a: CharacterBase = characters[i]
@@ -60,6 +97,9 @@ func _physics_process(_delta: float) -> void:
 				continue
 				
 			if a.is_ghost or b.is_ghost:
+				continue
+				
+			if a.is_dead or b.is_dead:
 				continue
 
 			var diff = b.global_position - a.global_position

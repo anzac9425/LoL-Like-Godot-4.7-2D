@@ -36,6 +36,8 @@ func cast(caster: CharacterBase) -> bool:
 	damage_info.is_dot = true
 	
 	Combat.apply_effect(target, Effect.Type.DOT, 5.0, 5.0, damage_info)
+	
+	Combat.apply_effect(target, Effect.Type.HEAL_REDUCTION, 5.0, 0.4)
 
 	cooldown.start(180.0, Cooldown.Type.SPELL, target.total_statistics)
 

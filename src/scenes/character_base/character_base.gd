@@ -195,9 +195,9 @@ func _draw() -> void:
 	if is_dead:
 		return
 		
-	var width: float = 256.0
-	var height: float = 32.0
-	var mana_height: float = 8.0
+	var width: float = 4 * total_statistics.radius
+	var height: float = total_statistics.radius / 2
+	var mana_height: float = total_statistics.radius / 8
 	
 	var barrier_amount: float = 0.0
 	
@@ -208,8 +208,8 @@ func _draw() -> void:
 
 	var health_ratio: float = current_health / max_health_barrier
 
-	var pos: Vector2 = Vector2(width / -2, -128.0)
-	var mana_pos: Vector2 = Vector2(width / -2, -128.0 + height + 4.0)
+	var pos: Vector2 = Vector2(width / -2, -2 * total_statistics.radius)
+	var mana_pos: Vector2 = Vector2(width / -2, -2 * total_statistics.radius + height + 4.0)
 
 	draw_rect(Rect2(pos, Vector2(width, height)), Color.BLACK)
 
@@ -271,6 +271,37 @@ func _draw() -> void:
 		128,
 		Color(1, 1, 1, 0.5),
 		2.0
+	)
+
+	var font: Font = ThemeDB.fallback_font
+	var font_size: int = int(total_statistics.radius * 0.8)
+	var text: String = self.name
+
+	if crowd_controls.size() > 0:
+		for i in range(crowd_controls.size() - 1, -1, -1):
+			var type: CrowdControl.Type = crowd_controls[i].type
+			
+			if type == CrowdControl.Type.SLOW:
+				continue
+			
+			text = CrowdControl.Type.keys()[type]
+			break
+
+	if statuses.size() > 0:
+		var text_: String = Status.Type.keys()[statuses[-1].type]
+		if !text_.begins_with("CANNOT_"):
+			text = text_
+
+	var text_width: float = font.get_string_size(text,HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+
+	draw_string(
+		font,
+		Vector2(-text_width * 0.5, -total_statistics.radius * 2.2),
+		text,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		font_size,
+		Color.WHITE
 	)
 
 
@@ -615,11 +646,13 @@ func add_spell(type: Spell.Type, slot: int) -> void:
 
 
 func spell_1() -> void:
-	spells[0].cast(self)
+	if !has_status(Status.Type.CANNOT_SPELL):
+		spells[0].cast(self)
 
 
 func spell_2() -> void:
-	spells[1].cast(self)
+	if !has_status(Status.Type.CANNOT_SPELL):
+		spells[1].cast(self)
 
 
 func is_same_team(target: CharacterBase) -> bool:

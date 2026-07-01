@@ -152,11 +152,14 @@ func _q(cast_id: String):
 	var direction: Vector2 = (mouse_pos - character_base.global_position).normalized()
 
 	var area: Area = Area.create_rectangle(
-		character_base.global_position + direction * 225.0,
+		character_base.global_position,
 		direction.angle(),
 		450.0,
 		80.0,
-		true
+		true,
+		character_base,
+		false,
+		 direction * 225.0
 	)
 	
 	Ingame.current.add_child(area)
@@ -183,7 +186,7 @@ func _q(cast_id: String):
 			
 			damage_info.on_hit = true
 		
-		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_Q, 25.0 + 100.0 / 17.0 * character_base.level, true, true)
+		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_Q, 25.0 + 100.0 / 17.0 * character_base.level + 1.1 * character_base.total_statistics.attack_damage, true, true)
 		
 		Combat.apply_damage(damage_info)
 		
@@ -273,7 +276,7 @@ func _q3(damage_info: DamageInfo) -> void:
 	
 	if !q_targets.has(damage_info.victim):
 		damage_info.damage_instances.clear()
-		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_Q, 25.0 + 100.0 / 17.0 * character_base.level, true, true)
+		damage_info.add_damage_instance(DamageType.Type.PHYSICAL, SourceType.Type.SKILL_Q, 25.0 + 100.0 / 17.0 * character_base.level + 1.1 * character_base.total_statistics.attack_damage, true, true)
 		
 		q_targets.append(damage_info.victim)
 		
@@ -411,6 +414,7 @@ func _e2() -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, time)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, time)
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, time)
 	Combat.apply_status(character_base, Status.Type.UNSTOPPABLE, time)
 
 	Combat.apply_forced_movement(character_base, e_location, 1200.0)
@@ -448,6 +452,7 @@ func _r(cast_id: String) -> void:
 	Combat.apply_status(character_base, Status.Type.CANNOT_MOVE, 0.75)
 	Combat.apply_status(character_base, Status.Type.CANNOT_AUTO_ATTACK, 0.75)
 	Combat.apply_status(character_base, Status.Type.CANNOT_CAST, 0.75)
+	Combat.apply_status(character_base, Status.Type.CANNOT_SPELL, 0.75)
 	
 	var mouse_pos: Vector2 = Ingame.current.get_global_mouse_position()
 	
@@ -493,6 +498,8 @@ func _r(cast_id: String) -> void:
 		blink_position = last_target.global_position + direction * 200.0
 		
 	character_base.global_position = blink_position
+	character_base.is_moving = false
+	character_base.forced_movement = null
 	
 	await get_tree().create_timer(0.3).timeout
 	

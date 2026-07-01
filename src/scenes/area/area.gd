@@ -1,4 +1,4 @@
-extends Node2D
+extends Area2D
 class_name Area
 
 
@@ -103,6 +103,7 @@ func get_targets_circle() -> Array[CharacterBase]:
 	query.transform = Transform2D(0.0, global_position)
 
 	query.collide_with_areas = true
+	query.collision_mask = collision_mask
 
 	var result: Array[Dictionary] = (
 		Ingame.current
@@ -132,11 +133,9 @@ func get_targets_rectangle() -> Array[CharacterBase]:
 	var query: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 
 	query.shape = shape_rectangle
+	query.collision_mask = collision_mask
 
-	query.transform = Transform2D(
-		global_rotation,
-		global_position
-	)
+	query.transform = Transform2D(global_rotation, global_position)
 
 	query.collide_with_areas = true
 
@@ -166,11 +165,9 @@ func get_targets_polygon() -> Array[CharacterBase]:
 	var query: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 
 	query.shape = shape_polygon
+	query.collision_mask = collision_mask
 
-	query.transform = Transform2D(
-		global_rotation,
-		global_position
-	)
+	query.transform = Transform2D(global_rotation, global_position)
 
 	query.collide_with_areas = true
 
